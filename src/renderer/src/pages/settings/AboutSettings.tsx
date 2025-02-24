@@ -67,7 +67,7 @@ const AboutSettings: FC = () => {
     const { appPath } = await window.api.getAppInfo()
     MinApp.start({
       name: t('settings.about.license.title'),
-      url: `file://${appPath}/resources/cherry-studio/license.html`,
+      url: `file://${appPath}/resources/deekr-studio/license.html`,
       logo: AppLogo
     })
   }
@@ -76,7 +76,7 @@ const AboutSettings: FC = () => {
     const { appPath } = await window.api.getAppInfo()
     MinApp.start({
       name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+      url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
       logo: AppLogo
     })
   }
@@ -221,7 +221,7 @@ const AboutSettings: FC = () => {
             <SendOutlined />
             Telegram
           </SettingRowTitle>
-          <Button onClick={() => onOpenWebsite('https://t.me/CherryStudioAI')}>
+          <Button onClick={() => onOpenWebsite('https://t.me/DeekrStudioAI')}>
             {t('settings.about.website.button')}
           </Button>
         </SettingRow>

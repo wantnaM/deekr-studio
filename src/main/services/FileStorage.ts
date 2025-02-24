@@ -22,7 +22,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 class FileStorage {
   private storageDir = path.join(app.getPath('userData'), 'Data', 'Files')
-  private tempDir = path.join(app.getPath('temp'), 'CherryStudio')
+  private tempDir = path.join(app.getPath('temp'), 'DeekrStudio')
 
   constructor() {
     this.initStorageDir()

@@ -21,8 +21,8 @@ if (!app.requestSingleInstanceLock()) {
     await updateUserDataPath()
 
     // Register custom protocol
-    if (!app.isDefaultProtocolClient('cherrystudio')) {
-      app.setAsDefaultProtocolClient('cherrystudio')
+    if (!app.isDefaultProtocolClient('deekrstudio')) {
+      app.setAsDefaultProtocolClient('deekrstudio')
     }
 
     // Handle protocol open
@@ -40,7 +40,7 @@ if (!app.requestSingleInstanceLock()) {
     })
 
     // Set app user model id for windows
-    electronApp.setAppUserModelId(import.meta.env.VITE_MAIN_BUNDLE_ID || 'com.kangfenmao.CherryStudio')
+    electronApp.setAppUserModelId(import.meta.env.VITE_MAIN_BUNDLE_ID || 'com.deerk.DeekrStudio')
 
     const mainWindow = windowService.createMainWindow()
     new TrayService()

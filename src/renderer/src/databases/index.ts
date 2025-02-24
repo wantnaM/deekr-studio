@@ -2,7 +2,7 @@ import { FileType, KnowledgeItem, Topic, TranslateHistory } from '@renderer/type
 import { Dexie, type EntityTable } from 'dexie'
 
 // Database declaration (move this to its own module also)
-export const db = new Dexie('CherryStudio') as Dexie & {
+export const db = new Dexie('DeekrStudio') as Dexie & {
   files: EntityTable<FileType, 'id'>
   topics: EntityTable<Pick<Topic, 'id' | 'messages'>, 'id'>
   settings: EntityTable<{ id: string; value: any }, 'id'>

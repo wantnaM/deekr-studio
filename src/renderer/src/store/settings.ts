@@ -110,7 +110,7 @@ const initialState: SettingsState = {
   webdavHost: '',
   webdavUser: '',
   webdavPass: '',
-  webdavPath: '/cherry-studio',
+  webdavPath: '/deekr-studio',
   webdavAutoSync: false,
   webdavSyncInterval: 0,
   translateModelPrompt: TRANSLATE_PROMPT,

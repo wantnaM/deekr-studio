@@ -1,5 +1,5 @@
 {
-  "name": "@cherry-studio/database",
+  "name": "@deekr-studio/database",
   "packageManager": "yarn@4.3.1",
   "dependencies": {
     "csv-parser": "^3.0.0",

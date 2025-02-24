@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(
   {
-    key: 'cherry-studio',
+    key: 'deekr-studio',
     storage,
     version: 72,
     blacklist: ['runtime'],

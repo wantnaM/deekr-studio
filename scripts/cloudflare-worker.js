@@ -1,9 +1,9 @@
 // 配置信息
 const config = {
-  R2_CUSTOM_DOMAIN: 'cherrystudio.ocool.online',
-  R2_BUCKET_NAME: 'cherrystudio',
+  R2_CUSTOM_DOMAIN: 'deekrstudio.ocool.online',
+  R2_BUCKET_NAME: 'deekrstudio',
   // 缓存键名
-  CACHE_KEY: 'cherry-studio-latest-release',
+  CACHE_KEY: 'deekr-studio-latest-release',
   VERSION_DB: 'versions.json',
   LOG_FILE: 'logs.json',
   MAX_LOGS: 1000 // 最多保存多少条日志

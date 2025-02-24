@@ -350,15 +350,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cherry-studio/artifacts@workspace:packages/artifacts":
+"@deekr-studio/artifacts@workspace:packages/artifacts":
   version: 0.0.0-use.local
-  resolution: "@cherry-studio/artifacts@workspace:packages/artifacts"
+  resolution: "@deekr-studio/artifacts@workspace:packages/artifacts"
   languageName: unknown
   linkType: soft
 
-"@cherry-studio/database@workspace:packages/database":
+"@deekr-studio/database@workspace:packages/database":
   version: 0.0.0-use.local
-  resolution: "@cherry-studio/database@workspace:packages/database"
+  resolution: "@deekr-studio/database@workspace:packages/database"
   dependencies:
     csv-parser: "npm:^3.0.0"
     sqlite3: "npm:^5.1.7"
@@ -2992,9 +2992,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"CherryStudio@workspace:.":
+"DeekrStudio@workspace:.":
   version: 0.0.0-use.local
-  resolution: "CherryStudio@workspace:."
+  resolution: "DeekrStudio@workspace:."
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.24.3"
     "@electron-toolkit/eslint-config-prettier": "npm:^2.0.0"
