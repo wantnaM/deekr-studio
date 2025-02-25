@@ -22,17 +22,37 @@ export interface LlmState {
 }
 
 const initialState: LlmState = {
-  defaultModel: SYSTEM_MODELS.silicon[1],
-  topicNamingModel: SYSTEM_MODELS.silicon[2],
-  translateModel: SYSTEM_MODELS.silicon[3],
+  defaultModel: SYSTEM_MODELS.bailian[0],
+  topicNamingModel: SYSTEM_MODELS.silicon[0],
+  translateModel: SYSTEM_MODELS.moonshot[0],
   providers: [
     {
-      id: 'silicon',
-      name: 'Silicon',
+      id: 'dashscope',
+      name: 'Bailian',
       type: 'openai',
-      apiKey: '',
-      apiHost: 'https://api.siliconflow.cn',
-      models: SYSTEM_MODELS.silicon,
+      apiKey: 'sk-d993cf8a84854b54bc4b5fd21a0e7844',
+      apiHost: 'https://dashscope.aliyuncs.com/compatible-mode/v1/',
+      models: SYSTEM_MODELS.bailian,
+      isSystem: true,
+      enabled: true
+    },
+    {
+      id: 'moonshot',
+      name: 'Moonshot AI',
+      type: 'openai',
+      apiKey: 'sk-TwGUVRGcNu3hI9rWa0srludHK9hnjZdO2F9EK5k6WaNhMerz',
+      apiHost: 'https://api.moonshot.cn',
+      models: SYSTEM_MODELS.moonshot,
+      isSystem: true,
+      enabled: true
+    },
+    {
+      id: 'zhipu',
+      name: 'ZhiPu',
+      type: 'openai',
+      apiKey: '68c0a9ec06fa46b09cf99cdaf5a9105a.QX6rKxfosvUxqjdp',
+      apiHost: 'https://open.bigmodel.cn/api/paas/v4/',
+      models: SYSTEM_MODELS.zhipu,
       isSystem: true,
       enabled: true
     },
@@ -40,11 +60,21 @@ const initialState: LlmState = {
       id: 'aihubmix',
       name: 'AiHubMix',
       type: 'openai',
-      apiKey: '',
+      apiKey: 'sk-LYfwIkjsM0vhuZmE89E4558d1c634a68A0027f1a825703Bb',
       apiHost: 'https://aihubmix.com',
       models: SYSTEM_MODELS.aihubmix,
       isSystem: true,
-      enabled: false
+      enabled: true
+    },
+    {
+      id: 'silicon',
+      name: 'Silicon',
+      type: 'openai',
+      apiKey: 'sk-zzzmjsfsprefednkyvafuodwftxkypcfahyueqigwratwcit',
+      apiHost: 'https://api.siliconflow.cn',
+      models: SYSTEM_MODELS.silicon,
+      isSystem: true,
+      enabled: true
     },
     {
       id: 'deepseek',
@@ -168,42 +198,12 @@ const initialState: LlmState = {
       enabled: false
     },
     {
-      id: 'zhipu',
-      name: 'ZhiPu',
-      type: 'openai',
-      apiKey: '',
-      apiHost: 'https://open.bigmodel.cn/api/paas/v4/',
-      models: SYSTEM_MODELS.zhipu,
-      isSystem: true,
-      enabled: false
-    },
-    {
-      id: 'moonshot',
-      name: 'Moonshot AI',
-      type: 'openai',
-      apiKey: '',
-      apiHost: 'https://api.moonshot.cn',
-      models: SYSTEM_MODELS.moonshot,
-      isSystem: true,
-      enabled: false
-    },
-    {
       id: 'baichuan',
       name: 'BAICHUAN AI',
       type: 'openai',
       apiKey: '',
       apiHost: 'https://api.baichuan-ai.com',
       models: SYSTEM_MODELS.baichuan,
-      isSystem: true,
-      enabled: false
-    },
-    {
-      id: 'dashscope',
-      name: 'Bailian',
-      type: 'openai',
-      apiKey: '',
-      apiHost: 'https://dashscope.aliyuncs.com/compatible-mode/v1/',
-      models: SYSTEM_MODELS.bailian,
       isSystem: true,
       enabled: false
     },
@@ -384,6 +384,16 @@ const initialState: LlmState = {
       apiKey: '',
       apiHost: 'https://cloud.infini-ai.com/maas',
       models: SYSTEM_MODELS.infini,
+      isSystem: true,
+      enabled: false
+    },
+    {
+      id: 'lmstudio',
+      name: 'LM Studio',
+      type: 'openai',
+      apiKey: '',
+      apiHost: 'http://localhost:1234',
+      models: SYSTEM_MODELS.lmstudio,
       isSystem: true,
       enabled: false
     },

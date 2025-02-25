@@ -67,6 +67,7 @@ const PopupContainer: React.FC<PopupContainerProps> = ({ model, resolve }) => {
     .map((p) => {
       const filteredModels = sortBy(p.models, ['group', 'name'])
         .filter((m) => !isEmbeddingModel(m))
+        .filter((m) => m?.provider !== 'silicon')
         .filter((m) =>
           [m.name + m.provider + t('provider.' + p.id)].join('').toLowerCase().includes(searchText.toLowerCase())
         )

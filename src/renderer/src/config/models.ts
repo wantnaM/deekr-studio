@@ -151,7 +151,9 @@ const visionAllowedModels = [
   'chatgpt-4o(?:-[\\w-]+)?',
   'o1(?:-[\\w-]+)?',
   'deepseek-vl(?:[\\w-]+)?',
-  'kimi-latest'
+  'kimi-latest',
+  'stabilityai(?:[\\w-]+)?',
+  'black-forest-labs/FLUX.1-schnell'
 ]
 
 const visionExcludedModels = ['gpt-4-\\d+-preview', 'gpt-4-turbo-preview', 'gpt-4-32k', 'gpt-4-\\d+']
@@ -297,68 +299,110 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
       group: 'GPT-4o'
     },
     {
-      id: 'claude-3-5-sonnet-latest',
+      id: 'o1',
       provider: 'aihubmix',
-      name: 'Claude 3.5 Sonnet',
-      group: 'Claude 3.5'
+      name: 'o1',
+      group: 'o1'
     },
     {
-      id: 'gemini-2.0-flash-exp-search',
+      id: 'o1-mini',
       provider: 'aihubmix',
-      name: 'Gemini 2.0 Flash Exp Search',
-      group: 'Gemini 2.0'
-    },
-    {
-      id: 'deepseek-chat',
-      provider: 'aihubmix',
-      name: 'DeepSeek Chat',
-      group: 'DeepSeek Chat'
-    },
-    {
-      id: 'aihubmix-Llama-3-3-70B-Instruct',
-      provider: 'aihubmix',
-      name: 'Llama-3.3-70b',
-      group: 'Llama 3.3'
-    },
-    {
-      id: 'Qwen/QVQ-72B-Preview',
-      provider: 'aihubmix',
-      name: 'Qwen/QVQ-72B',
-      group: 'Qwen'
+      name: 'o1-mini',
+      group: 'o1'
     }
+    // {
+    //   id: 'claude-3-5-sonnet-latest',
+    //   provider: 'aihubmix',
+    //   name: 'Claude 3.5 Sonnet',
+    //   group: 'Claude 3.5'
+    // },
+    // {
+    //   id: 'gemini-2.0-flash-exp-search',
+    //   provider: 'aihubmix',
+    //   name: 'Gemini 2.0 Flash Exp Search',
+    //   group: 'Gemini 2.0'
+    // },
+    // {
+    //   id: 'deepseek-chat',
+    //   provider: 'aihubmix',
+    //   name: 'DeepSeek Chat',
+    //   group: 'DeepSeek Chat'
+    // },
+    // {
+    //   id: 'aihubmix-Llama-3-3-70B-Instruct',
+    //   provider: 'aihubmix',
+    //   name: 'Llama-3.3-70b',
+    //   group: 'Llama 3.3'
+    // },
+    // {
+    //   id: 'Qwen/QVQ-72B-Preview',
+    //   provider: 'aihubmix',
+    //   name: 'Qwen/QVQ-72B',
+    //   group: 'Qwen'
+    // }
   ],
   ollama: [],
   lmstudio: [],
   silicon: [
+    // {
+    //   id: 'deepseek-ai/DeepSeek-R1',
+    //   name: 'deepseek-ai/DeepSeek-R1',
+    //   provider: 'silicon',
+    //   group: 'deepseek-ai'
+    // },
+    // {
+    //   id: 'deepseek-ai/DeepSeek-V3',
+    //   name: 'deepseek-ai/DeepSeek-V3',
+    //   provider: 'silicon',
+    //   group: 'deepseek-ai'
+    // },
+    // {
+    //   id: 'Qwen/Qwen2.5-7B-Instruct',
+    //   provider: 'silicon',
+    //   name: 'Qwen2.5-7B-Instruct',
+    //   group: 'Qwen'
+    // },
+    // {
+    //   id: 'meta-llama/Llama-3.3-70B-Instruct',
+    //   name: 'meta-llama/Llama-3.3-70B-Instruct',
+    //   provider: 'silicon',
+    //   group: 'meta-llama'
+    // },
+    // {
+    //   id: 'BAAI/bge-m3',
+    //   name: 'BAAI/bge-m3',
+    //   provider: 'silicon',
+    //   group: 'BAAI'
+    // }
     {
-      id: 'deepseek-ai/DeepSeek-R1',
-      name: 'deepseek-ai/DeepSeek-R1',
+      id: 'deepseek-ai/DeepSeek-R1-Distill-Llama-8B',
+      name: 'DeepSeek-R1-Distill-Llama-8B',
       provider: 'silicon',
       group: 'deepseek-ai'
     },
     {
-      id: 'deepseek-ai/DeepSeek-V3',
-      name: 'deepseek-ai/DeepSeek-V3',
+      id: 'black-forest-labs/FLUX.1-schnell',
+      name: 'FLUX.1-schnell',
       provider: 'silicon',
-      group: 'deepseek-ai'
+      group: '生图'
     },
     {
-      id: 'Qwen/Qwen2.5-7B-Instruct',
+      id: 'stabilityai/stable-diffusion-3-5-large',
+      name: 'stable-diffusion-3-5-large',
       provider: 'silicon',
-      name: 'Qwen2.5-7B-Instruct',
-      group: 'Qwen'
+      group: '生图'
     },
     {
-      id: 'meta-llama/Llama-3.3-70B-Instruct',
-      name: 'meta-llama/Llama-3.3-70B-Instruct',
+      id: 'stabilityai/stable-diffusion-3-medium',
+      name: 'stable-diffusion-3-medium',
       provider: 'silicon',
-      group: 'meta-llama'
+      group: '生图'
     },
     {
-      id: 'BAAI/bge-m3',
-      name: 'BAAI/bge-m3',
+      id: 'stabilityai/stable-diffusion-2-1',
+      name: 'stable-diffusion-2-1',
       provider: 'silicon',
-      group: 'BAAI'
+      group: '生图'
     }
   ],
   ppio: [
@@ -839,75 +883,75 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
     {
       id: 'glm-zero-preview',
       provider: 'zhipu',
-      name: 'GLM-Zero-Preview',
+      name: 'Zero深度推理',
       group: 'GLM-Zero'
-    },
-    {
-      id: 'glm-4-0520',
-      provider: 'zhipu',
-      name: 'GLM-4-0520',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-long',
-      provider: 'zhipu',
-      name: 'GLM-4-Long',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-plus',
-      provider: 'zhipu',
-      name: 'GLM-4-Plus',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-air',
-      provider: 'zhipu',
-      name: 'GLM-4-Air',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-airx',
-      provider: 'zhipu',
-      name: 'GLM-4-AirX',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-flash',
-      provider: 'zhipu',
-      name: 'GLM-4-Flash',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4-flashx',
-      provider: 'zhipu',
-      name: 'GLM-4-FlashX',
-      group: 'GLM-4'
-    },
-    {
-      id: 'glm-4v',
-      provider: 'zhipu',
-      name: 'GLM 4V',
-      group: 'GLM-4v'
-    },
-    {
-      id: 'glm-4v-plus',
-      provider: 'zhipu',
-      name: 'GLM-4V-Plus',
-      group: 'GLM-4v'
-    },
-    {
-      id: 'glm-4-alltools',
-      provider: 'zhipu',
-      name: 'GLM-4-AllTools',
-      group: 'GLM-4-AllTools'
-    },
-    {
-      id: 'embedding-3',
-      provider: 'zhipu',
-      name: 'Embedding-3',
-      group: 'Embedding'
     }
+    // {
+    //   id: 'glm-4-0520',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-0520',
+    //   group: 'GLM-4'
+    // }
+    // {
+    //   id: 'glm-4-long',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-Long',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4-plus',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-Plus',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4-air',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-Air',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4-airx',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-AirX',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4-flash',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-Flash',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4-flashx',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-FlashX',
+    //   group: 'GLM-4'
+    // },
+    // {
+    //   id: 'glm-4v',
+    //   provider: 'zhipu',
+    //   name: 'GLM 4V',
+    //   group: 'GLM-4v'
+    // },
+    // {
+    //   id: 'glm-4v-plus',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4V-Plus',
+    //   group: 'GLM-4v'
+    // },
+    // {
+    //   id: 'glm-4-alltools',
+    //   provider: 'zhipu',
+    //   name: 'GLM-4-AllTools',
+    //   group: 'GLM-4-AllTools'
+    // },
+    // {
+    //   id: 'embedding-3',
+    //   provider: 'zhipu',
+    //   name: 'Embedding-3',
+    //   group: 'Embedding'
+    // }
   ],
   moonshot: [
     {
@@ -971,11 +1015,13 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
     }
   ],
   bailian: [
-    { id: 'qwen-vl-plus', name: 'qwen-vl-plus', provider: 'dashscope', group: 'qwen-vl', owned_by: 'system' },
-    { id: 'qwen-coder-plus', name: 'qwen-coder-plus', provider: 'dashscope', group: 'qwen-coder', owned_by: 'system' },
-    { id: 'qwen-turbo', name: 'qwen-turbo', provider: 'dashscope', group: 'qwen-turbo', owned_by: 'system' },
-    { id: 'qwen-plus', name: 'qwen-plus', provider: 'dashscope', group: 'qwen-plus', owned_by: 'system' },
-    { id: 'qwen-max', name: 'qwen-max', provider: 'dashscope', group: 'qwen-max', owned_by: 'system' }
+    // { id: 'qwen-vl-plus', name: 'qwen-vl-plus', provider: 'dashscope', group: 'qwen-vl', owned_by: 'system' },
+    // { id: 'qwen-coder-plus', name: 'qwen-coder-plus', provider: 'dashscope', group: 'qwen-coder', owned_by: 'system' },
+    // { id: 'qwen-turbo', name: 'qwen-turbo', provider: 'dashscope', group: 'qwen-turbo', owned_by: 'system' },
+    // { id: 'qwen-plus', name: 'qwen-plus', provider: 'dashscope', group: 'qwen-plus', owned_by: 'system' },
+    // { id: 'qwen-max', name: 'qwen-max', provider: 'dashscope', group: 'qwen-max', owned_by: 'system' }
+    { id: 'deepseek-r1', name: 'deepseek-R1', provider: 'dashscope', group: 'deepseek-ai', owned_by: 'system' },
+    { id: 'deepseek-v3', name: 'deepseek-V3', provider: 'dashscope', group: 'deepseek-ai', owned_by: 'system' }
   ],
   stepfun: [
     {
@@ -1523,48 +1569,48 @@ export const TEXT_TO_IMAGES_MODELS = [
     name: 'FLUX.1 Schnell',
     group: 'FLUX'
   },
-  {
-    id: 'black-forest-labs/FLUX.1-dev',
-    provider: 'silicon',
-    name: 'FLUX.1 Dev',
-    group: 'FLUX'
-  },
-  {
-    id: 'black-forest-labs/FLUX.1-pro',
-    provider: 'silicon',
-    name: 'FLUX.1 Pro',
-    group: 'FLUX'
-  },
-  {
-    id: 'Pro/black-forest-labs/FLUX.1-schnell',
-    provider: 'silicon',
-    name: 'FLUX.1 Schnell Pro',
-    group: 'FLUX'
-  },
-  {
-    id: 'LoRA/black-forest-labs/FLUX.1-dev',
-    provider: 'silicon',
-    name: 'FLUX.1 Dev LoRA',
-    group: 'FLUX'
-  },
-  {
-    id: 'deepseek-ai/Janus-Pro-7B',
-    provider: 'silicon',
-    name: 'Janus-Pro-7B',
-    group: 'deepseek-ai'
-  },
+  // {
+  //   id: 'black-forest-labs/FLUX.1-dev',
+  //   provider: 'silicon',
+  //   name: 'FLUX.1 Dev',
+  //   group: 'FLUX'
+  // },
+  // {
+  //   id: 'black-forest-labs/FLUX.1-pro',
+  //   provider: 'silicon',
+  //   name: 'FLUX.1 Pro',
+  //   group: 'FLUX'
+  // },
+  // {
+  //   id: 'Pro/black-forest-labs/FLUX.1-schnell',
+  //   provider: 'silicon',
+  //   name: 'FLUX.1 Schnell Pro',
+  //   group: 'FLUX'
+  // },
+  // {
+  //   id: 'LoRA/black-forest-labs/FLUX.1-dev',
+  //   provider: 'silicon',
+  //   name: 'FLUX.1 Dev LoRA',
+  //   group: 'FLUX'
+  // },
+  // {
+  //   id: 'deepseek-ai/Janus-Pro-7B',
+  //   provider: 'silicon',
+  //   name: 'Janus-Pro-7B',
+  //   group: 'deepseek-ai'
+  // },
   {
     id: 'stabilityai/stable-diffusion-3-5-large',
     provider: 'silicon',
     name: 'Stable Diffusion 3.5 Large',
     group: 'Stable Diffusion'
   },
-  {
-    id: 'stabilityai/stable-diffusion-3-5-large-turbo',
-    provider: 'silicon',
-    name: 'Stable Diffusion 3.5 Large Turbo',
-    group: 'Stable Diffusion'
-  },
+  // {
+  //   id: 'stabilityai/stable-diffusion-3-5-large-turbo',
+  //   provider: 'silicon',
+  //   name: 'Stable Diffusion 3.5 Large Turbo',
+  //   group: 'Stable Diffusion'
+  // },
   {
     id: 'stabilityai/stable-diffusion-3-medium',
     provider: 'silicon',
@@ -1576,13 +1622,13 @@ export const TEXT_TO_IMAGES_MODELS = [
     provider: 'silicon',
     name: 'Stable Diffusion 2.1',
     group: 'Stable Diffusion'
-  },
-  {
-    id: 'stabilityai/stable-diffusion-xl-base-1.0',
-    provider: 'silicon',
-    name: 'Stable Diffusion XL Base 1.0',
-    group: 'Stable Diffusion'
   }
+  // {
+  //   id: 'stabilityai/stable-diffusion-xl-base-1.0',
+  //   provider: 'silicon',
+  //   name: 'Stable Diffusion XL Base 1.0',
+  //   group: 'Stable Diffusion'
+  // }
 ]
 
 export const TEXT_TO_IMAGES_MODELS_SUPPORT_IMAGE_ENHANCEMENT = [
@@ -1629,6 +1675,12 @@ export function isReasoningModel(model: Model): boolean {
 
   if (model.provider === 'doubao') {
     return REASONING_REGEX.test(model.name) || model.type?.includes('reasoning') || false
+  }
+
+  if (model.provider === 'zhipu') {
+    return (
+      REASONING_REGEX.test(model.name) || model.type?.includes('reasoning') || model.id === 'glm-zero-preview' || false
+    )
   }
 
   return REASONING_REGEX.test(model.id) || model.type?.includes('reasoning') || false
