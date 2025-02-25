@@ -88,7 +88,7 @@ export class WindowService {
       width,
       height,
       autoHideMenuBar: true,
-      title: 'Deekr Studio',
+      title: '教师智能体',
       ...windowOptions,
       parent,
       webPreferences: {

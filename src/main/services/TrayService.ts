@@ -70,7 +70,7 @@ export class TrayService {
       this.tray.setContextMenu(contextMenu)
     }
 
-    this.tray.setToolTip('Deekr Studio')
+    this.tray.setToolTip('教师智能体')
 
     this.tray.on('right-click', () => {
       this.tray?.popUpContextMenu(contextMenu)

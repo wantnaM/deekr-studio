@@ -1,5 +1,5 @@
 appId: com.deerk.DeekrStudio
-productName: Deekr Studio
+productName: 教师智能体
 directories:
   buildResources: build
 files:
@@ -32,15 +32,15 @@ asarUnpack:
   - resources/**
   - '**/*.{node,dll,metal,exp,lib}'
 win:
-  executableName: Deekr Studio
-  artifactName: ${productName}-${version}-portable.${ext}
+  executableName: 教师智能体
+  artifactName: Deekr Studio-${version}-portable.${ext}
   target:
     - target: nsis
     - target: portable
 nsis:
-  artifactName: ${productName}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
+  artifactName: Deekr Studio-${version}-setup.${ext}
+  shortcutName: Deekr Studio
+  uninstallDisplayName: Deekr Studio
   createDesktopShortcut: always
   allowToChangeInstallationDirectory: true
   oneClick: false
@@ -48,7 +48,7 @@ nsis:
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: Deekr Studio-${version}-${arch}.${ext}
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -64,7 +64,7 @@ mac:
         - arm64
         - x64
 linux:
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: Deekr Studio-${version}-${arch}.${ext}
   target:
     - target: AppImage
       arch:
