@@ -1,87 +1,81 @@
-import { GithubOutlined, XOutlined } from '@ant-design/icons'
-import { FileProtectOutlined, GlobalOutlined, MailOutlined, SendOutlined, SoundOutlined } from '@ant-design/icons'
-import IndicatorLight from '@renderer/components/IndicatorLight'
-import { HStack } from '@renderer/components/Layout'
-import MinApp from '@renderer/components/MinApp'
+// import MinApp from '@renderer/components/MinApp'
 import { APP_NAME, AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useRuntime } from '@renderer/hooks/useRuntime'
-import { useSettings } from '@renderer/hooks/useSettings'
-import { useAppDispatch } from '@renderer/store'
-import { setUpdateState } from '@renderer/store/runtime'
-import { setManualUpdateCheck } from '@renderer/store/settings'
-import { ThemeMode } from '@renderer/types'
-import { compareVersions, runAsyncFunction } from '@renderer/utils'
-import { Avatar, Button, Progress, Row, Switch, Tag } from 'antd'
-import { debounce } from 'lodash'
+// import { useSettings } from '@renderer/hooks/useSettings'
+// import { useAppDispatch } from '@renderer/store'
+// import { setUpdateState } from '@renderer/store/runtime'
+// import { ThemeMode } from '@renderer/types'
+// import { compareVersions, runAsyncFunction } from '@renderer/utils'
+import { runAsyncFunction } from '@renderer/utils'
+import { Avatar, Progress, Row, Tag } from 'antd'
+// import { debounce } from 'lodash'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Markdown from 'react-markdown'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { SettingContainer, SettingDivider, SettingGroup, SettingRow, SettingTitle } from '.'
+import { SettingContainer, SettingDivider, SettingGroup, SettingTitle } from '.'
 
 const AboutSettings: FC = () => {
   const [version, setVersion] = useState('')
   const { t } = useTranslation()
-  const { manualUpdateCheck } = useSettings()
+  // const { manualUpdateCheck } = useSettings()
   const { theme } = useTheme()
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
   const { update } = useRuntime()
 
-  const onCheckUpdate = debounce(
-    async () => {
-      if (update.checking || update.downloading) {
-        return
-      }
+  // const onCheckUpdate = debounce(
+  //   async () => {
+  //     if (update.checking || update.downloading) {
+  //       return
+  //     }
 
-      dispatch(setUpdateState({ checking: true }))
+  //     dispatch(setUpdateState({ checking: true }))
 
-      try {
-        await window.api.checkForUpdate()
-      } catch (error) {
-        window.message.error(t('settings.about.updateError'))
-      }
+  //     try {
+  //       await window.api.checkForUpdate()
+  //     } catch (error) {
+  //       window.message.error(t('settings.about.updateError'))
+  //     }
 
-      dispatch(setUpdateState({ checking: false }))
-    },
-    2000,
-    { leading: true, trailing: false }
-  )
+  //     dispatch(setUpdateState({ checking: false }))
+  //   },
+  //   2000,
+  //   { leading: true, trailing: false }
+  // )
 
-  const onOpenWebsite = (url: string) => {
-    window.api.openWebsite(url)
-  }
+  // const onOpenWebsite = (url: string) => {
+  //   window.api.openWebsite(url)
+  // }
 
-  const mailto = async () => {
-    const email = 'support@cherry-ai.com'
-    const subject = `${APP_NAME} Feedback`
-    const version = (await window.api.getAppInfo()).version
-    const platform = window.electron.process.platform
-    const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
-    onOpenWebsite(url)
-  }
+  // const mailto = async () => {
+  //   const email = 'support@cherry-ai.com'
+  //   const subject = `${APP_NAME} Feedback`
+  //   const version = (await window.api.getAppInfo()).version
+  //   const platform = window.electron.process.platform
+  //   const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
+  //   onOpenWebsite(url)
+  // }
 
-  const showLicense = async () => {
-    const { appPath } = await window.api.getAppInfo()
-    MinApp.start({
-      name: t('settings.about.license.title'),
-      url: `file://${appPath}/resources/deekr-studio/license.html`,
-      logo: AppLogo
-    })
-  }
+  // const showLicense = async () => {
+  //   const { appPath } = await window.api.getAppInfo()
+  //   MinApp.start({
+  //     name: t('settings.about.license.title'),
+  //     url: `file://${appPath}/resources/deekr-studio/license.html`,
+  //     logo: AppLogo
+  //   })
+  // }
 
-  const showReleases = async () => {
-    const { appPath } = await window.api.getAppInfo()
-    MinApp.start({
-      name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
-      logo: AppLogo
-    })
-  }
+  // const showReleases = async () => {
+  //   const { appPath } = await window.api.getAppInfo()
+  //   MinApp.start({
+  //     name: t('settings.about.releases.title'),
+  //     url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+  //     logo: AppLogo
+  //   })
+  // }
 
-  const hasNewVersion = update?.info?.version && version ? compareVersions(update.info.version, version) > 0 : false
+  // const hasNewVersion = update?.info?.version && version ? compareVersions(update.info.version, version) > 0 : false
 
   useEffect(() => {
     runAsyncFunction(async () => {
@@ -95,16 +89,16 @@ const AboutSettings: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>
           {t('settings.about.title')}
-          <HStack alignItems="center">
+          {/* <HStack alignItems="center">
             <Link to="https://github.com/kangfenmao/cherry-studio">
               <GithubOutlined style={{ marginRight: 4, color: 'var(--color-text)', fontSize: 20 }} />
             </Link>
-          </HStack>
+          </HStack> */}
         </SettingTitle>
         <SettingDivider />
         <AboutHeader>
           <Row align="middle">
-            <AvatarWrapper onClick={() => onOpenWebsite('https://github.com/kangfenmao/cherry-studio')}>
+            <AvatarWrapper>
               {update.downloadProgress > 0 && (
                 <ProgressCircle
                   type="circle"
@@ -121,14 +115,14 @@ const AboutSettings: FC = () => {
               <Title>{APP_NAME}</Title>
               <Description>{t('settings.about.description')}</Description>
               <Tag
-                onClick={() => onOpenWebsite('https://github.com/kangfenmao/cherry-studio/releases')}
+                // onClick={() => onOpenWebsite('https://github.com/kangfenmao/cherry-studio/releases')}
                 color="cyan"
-                style={{ marginTop: 8, cursor: 'pointer' }}>
+                style={{ marginTop: 8 }}>
                 v{version}
               </Tag>
             </VersionWrapper>
           </Row>
-          <CheckUpdateButton
+          {/* <CheckUpdateButton
             onClick={onCheckUpdate}
             loading={update.checking}
             disabled={update.downloading || update.checking}>
@@ -137,15 +131,15 @@ const AboutSettings: FC = () => {
               : update.available
                 ? t('settings.about.checkUpdate.available')
                 : t('settings.about.checkUpdate')}
-          </CheckUpdateButton>
+          </CheckUpdateButton> */}
         </AboutHeader>
-        <SettingDivider />
+        {/* <SettingDivider />
         <SettingRow>
           <SettingRowTitle>{t('settings.general.manually_check_update.title')}</SettingRowTitle>
           <Switch value={manualUpdateCheck} onChange={(v) => dispatch(setManualUpdateCheck(v))} />
-        </SettingRow>
+        </SettingRow> */}
       </SettingGroup>
-      {hasNewVersion && update.info && (
+      {/* {hasNewVersion && update.info && (
         <SettingGroup theme={theme}>
           <SettingRow>
             <SettingRowTitle>
@@ -225,7 +219,7 @@ const AboutSettings: FC = () => {
             {t('settings.about.website.button')}
           </Button>
         </SettingRow>
-      </SettingGroup>
+      </SettingGroup> */}
     </SettingContainer>
   )
 }
@@ -260,7 +254,7 @@ const Description = styled.div`
   text-align: center;
 `
 
-const CheckUpdateButton = styled(Button)``
+// const CheckUpdateButton = styled(Button)``
 
 const AvatarWrapper = styled.div`
   position: relative;
@@ -288,17 +282,17 @@ export const SettingRowTitle = styled.div`
   }
 `
 
-const UpdateNotesWrapper = styled.div`
-  padding: 12px 0;
-  margin: 8px 0;
-  background-color: var(--color-bg-2);
-  border-radius: 6px;
+// const UpdateNotesWrapper = styled.div`
+//   padding: 12px 0;
+//   margin: 8px 0;
+//   background-color: var(--color-bg-2);
+//   border-radius: 6px;
 
-  p {
-    margin: 0;
-    color: var(--color-text-2);
-    font-size: 14px;
-  }
-`
+//   p {
+//     margin: 0;
+//     color: var(--color-text-2);
+//     font-size: 14px;
+//   }
+// `
 
 export default AboutSettings
