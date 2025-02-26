@@ -1,5 +1,5 @@
 import {
-  CloudOutlined,
+  // CloudOutlined,
   GlobalOutlined,
   InfoCircleOutlined,
   LayoutOutlined,
@@ -40,12 +40,12 @@ const SettingsPage: FC = () => {
         <SettingMenus>
           {!isLocalAi && (
             <>
-              <MenuItemLink to="/settings/provider">
+              {/* <MenuItemLink to="/settings/provider">
                 <MenuItem className={isRoute('/settings/provider')}>
                   <CloudOutlined />
                   {t('settings.provider.title')}
                 </MenuItem>
-              </MenuItemLink>
+              </MenuItemLink> */}
               <MenuItemLink to="/settings/model">
                 <MenuItem className={isRoute('/settings/model')}>
                   <i className="iconfont icon-ai-model" />
