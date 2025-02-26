@@ -101,7 +101,7 @@ const Sidebar: FC = () => {
               if (minappShow) {
                 await MinApp.close()
               }
-              await to(isLocalAi ? '/settings/assistant' : '/settings/provider')
+              await to(isLocalAi ? '/settings/assistant' : '/settings/model')
             }}>
             <Icon className={pathname.startsWith('/settings') && !minappShow ? 'active' : ''}>
               <i className="iconfont icon-setting" />
