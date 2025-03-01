@@ -683,7 +683,7 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
     {
       id: 'deepseek-reasoner',
       provider: 'deepseek',
-      name: 'DeepSeek Reasoner',
+      name: 'DeepSeek 深度思考(R1)',
       group: 'DeepSeek Reasoner'
     }
   ],

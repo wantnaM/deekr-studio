@@ -22,10 +22,20 @@ export interface LlmState {
 }
 
 const initialState: LlmState = {
-  defaultModel: SYSTEM_MODELS.bailian[0],
+  defaultModel: SYSTEM_MODELS.deepseek[1],
   topicNamingModel: SYSTEM_MODELS.silicon[0],
   translateModel: SYSTEM_MODELS.moonshot[0],
   providers: [
+    {
+      id: 'deepseek',
+      name: 'deepseek',
+      type: 'openai',
+      apiKey: 'sk-01b6329159164fadb638644aea20e6c0',
+      apiHost: 'https://api.deepseek.com',
+      models: SYSTEM_MODELS.deepseek,
+      isSystem: true,
+      enabled: true
+    },
     {
       id: 'dashscope',
       name: 'Bailian',
@@ -34,7 +44,7 @@ const initialState: LlmState = {
       apiHost: 'https://dashscope.aliyuncs.com/compatible-mode/v1/',
       models: SYSTEM_MODELS.bailian,
       isSystem: true,
-      enabled: true
+      enabled: false
     },
     {
       id: 'moonshot',
@@ -75,16 +85,6 @@ const initialState: LlmState = {
       models: SYSTEM_MODELS.silicon,
       isSystem: true,
       enabled: true
-    },
-    {
-      id: 'deepseek',
-      name: 'deepseek',
-      type: 'openai',
-      apiKey: '',
-      apiHost: 'https://api.deepseek.com',
-      models: SYSTEM_MODELS.deepseek,
-      isSystem: true,
-      enabled: false
     },
     {
       id: 'ocoolai',
