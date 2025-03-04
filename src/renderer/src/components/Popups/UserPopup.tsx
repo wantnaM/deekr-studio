@@ -1,8 +1,7 @@
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useSettings } from '@renderer/hooks/useSettings'
-import { useAppDispatch, useAppSelector } from '@renderer/store'
-import { setUserState } from '@renderer/store/runtime'
-import { setUserName } from '@renderer/store/settings'
+import { useAppDispatch } from '@renderer/store'
+import { setUserName, setUserState } from '@renderer/store/settings'
 import { Avatar, Button, Form, Input, message, Modal } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,8 +21,9 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const [form] = Form.useForm()
   const dispatch = useAppDispatch()
   const avatar = useAvatar()
-  const { userName } = useSettings()
-  const { isLoggedIn, username } = useAppSelector((state) => state.runtime.user)
+  const { userName, user } = useSettings()
+  const { isLoggedIn, username } = user
+  console.log(isLoggedIn, username)
 
   // 登录处理
   const handleLogin = async () => {

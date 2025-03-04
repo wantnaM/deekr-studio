@@ -32,12 +32,10 @@ const Sidebar: FC = () => {
   const { minappShow } = useRuntime()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { windowStyle, sidebarIcons } = useSettings()
+  const { windowStyle, sidebarIcons, user } = useSettings()
   const { theme, toggleTheme } = useTheme()
   const { pinned } = useMinapps()
-
   const onEditUser = () => UserPopup.show()
-
   const macTransparentWindow = isMac && windowStyle === 'transparent'
   const sidebarBgColor = macTransparentWindow ? 'transparent' : 'var(--navbar-background)'
 
@@ -48,6 +46,9 @@ const Sidebar: FC = () => {
     navigate(path)
   }
 
+  if (!user.isLoggedIn) {
+    onEditUser()
+  }
   // const onOpenDocs = () => {
   //   MinApp.start({
   //     id: 'docs',
