@@ -8,7 +8,10 @@ export type SidebarIcon = 'assistants' | 'agents' | 'paintings' | 'translate' | 
 
 export interface UserState {
   username: string
-  token: string | null
+  userId: string | number
+  accessToken: string | null
+  refreshToken: string | null
+  expiresTime: number | null
   isLoggedIn: boolean
 }
 
@@ -141,8 +144,11 @@ const initialState: SettingsState = {
   notionSplitSize: 90,
   user: {
     isLoggedIn: false,
+    userId: '',
     username: '',
-    token: null
+    accessToken: null,
+    refreshToken: null,
+    expiresTime: null
   }
 }
 

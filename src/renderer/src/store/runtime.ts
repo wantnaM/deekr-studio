@@ -26,6 +26,7 @@ export interface RuntimeState {
   update: UpdateState
   webdavSync: WebDAVSyncState
   export: ExportState
+  showLogin: boolean
 }
 
 export interface ExportState {
@@ -53,7 +54,8 @@ const initialState: RuntimeState = {
   },
   export: {
     isExporting: false
-  }
+  },
+  showLogin: true
 }
 
 const runtimeSlice = createSlice({
@@ -86,6 +88,9 @@ const runtimeSlice = createSlice({
     },
     setExportState: (state, action: PayloadAction<Partial<ExportState>>) => {
       state.export = { ...state.export, ...action.payload }
+    },
+    setShowLogin: (state, action: PayloadAction<boolean>) => {
+      state.showLogin = action.payload
     }
   }
 })
@@ -99,7 +104,8 @@ export const {
   setResourcesPath,
   setUpdateState,
   setWebDAVSyncState,
-  setExportState
+  setExportState,
+  setShowLogin
 } = runtimeSlice.actions
 
 export default runtimeSlice.reducer

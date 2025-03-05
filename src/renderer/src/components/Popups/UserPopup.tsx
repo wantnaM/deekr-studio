@@ -1,3 +1,4 @@
+import { ADMIN_API_URL } from '@renderer/config/env'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useAppDispatch } from '@renderer/store'
@@ -23,31 +24,62 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const avatar = useAvatar()
   const { userName, user } = useSettings()
   const { isLoggedIn, username } = user
-  console.log(isLoggedIn, username)
 
   // 登录处理
   const handleLogin = async () => {
     try {
       const values = await form.validateFields()
+      // 使用feach请求后端登录端口，url是ADMIN_API_URL
+      const response = await fetch(`${ADMIN_API_URL}/admin-api/system/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+
+      if (!response.ok) {
+        throw new Error('Login failed')
+      }
+      // 解析响应数据
+      const res = await response.json()
+      console.log(res)
+      if (res.code !== 0) {
+        message.error(res.msg)
+        throw new Error(res.msg)
+      }
+      const data = res.data
       // 模拟登录成功
       dispatch(
         setUserState({
           isLoggedIn: true,
+          userId: data.userId,
           username: values.username,
-          token: 'mock-token'
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          expiresTime: data.expiresTime
         })
       )
       setOpen(false)
       resolve({ success: true })
       message.success(t('login.success')) // 显示登录成功的消息
     } catch (error) {
-      console.error('Login failed:', error)
+      console.error('login failed:', error)
     }
   }
 
   // 登出处理
   const handleLogout = () => {
-    dispatch(setUserState({ isLoggedIn: false, username: '', token: '' }))
+    dispatch(
+      setUserState({
+        isLoggedIn: false,
+        userId: '',
+        username: '',
+        accessToken: null,
+        refreshToken: null,
+        expiresTime: null
+      })
+    )
     setOpen(false)
     resolve({})
     message.success(t('logout.success')) // 显示登出成功的消息
