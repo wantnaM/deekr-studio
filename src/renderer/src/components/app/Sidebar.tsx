@@ -12,6 +12,8 @@ import useAvatar from '@renderer/hooks/useAvatar'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { modelGenerating, useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { useAppDispatch } from '@renderer/store'
+import { setShowLogin } from '@renderer/store/runtime'
 import type { MenuProps } from 'antd'
 import { Tooltip } from 'antd'
 import { Avatar } from 'antd'
@@ -29,15 +31,14 @@ import UserPopup from '../Popups/UserPopup'
 const Sidebar: FC = () => {
   const { pathname } = useLocation()
   const avatar = useAvatar()
-  const { minappShow } = useRuntime()
+  const { minappShow, showLogin } = useRuntime()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { windowStyle, sidebarIcons } = useSettings()
+  const { windowStyle, sidebarIcons, user } = useSettings()
   const { theme, toggleTheme } = useTheme()
   const { pinned } = useMinapps()
-
+  const dispatch = useAppDispatch()
   const onEditUser = () => UserPopup.show()
-
   const macTransparentWindow = isMac && windowStyle === 'transparent'
   const sidebarBgColor = macTransparentWindow ? 'transparent' : 'var(--navbar-background)'
 
@@ -47,7 +48,12 @@ const Sidebar: FC = () => {
     await modelGenerating()
     navigate(path)
   }
+  console.log(showLogin)
 
+  if (!user.isLoggedIn && showLogin) {
+    dispatch(setShowLogin(false))
+    onEditUser()
+  }
   // const onOpenDocs = () => {
   //   MinApp.start({
   //     id: 'docs',

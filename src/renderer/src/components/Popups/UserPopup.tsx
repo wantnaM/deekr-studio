@@ -1,11 +1,9 @@
+import { ADMIN_API_URL } from '@renderer/config/env'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useSettings } from '@renderer/hooks/useSettings'
-import ImageStorage from '@renderer/services/ImageStorage'
 import { useAppDispatch } from '@renderer/store'
-import { setAvatar } from '@renderer/store/runtime'
-import { setUserName } from '@renderer/store/settings'
-import { compressImage } from '@renderer/utils'
-import { Avatar, Input, Modal, Upload } from 'antd'
+import { setUserName, setUserState } from '@renderer/store/settings'
+import { Avatar, Button, Form, Input, message, Modal } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -18,18 +16,78 @@ interface Props {
 }
 
 const PopupContainer: React.FC<Props> = ({ resolve }) => {
+  // 使用 useState 钩子来管理模态框的显示状态，初始值为 true
   const [open, setOpen] = useState(true)
   const { t } = useTranslation()
-  const { userName } = useSettings()
+  const [form] = Form.useForm()
   const dispatch = useAppDispatch()
   const avatar = useAvatar()
+  const { userName, user } = useSettings()
+  const { isLoggedIn, username } = user
 
-  const onOk = () => {
-    setOpen(false)
+  // 登录处理
+  const handleLogin = async () => {
+    try {
+      const values = await form.validateFields()
+      // 使用feach请求后端登录端口，url是ADMIN_API_URL
+      const response = await fetch(`${ADMIN_API_URL}/admin-api/system/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
+
+      if (!response.ok) {
+        throw new Error('Login failed')
+      }
+      // 解析响应数据
+      const res = await response.json()
+      console.log(res)
+      if (res.code !== 0) {
+        message.error(res.msg)
+        throw new Error(res.msg)
+      }
+      const data = res.data
+      // 模拟登录成功
+      dispatch(
+        setUserState({
+          isLoggedIn: true,
+          userId: data.userId,
+          username: values.username,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          expiresTime: data.expiresTime
+        })
+      )
+      setOpen(false)
+      resolve({ success: true })
+      message.success(t('login.success')) // 显示登录成功的消息
+    } catch (error) {
+      console.error('login failed:', error)
+    }
   }
 
-  const onCancel = () => {
+  // 登出处理
+  const handleLogout = () => {
+    dispatch(
+      setUserState({
+        isLoggedIn: false,
+        userId: '',
+        username: '',
+        accessToken: null,
+        refreshToken: null,
+        expiresTime: null
+      })
+    )
     setOpen(false)
+    resolve({})
+    message.success(t('logout.success')) // 显示登出成功的消息
+  }
+
+  // 用户名更新
+  const handleUpdateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserName(e.target.value))
   }
 
   const onClose = () => {
@@ -38,42 +96,70 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
 
   return (
     <Modal
-      width="300px"
+      width="400px"
+      title={isLoggedIn ? t('user.profile') : t('login.title')}
       open={open}
-      footer={null}
-      onOk={onOk}
-      onCancel={onCancel}
+      footer={
+        isLoggedIn
+          ? [
+              <Button key="logout" danger onClick={handleLogout}>
+                {t('user.logout')}
+              </Button>,
+              <Button key="confirm" type="primary" onClick={() => setOpen(false)}>
+                {t('common.save')}
+              </Button>
+            ]
+          : [
+              <Button key="submit" type="primary" onClick={handleLogin}>
+                {t('login.submit')}
+              </Button>
+            ]
+      }
+      onCancel={() => setOpen(false)}
       afterClose={onClose}
-      transitionName="ant-move-down"
       centered>
-      <Center mt="30px">
-        <Upload
-          customRequest={() => {}}
-          accept="image/png, image/jpeg"
-          itemRender={() => null}
-          maxCount={1}
-          onChange={async ({ file }) => {
-            try {
-              const _file = file.originFileObj as File
-              const compressedFile = await compressImage(_file)
-              await ImageStorage.set('avatar', compressedFile)
-              dispatch(setAvatar(await ImageStorage.get('avatar')))
-            } catch (error: any) {
-              window.message.error(error.message)
-            }
-          }}>
-          <UserAvatar src={avatar} />
-        </Upload>
-      </Center>
-      <HStack alignItems="center" gap="10px" p="20px">
-        <Input
-          placeholder={t('settings.general.user_name.placeholder')}
-          value={userName}
-          onChange={(e) => dispatch(setUserName(e.target.value))}
-          style={{ flex: 1, textAlign: 'center', width: '100%' }}
-          maxLength={30}
-        />
-      </HStack>
+      {isLoggedIn ? (
+        <>
+          <HStack alignItems="center" justifyContent="center" mt="10px">
+            <div>{t('user.current_username') + ': ' + username}</div>
+          </HStack>
+          <Center mt="20px">
+            <UserAvatar src={avatar} />
+          </Center>
+          <HStack alignItems="center" gap="10px" p="20px">
+            <Input
+              placeholder={t('settings.general.user_name.placeholder')}
+              value={userName}
+              onChange={handleUpdateUsername}
+              style={{ flex: 1, textAlign: 'center' }}
+              maxLength={30}
+            />
+          </HStack>
+        </>
+      ) : (
+        <>
+          <Form form={form} layout="vertical">
+            <Form.Item
+              name="username"
+              label={t('login.username.label')}
+              rules={[{ required: true, message: t('login.username.required') }]}>
+              <Input placeholder={t('login.username.placeholder')} />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              label={t('login.password.label')}
+              rules={[{ required: true, message: t('login.password.required') }]}>
+              <Input.Password placeholder={t('login.password.placeholder')} />
+            </Form.Item>
+          </Form>
+
+          <HStack justifyContent="space-between" style={{ marginTop: -10 }}>
+            <a>{t('login.forgot_password')}</a>
+            <a>{t('login.register')}</a>
+          </HStack>
+        </>
+      )}
     </Modal>
   )
 }

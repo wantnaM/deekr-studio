@@ -6,6 +6,15 @@ export type SendMessageShortcut = 'Enter' | 'Shift+Enter' | 'Ctrl+Enter' | 'Comm
 
 export type SidebarIcon = 'assistants' | 'agents' | 'paintings' | 'translate' | 'minapp' | 'knowledge' | 'files'
 
+export interface UserState {
+  username: string
+  userId: string | number
+  accessToken: string | null
+  refreshToken: string | null
+  expiresTime: number | null
+  isLoggedIn: boolean
+}
+
 export const DEFAULT_SIDEBAR_ICONS: SidebarIcon[] = [
   'assistants',
   'agents',
@@ -73,6 +82,7 @@ export interface SettingsState {
   thoughtAutoCollapse: boolean
   notionAutoSplit: boolean
   notionSplitSize: number
+  user: UserState
 }
 
 export type MultiModelMessageStyle = 'horizontal' | 'vertical' | 'fold' | 'grid'
@@ -131,7 +141,15 @@ const initialState: SettingsState = {
   notionPageNameKey: 'Name',
   thoughtAutoCollapse: true,
   notionAutoSplit: false,
-  notionSplitSize: 90
+  notionSplitSize: 90,
+  user: {
+    isLoggedIn: false,
+    userId: '',
+    username: '',
+    accessToken: null,
+    refreshToken: null,
+    expiresTime: null
+  }
 }
 
 const settingsSlice = createSlice({
@@ -303,6 +321,9 @@ const settingsSlice = createSlice({
     },
     setNotionSplitSize: (state, action: PayloadAction<number>) => {
       state.notionSplitSize = action.payload
+    },
+    setUserState: (state, action: PayloadAction<Partial<UserState>>) => {
+      state.user = { ...state.user, ...action.payload }
     }
   }
 })
@@ -360,7 +381,8 @@ export const {
   setNotionPageNameKey,
   setThoughtAutoCollapse,
   setNotionAutoSplit,
-  setNotionSplitSize
+  setNotionSplitSize,
+  setUserState
 } = settingsSlice.actions
 
 export default settingsSlice.reducer
