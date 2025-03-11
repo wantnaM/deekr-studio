@@ -48,7 +48,6 @@ const Sidebar: FC = () => {
     await modelGenerating()
     navigate(path)
   }
-  console.log(showLogin)
 
   if (!user.isLoggedIn && showLogin) {
     dispatch(setShowLogin(false))

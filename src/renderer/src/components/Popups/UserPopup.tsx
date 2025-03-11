@@ -1,6 +1,8 @@
-import { ADMIN_API_URL } from '@renderer/config/env'
+import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import useAvatar from '@renderer/hooks/useAvatar'
+import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { getApiKey, login, logout } from '@renderer/services/AdminService'
 import { useAppDispatch } from '@renderer/store'
 import { setUserName, setUserState } from '@renderer/store/settings'
 import { Avatar, Button, Form, Input, message, Modal } from 'antd'
@@ -24,32 +26,15 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const avatar = useAvatar()
   const { userName, user } = useSettings()
   const { isLoggedIn, username } = user
+  const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
+  const { updateProviders } = useProviders()
 
   // 登录处理
   const handleLogin = async () => {
     try {
       const values = await form.validateFields()
       // 使用feach请求后端登录端口，url是ADMIN_API_URL
-      const response = await fetch(`${ADMIN_API_URL}/admin-api/system/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-      })
-
-      if (!response.ok) {
-        throw new Error('Login failed')
-      }
-      // 解析响应数据
-      const res = await response.json()
-      console.log(res)
-      if (res.code !== 0) {
-        message.error(res.msg)
-        throw new Error(res.msg)
-      }
-      const data = res.data
-      // 模拟登录成功
+      const data = await login(values)
       dispatch(
         setUserState({
           isLoggedIn: true,
@@ -60,6 +45,12 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
           expiresTime: data.expiresTime
         })
       )
+      const apiKey = await getApiKey(data.userId)
+      updateProviders(apiKey.providers)
+      setDefaultModel(apiKey.defaultModel)
+      setTopicNamingModel(apiKey.topicNamingModel)
+      setTranslateModel(apiKey.translateModel)
+
       setOpen(false)
       resolve({ success: true })
       message.success(t('login.success')) // 显示登录成功的消息
@@ -69,7 +60,8 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   }
 
   // 登出处理
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout()
     dispatch(
       setUserState({
         isLoggedIn: false,
@@ -80,6 +72,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         expiresTime: null
       })
     )
+    updateProviders([])
     setOpen(false)
     resolve({})
     message.success(t('logout.success')) // 显示登出成功的消息

@@ -61,3 +61,7 @@ export function useMessageStyle() {
 export const getStoreSetting = (key: keyof SettingsState) => {
   return store.getState().settings[key]
 }
+
+export const getToken = () => {
+  return store.getState().settings.user.accessToken
+}
