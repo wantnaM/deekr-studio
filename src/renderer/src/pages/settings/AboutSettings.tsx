@@ -3,13 +3,13 @@ import { APP_NAME, AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 // import { useSettings } from '@renderer/hooks/useSettings'
-// import { useAppDispatch } from '@renderer/store'
-// import { setUpdateState } from '@renderer/store/runtime'
+import { useAppDispatch } from '@renderer/store'
+import { setUpdateState } from '@renderer/store/runtime'
 // import { ThemeMode } from '@renderer/types'
 // import { compareVersions, runAsyncFunction } from '@renderer/utils'
 import { runAsyncFunction } from '@renderer/utils'
-import { Avatar, Progress, Row, Tag } from 'antd'
-// import { debounce } from 'lodash'
+import { Avatar, Button, Progress, Row, Tag } from 'antd'
+import { debounce } from 'lodash'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -21,28 +21,28 @@ const AboutSettings: FC = () => {
   const { t } = useTranslation()
   // const { manualUpdateCheck } = useSettings()
   const { theme } = useTheme()
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
   const { update } = useRuntime()
 
-  // const onCheckUpdate = debounce(
-  //   async () => {
-  //     if (update.checking || update.downloading) {
-  //       return
-  //     }
+  const onCheckUpdate = debounce(
+    async () => {
+      if (update.checking || update.downloading) {
+        return
+      }
 
-  //     dispatch(setUpdateState({ checking: true }))
+      dispatch(setUpdateState({ checking: true }))
 
-  //     try {
-  //       await window.api.checkForUpdate()
-  //     } catch (error) {
-  //       window.message.error(t('settings.about.updateError'))
-  //     }
+      try {
+        await window.api.checkForUpdate()
+      } catch (error) {
+        window.message.error(t('settings.about.updateError'))
+      }
 
-  //     dispatch(setUpdateState({ checking: false }))
-  //   },
-  //   2000,
-  //   { leading: true, trailing: false }
-  // )
+      dispatch(setUpdateState({ checking: false }))
+    },
+    2000,
+    { leading: true, trailing: false }
+  )
 
   // const onOpenWebsite = (url: string) => {
   //   window.api.openWebsite(url)
@@ -122,7 +122,7 @@ const AboutSettings: FC = () => {
               </Tag>
             </VersionWrapper>
           </Row>
-          {/* <CheckUpdateButton
+          <CheckUpdateButton
             onClick={onCheckUpdate}
             loading={update.checking}
             disabled={update.downloading || update.checking}>
@@ -131,7 +131,7 @@ const AboutSettings: FC = () => {
               : update.available
                 ? t('settings.about.checkUpdate.available')
                 : t('settings.about.checkUpdate')}
-          </CheckUpdateButton> */}
+          </CheckUpdateButton>
         </AboutHeader>
         {/* <SettingDivider />
         <SettingRow>
@@ -254,7 +254,7 @@ const Description = styled.div`
   text-align: center;
 `
 
-// const CheckUpdateButton = styled(Button)``
+const CheckUpdateButton = styled(Button)``
 
 const AvatarWrapper = styled.div`
   position: relative;

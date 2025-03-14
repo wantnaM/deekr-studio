@@ -47,7 +47,7 @@ export const getApiKey = async (userId: number) => {
         userId: userId
       })
     },
-    20000
+    60000
   ) // 设置超时时间为5000毫秒（5秒）
 
   if (!response.ok) {

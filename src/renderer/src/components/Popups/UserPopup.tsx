@@ -55,7 +55,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       resolve({ success: true })
       message.success(t('login.success')) // 显示登录成功的消息
     } catch (error) {
-      console.error('login failed:', error)
+      message.error((error as Error).message)
     }
   }
 

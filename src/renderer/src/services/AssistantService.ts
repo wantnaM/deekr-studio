@@ -68,6 +68,7 @@ export function getTranslateModel() {
 
 export function getAssistantProvider(assistant: Assistant): Provider {
   const providers = store.getState().llm.providers
+  console.log(assistant, providers)
   const provider = providers.find((p) => p.id === assistant.model?.provider)
   return provider || getDefaultProvider()
 }
