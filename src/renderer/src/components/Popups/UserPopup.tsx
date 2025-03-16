@@ -4,6 +4,7 @@ import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { getApiKey, login, logout } from '@renderer/services/AdminService'
 import { useAppDispatch } from '@renderer/store'
+import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
 import { Avatar, Button, Form, Input, message, Modal } from 'antd'
 import { useState } from 'react'
@@ -72,7 +73,8 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         expiresTime: null
       })
     )
-    updateProviders([])
+    updateProviders(initialState.providers)
+    // updateProviders([])
     setOpen(false)
     resolve({})
     message.success(t('logout.success')) // 显示登出成功的消息

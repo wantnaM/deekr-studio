@@ -21,7 +21,7 @@ export interface LlmState {
   settings: LlmSettings
 }
 
-const initialState: LlmState = {
+export const initialState: LlmState = {
   defaultModel: SYSTEM_MODELS.deepseek[1],
   topicNamingModel: SYSTEM_MODELS.silicon[0],
   translateModel: SYSTEM_MODELS.moonshot[0],
