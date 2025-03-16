@@ -292,24 +292,24 @@ export function getModelLogo(modelId: string) {
 
 export const SYSTEM_MODELS: Record<string, Model[]> = {
   aihubmix: [
-    {
-      id: 'gpt-4o',
-      provider: 'aihubmix',
-      name: 'GPT-4o',
-      group: 'GPT-4o'
-    },
-    {
-      id: 'o1',
-      provider: 'aihubmix',
-      name: 'o1',
-      group: 'o1'
-    },
-    {
-      id: 'o1-mini',
-      provider: 'aihubmix',
-      name: 'o1-mini',
-      group: 'o1'
-    }
+    // {
+    //   id: 'gpt-4o',
+    //   provider: 'aihubmix',
+    //   name: 'GPT-4o',
+    //   group: 'GPT-4o'
+    // },
+    // {
+    //   id: 'o1',
+    //   provider: 'aihubmix',
+    //   name: 'o1',
+    //   group: 'o1'
+    // },
+    // {
+    //   id: 'o1-mini',
+    //   provider: 'aihubmix',
+    //   name: 'o1-mini',
+    //   group: 'o1'
+    // }
     // {
     //   id: 'claude-3-5-sonnet-latest',
     //   provider: 'aihubmix',
@@ -368,17 +368,23 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
     //   provider: 'silicon',
     //   group: 'meta-llama'
     // },
-    // {
-    //   id: 'BAAI/bge-m3',
-    //   name: 'BAAI/bge-m3',
-    //   provider: 'silicon',
-    //   group: 'BAAI'
-    // }
     {
       id: 'deepseek-ai/DeepSeek-R1-Distill-Llama-8B',
       name: 'DeepSeek-R1-Distill-Llama-8B',
       provider: 'silicon',
       group: 'deepseek-ai'
+    },
+    {
+      id: 'BAAI/bge-m3',
+      name: 'BAAI/bge-m3',
+      provider: 'silicon',
+      group: 'BAAI'
+    },
+    {
+      id: 'BAAI/bge-large-zh-v1.5',
+      name: 'BAAI/bge-large-zh-v1.5',
+      provider: 'silicon',
+      group: 'BAAI'
     },
     {
       id: 'black-forest-labs/FLUX.1-schnell',
@@ -884,7 +890,13 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
       id: 'glm-zero-preview',
       provider: 'zhipu',
       name: 'Zero深度推理',
-      group: 'GLM-Zero'
+      group: 'GLM4-ZERO'
+    },
+    {
+      id: 'glm-4-0520',
+      provider: 'zhipu',
+      name: 'GLM-4-0520',
+      group: 'GLM4'
     }
     // {
     //   id: 'glm-4-0520',

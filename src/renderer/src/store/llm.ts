@@ -22,9 +22,9 @@ export interface LlmState {
 }
 
 export const initialState: LlmState = {
-  defaultModel: SYSTEM_MODELS.deepseek[1],
+  defaultModel: SYSTEM_MODELS.silicon[0],
   topicNamingModel: SYSTEM_MODELS.silicon[0],
-  translateModel: SYSTEM_MODELS.moonshot[0],
+  translateModel: SYSTEM_MODELS.silicon[0],
   providers: [
     {
       id: 'deepseek',
@@ -34,7 +34,7 @@ export const initialState: LlmState = {
       apiHost: 'https://api.deepseek.com',
       models: SYSTEM_MODELS.deepseek,
       isSystem: true,
-      enabled: true
+      enabled: false
     },
     {
       id: 'dashscope',
@@ -54,7 +54,7 @@ export const initialState: LlmState = {
       apiHost: 'https://api.moonshot.cn',
       models: SYSTEM_MODELS.moonshot,
       isSystem: true,
-      enabled: true
+      enabled: false
     },
     {
       id: 'zhipu',
@@ -64,7 +64,7 @@ export const initialState: LlmState = {
       apiHost: 'https://open.bigmodel.cn/api/paas/v4/',
       models: SYSTEM_MODELS.zhipu,
       isSystem: true,
-      enabled: true
+      enabled: false
     },
     {
       id: 'aihubmix',
@@ -74,13 +74,13 @@ export const initialState: LlmState = {
       apiHost: 'https://aihubmix.com',
       models: SYSTEM_MODELS.aihubmix,
       isSystem: true,
-      enabled: true
+      enabled: false
     },
     {
       id: 'silicon',
       name: 'Silicon',
       type: 'openai',
-      apiKey: '',
+      apiKey: 'sk-tochbhqymeeghgoxwjhzzqlikqzdnydpqhyjezlwsdynwjow',
       apiHost: 'https://api.siliconflow.cn',
       models: SYSTEM_MODELS.silicon,
       isSystem: true,
