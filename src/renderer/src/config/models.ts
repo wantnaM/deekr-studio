@@ -376,13 +376,13 @@ export const SYSTEM_MODELS: Record<string, Model[]> = {
     },
     {
       id: 'BAAI/bge-m3',
-      name: 'BAAI/bge-m3',
+      name: 'BAAI/bge-m3(多语言)',
       provider: 'silicon',
       group: 'BAAI'
     },
     {
       id: 'BAAI/bge-large-zh-v1.5',
-      name: 'BAAI/bge-large-zh-v1.5',
+      name: 'BAAI/bge-large-zh-v1.5(中文)',
       provider: 'silicon',
       group: 'BAAI'
     },
