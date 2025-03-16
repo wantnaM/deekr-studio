@@ -39,8 +39,8 @@ win:
     - target: portable
 nsis:
   artifactName: Deekr Studio-${version}-setup.${ext}
-  shortcutName: Deekr Studio
-  uninstallDisplayName: Deekr Studio
+  shortcutName: 教师智能体
+  uninstallDisplayName: 教师智能体
   createDesktopShortcut: always
   allowToChangeInstallationDirectory: true
   oneClick: false

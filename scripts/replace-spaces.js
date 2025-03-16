@@ -40,7 +40,7 @@ function replaceYmlContent() {
           if (err) throw err
 
           // 替换内容
-          const newContent = data.replace(/Deekr Studio-/g, 'Cherry-Studio-')
+          const newContent = data.replace(/Deekr Studio-/g, 'DeeKr-Studio-')
 
           // 写回文件
           fs.writeFile(filePath, newContent, 'utf8', (err) => {
