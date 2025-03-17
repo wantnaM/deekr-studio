@@ -34,14 +34,14 @@ export const login = async (values: any) => {
   return res.data
 }
 
-export const getApiKey = async (userId: number) => {
+export const getApiKey = async (userId: number, accessToken: string) => {
   const response = await fetchWithTimeout(
     `${ADMIN_API_URL}/admin-api/ds/llm/get-api-key`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `Bearer ${accessToken}`
       },
       body: JSON.stringify({
         userId: userId
@@ -71,6 +71,31 @@ export const logout = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${getToken()}`
       }
+    },
+    10000
+  ) // 设置超时时间为5000毫秒（5秒）
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const res = await response.json()
+  if (res.code !== 0) {
+    throw new Error(res.msg)
+  }
+  return res.data
+}
+
+export const changePassword = async (data: any) => {
+  const response = await fetchWithTimeout(
+    `${ADMIN_API_URL}/admin-api/system/user/profile/update-password`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`
+      },
+      body: JSON.stringify(data)
     },
     10000
   ) // 设置超时时间为5000毫秒（5秒）

@@ -18,7 +18,7 @@ import type { MenuProps } from 'antd'
 import { Tooltip } from 'antd'
 import { Avatar } from 'antd'
 import { Dropdown } from 'antd'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -49,10 +49,14 @@ const Sidebar: FC = () => {
     navigate(path)
   }
 
-  if (!user.isLoggedIn && showLogin) {
-    dispatch(setShowLogin(false))
-    onEditUser()
-  }
+  // 将状态修改移到 useEffect
+  useEffect(() => {
+    if (!user.isLoggedIn && showLogin) {
+      dispatch(setShowLogin(false))
+      onEditUser()
+    }
+  }, [user.isLoggedIn, showLogin, dispatch, onEditUser])
+
   // const onOpenDocs = () => {
   //   MinApp.start({
   //     id: 'docs',

@@ -190,7 +190,8 @@
       "select": "选择",
       "topics": "话题",
       "warning": "警告",
-      "you": "用户"
+      "you": "用户",
+      "submit": "提交"
     },
     "docs": {
       "title": "帮助文档"
@@ -874,7 +875,16 @@
     "user": {
       "profile": "用户资料",
       "logout": "退出登录",
-      "current_username": "当前账号"
+      "current_username": "当前账号",
+      "changePassword": "修改密码",
+      "oldPassword": "旧密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认密码",
+      "passwordNotMatch": "两次输入密码不一致",
+      "changePasswordSuccess": "密码修改成功",
+      "newPasswordRequired": "请输入新密码",
+      "confirmPasswordRequired": "请确认新密码",
+      "passwordMinLength": "密码至少需要6个字符"
     }
   }
 }
