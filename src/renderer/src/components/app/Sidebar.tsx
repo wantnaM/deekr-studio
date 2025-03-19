@@ -13,14 +13,12 @@ import { useMinapps } from '@renderer/hooks/useMinapps'
 import useNavBackgroundColor from '@renderer/hooks/useNavBackgroundColor'
 import { modelGenerating, useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
-import { useAppDispatch } from '@renderer/store'
-import { setShowLogin } from '@renderer/store/runtime'
 import { isEmoji } from '@renderer/utils'
 import type { MenuProps } from 'antd'
 import { Tooltip } from 'antd'
 import { Avatar } from 'antd'
 import { Dropdown } from 'antd'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -33,13 +31,12 @@ import UserPopup from '../Popups/UserPopup'
 const Sidebar: FC = () => {
   const { pathname } = useLocation()
   const avatar = useAvatar()
-  const { minappShow, showLogin } = useRuntime()
+  const { minappShow } = useRuntime()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { sidebarIcons, user } = useSettings()
+  const { sidebarIcons } = useSettings()
   const { theme, toggleTheme } = useTheme()
   const { pinned } = useMinapps()
-  const dispatch = useAppDispatch()
   const onEditUser = () => UserPopup.show()
 
   const backgroundColor = useNavBackgroundColor()
@@ -50,14 +47,6 @@ const Sidebar: FC = () => {
     await modelGenerating()
     navigate(path)
   }
-
-  // 将状态修改移到 useEffect
-  useEffect(() => {
-    if (!user.isLoggedIn && showLogin) {
-      dispatch(setShowLogin(false))
-      onEditUser()
-    }
-  }, [user.isLoggedIn, showLogin, dispatch, onEditUser])
 
   // const onOpenDocs = () => {
   //   MinApp.start({
