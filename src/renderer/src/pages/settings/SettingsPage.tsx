@@ -1,6 +1,6 @@
 import {
   // CloudOutlined,
-  CodeOutlined,
+  // CodeOutlined,
   GlobalOutlined,
   InfoCircleOutlined,
   LayoutOutlined,
@@ -62,12 +62,12 @@ const SettingsPage: FC = () => {
               {t('settings.websearch.title')}
             </MenuItem>
           </MenuItemLink>
-          <MenuItemLink to="/settings/mcp">
+          {/* <MenuItemLink to="/settings/mcp">
             <MenuItem className={isRoute('/settings/mcp')}>
               <CodeOutlined />
               {t('settings.mcp.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/general">
             <MenuItem className={isRoute('/settings/general')}>
               <SettingOutlined />

@@ -1,11 +1,11 @@
 import {
-  CloudSyncOutlined,
+  // CloudSyncOutlined,
   DatabaseOutlined,
   FileMarkdownOutlined,
   FileSearchOutlined,
   FolderOpenOutlined,
-  SaveOutlined,
-  YuqueOutlined
+  SaveOutlined
+  // YuqueOutlined
 } from '@ant-design/icons'
 import { HStack } from '@renderer/components/Layout'
 import ListItem from '@renderer/components/ListItem'
@@ -37,23 +37,23 @@ const DataSettings: FC = () => {
 
   const menuItems = [
     { key: 'data', title: 'settings.data.data.title', icon: <DatabaseOutlined style={{ fontSize: 16 }} /> },
-    { key: 'webdav', title: 'settings.data.webdav.title', icon: <CloudSyncOutlined style={{ fontSize: 16 }} /> },
+    // { key: 'webdav', title: 'settings.data.webdav.title', icon: <CloudSyncOutlined style={{ fontSize: 16 }} /> },
     {
       key: 'markdown_export',
       title: 'settings.data.markdown_export.title',
       icon: <FileMarkdownOutlined style={{ fontSize: 16 }} />
-    },
-    { key: 'notion', title: 'settings.data.notion.title', icon: <i className="iconfont icon-notion" /> },
-    {
-      key: 'yuque',
-      title: 'settings.data.yuque.title',
-      icon: <YuqueOutlined style={{ fontSize: 16 }} />
-    },
-    {
-      key: 'obsidian',
-      title: 'settings.data.obsidian.title',
-      icon: <i className="iconfont icon-obsidian" />
     }
+    // { key: 'notion', title: 'settings.data.notion.title', icon: <i className="iconfont icon-notion" /> },
+    // {
+    //   key: 'yuque',
+    //   title: 'settings.data.yuque.title',
+    //   icon: <YuqueOutlined style={{ fontSize: 16 }} />
+    // },
+    // {
+    //   key: 'obsidian',
+    //   title: 'settings.data.obsidian.title',
+    //   icon: <i className="iconfont icon-obsidian" />
+    // }
   ]
 
   useEffect(() => {

@@ -100,7 +100,7 @@ const Sidebar: FC = () => {
             onClick={async () => {
               minappShow && (await MinApp.close())
               await modelGenerating()
-              await to('/settings/provider')
+              await to('/settings/model')
             }}>
             <Icon theme={theme} className={pathname.startsWith('/settings') && !minappShow ? 'active' : ''}>
               <i className="iconfont icon-setting" />
