@@ -9,10 +9,10 @@ exports.default = async function (context) {
   if (platform === 'mac') {
     // macOS 的语言文件位置
     resourceDirs = [
-      path.join(context.appOutDir, 'Cherry Studio.app', 'Contents', 'Resources'),
+      path.join(context.appOutDir, 'Deekr Studio.app', 'Contents', 'Resources'),
       path.join(
         context.appOutDir,
-        'Cherry Studio.app',
+        'Deekr Studio.app',
         'Contents',
         'Frameworks',
         'Electron Framework.framework',

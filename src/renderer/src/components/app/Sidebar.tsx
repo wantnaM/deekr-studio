@@ -2,23 +2,25 @@ import {
   FileSearchOutlined,
   FolderOutlined,
   PictureOutlined,
-  QuestionCircleOutlined,
+  // QuestionCircleOutlined,
   TranslationOutlined
 } from '@ant-design/icons'
 import { isMac } from '@renderer/config/constant'
-import { AppLogo, UserAvatar } from '@renderer/config/env'
+import { UserAvatar } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import useNavBackgroundColor from '@renderer/hooks/useNavBackgroundColor'
 import { modelGenerating, useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
+import { useAppDispatch } from '@renderer/store'
+import { setShowLogin } from '@renderer/store/runtime'
 import { isEmoji } from '@renderer/utils'
 import type { MenuProps } from 'antd'
 import { Tooltip } from 'antd'
 import { Avatar } from 'antd'
 import { Dropdown } from 'antd'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -31,13 +33,13 @@ import UserPopup from '../Popups/UserPopup'
 const Sidebar: FC = () => {
   const { pathname } = useLocation()
   const avatar = useAvatar()
-  const { minappShow } = useRuntime()
+  const { minappShow, showLogin } = useRuntime()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { sidebarIcons } = useSettings()
+  const { sidebarIcons, user } = useSettings()
   const { theme, toggleTheme } = useTheme()
   const { pinned } = useMinapps()
-
+  const dispatch = useAppDispatch()
   const onEditUser = () => UserPopup.show()
 
   const backgroundColor = useNavBackgroundColor()
@@ -49,14 +51,22 @@ const Sidebar: FC = () => {
     navigate(path)
   }
 
-  const onOpenDocs = () => {
-    MinApp.start({
-      id: 'docs',
-      name: t('docs.title'),
-      url: 'https://docs.cherry-ai.com/',
-      logo: AppLogo
-    })
-  }
+  // 将状态修改移到 useEffect
+  useEffect(() => {
+    if (!user.isLoggedIn && showLogin) {
+      dispatch(setShowLogin(false))
+      onEditUser()
+    }
+  }, [user.isLoggedIn, showLogin, dispatch, onEditUser])
+
+  // const onOpenDocs = () => {
+  //   MinApp.start({
+  //     id: 'docs',
+  //     name: t('docs.title'),
+  //     url: 'https://docs.cherry-ai.com/',
+  //     logo: AppLogo
+  //   })
+  // }
 
   return (
     <Container id="app-sidebar" style={{ backgroundColor, zIndex: minappShow ? 10000 : 'initial' }}>
@@ -79,14 +89,14 @@ const Sidebar: FC = () => {
         )}
       </MainMenusContainer>
       <Menus>
-        <Tooltip title={t('docs.title')} mouseEnterDelay={0.8} placement="right">
+        {/* <Tooltip title={t('docs.title')} mouseEnterDelay={0.8} placement="right">
           <Icon
             theme={theme}
             onClick={onOpenDocs}
             className={minappShow && MinApp.app?.url === 'https://docs.cherry-ai.com/' ? 'active' : ''}>
             <QuestionCircleOutlined />
           </Icon>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={t('settings.theme.title')} mouseEnterDelay={0.8} placement="right">
           <Icon theme={theme} onClick={() => toggleTheme()}>
             {theme === 'dark' ? (

@@ -49,7 +49,7 @@ export const getKnowledgeBaseParams = (base: KnowledgeBase): KnowledgeBaseParams
 export const getFileFromUrl = async (url: string): Promise<FileType | null> => {
   let fileName = ''
 
-  if (url && url.includes('CherryStudio')) {
+  if (url && url.includes('DeekrStudio')) {
     if (url.includes('/Data/Files')) {
       fileName = url.split('/Data/Files/')[1]
     }

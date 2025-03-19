@@ -6,6 +6,15 @@ export type SendMessageShortcut = 'Enter' | 'Shift+Enter' | 'Ctrl+Enter' | 'Comm
 
 export type SidebarIcon = 'assistants' | 'agents' | 'paintings' | 'translate' | 'minapp' | 'knowledge' | 'files'
 
+export interface UserState {
+  username: string
+  userId: string | number
+  accessToken: string | null
+  refreshToken: string | null
+  expiresTime: number | null
+  isLoggedIn: boolean
+}
+
 export const DEFAULT_SIDEBAR_ICONS: SidebarIcon[] = [
   'assistants',
   'agents',
@@ -78,6 +87,7 @@ export interface SettingsState {
   thoughtAutoCollapse: boolean
   notionAutoSplit: boolean
   notionSplitSize: number
+  user: UserState
   yuqueToken: string | null
   yuqueUrl: string | null
   yuqueRepoId: string | null
@@ -109,7 +119,7 @@ const initialState: SettingsState = {
   pasteLongTextAsFile: false,
   pasteLongTextThreshold: 1500,
   clickAssistantToShowTopic: false,
-  manualUpdateCheck: false,
+  manualUpdateCheck: true,
   renderInputMessageAsMarkdown: false,
   codeShowLineNumbers: false,
   codeCollapsible: false,
@@ -122,7 +132,7 @@ const initialState: SettingsState = {
   webdavHost: '',
   webdavUser: '',
   webdavPass: '',
-  webdavPath: '/cherry-studio',
+  webdavPath: '/deekr-studio',
   webdavAutoSync: false,
   webdavSyncInterval: 0,
   translateModelPrompt: TRANSLATE_PROMPT,
@@ -150,7 +160,15 @@ const initialState: SettingsState = {
   yuqueUrl: '',
   yuqueRepoId: '',
   obsidianApiKey: '',
-  obsidianUrl: ''
+  obsidianUrl: '',
+  user: {
+    isLoggedIn: false,
+    userId: '',
+    username: '',
+    accessToken: null,
+    refreshToken: null,
+    expiresTime: null
+  }
 }
 
 const settingsSlice = createSlice({
@@ -334,6 +352,9 @@ const settingsSlice = createSlice({
     setNotionSplitSize: (state, action: PayloadAction<number>) => {
       state.notionSplitSize = action.payload
     },
+    setUserState: (state, action: PayloadAction<Partial<UserState>>) => {
+      state.user = { ...state.user, ...action.payload }
+    },
     setYuqueToken: (state, action: PayloadAction<string>) => {
       state.yuqueToken = action.payload
     },
@@ -410,6 +431,7 @@ export const {
   setThoughtAutoCollapse,
   setNotionAutoSplit,
   setNotionSplitSize,
+  setUserState,
   setYuqueToken,
   setYuqueRepoId,
   setYuqueUrl,

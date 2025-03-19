@@ -1,5 +1,5 @@
-appId: com.kangfenmao.CherryStudio
-productName: Cherry Studio
+appId: com.deerk.DeekrStudio
+productName: 教师智能体
 directories:
   buildResources: build
 files:
@@ -31,15 +31,15 @@ asarUnpack:
   - resources/**
   - '**/*.{node,dll,metal,exp,lib}'
 win:
-  executableName: Cherry Studio
-  artifactName: ${productName}-${version}-portable.${ext}
+  executableName: 教师智能体
+  artifactName: Deekr Studio-${version}-portable.${ext}
   target:
     - target: nsis
     - target: portable
 nsis:
-  artifactName: ${productName}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
+  artifactName: Deekr Studio-${version}-setup.${ext}
+  shortcutName: 教师智能体
+  uninstallDisplayName: 教师智能体
   createDesktopShortcut: always
   allowToChangeInstallationDirectory: true
   oneClick: false
@@ -47,7 +47,7 @@ nsis:
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: Deekr Studio-${version}-${arch}.${ext}
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -63,7 +63,7 @@ mac:
         - arm64
         - x64
 linux:
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: Deekr Studio-${version}-${arch}.${ext}
   target:
     - target: AppImage
       arch:
@@ -73,15 +73,11 @@ linux:
   category: Utility
 publish:
   provider: generic
-  url: https://cherrystudio.ocool.online
+  url: http://8.134.23.119:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    支持引文预览功能
-    界面显示优化
-    修复快捷弹窗无法对话问题
-    MCP：修复豆包无法使用问题
-    MCP：修复 Linux 上无法安装问题
+    支持登录功能

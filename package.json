@@ -1,11 +1,8 @@
 {
-  "name": "CherryStudio",
-  "version": "1.1.7",
+  "name": "DeekrStudio",
+  "version": "1.0.0",
   "private": true,
-  "description": "A powerful AI assistant for producer.",
   "main": "./out/main/index.js",
-  "author": "support@cherry-ai.com",
-  "homepage": "https://github.com/CherryHQ/cherry-studio",
   "workspaces": {
     "packages": [
       "local",
@@ -35,7 +32,7 @@
     "release": "node scripts/version.js",
     "publish": "yarn build:check && yarn release patch push",
     "pulish:artifacts": "cd packages/artifacts && npm publish && cd -",
-    "generate:agents": "yarn workspace @cherry-studio/database agents",
+    "generate:agents": "yarn workspace @deekr-studio/database agents",
     "generate:icons": "electron-icon-builder --input=./build/logo.png --output=build",
     "analyze:renderer": "VISUALIZER_RENDERER=true yarn build",
     "analyze:main": "VISUALIZER_MAIN=true yarn build",
