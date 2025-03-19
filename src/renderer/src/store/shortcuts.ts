@@ -28,7 +28,7 @@ const initialState: ShortcutsState = {
       key: 'mini_window',
       shortcut: [isMac ? 'Command' : 'Ctrl', 'E'],
       editable: true,
-      enabled: false,
+      enabled: true,
       system: true
     },
     {

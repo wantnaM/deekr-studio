@@ -145,7 +145,7 @@ const initialState: SettingsState = {
     disabled: []
   },
   narrowMode: false,
-  enableQuickAssistant: false,
+  enableQuickAssistant: true,
   clickTrayToShowQuickAssistant: false,
   readClipboardAtStartup: true,
   multiModelMessageStyle: 'fold',
