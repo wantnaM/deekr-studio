@@ -1,5 +1,4 @@
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
-import DefaultAvatar from '@renderer/assets/images/avatar.png'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
@@ -7,14 +6,12 @@ import { changePassword, getApiKey, login, logout } from '@renderer/services/Adm
 import { useAppDispatch } from '@renderer/store'
 import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
-import { compressImage, isEmoji } from '@renderer/utils'
-import { Avatar, Dropdown, Button, Form, Input, message, Modal, Popover, Space } from 'antd'
+import { Avatar, Button, Form, Input, message, Modal, Space } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import EmojiPicker from '../EmojiPicker'
-import { Center, HStack, VStack } from '../Layout'
+import { Center, HStack } from '../Layout'
 import { TopView } from '../TopView'
 
 interface Props {
@@ -24,8 +21,6 @@ interface Props {
 const PopupContainer: React.FC<Props> = ({ resolve }) => {
   // 使用 useState 钩子来管理模态框的显示状态，初始值为 true
   const [open, setOpen] = useState(true)
-  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useAppDispatch()
@@ -121,85 +116,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const onClose = () => {
     resolve({})
   }
-
-  const handleEmojiClick = async (emoji: string) => {
-    try {
-      // set emoji string
-      await ImageStorage.set('avatar', emoji)
-      // update avatar display
-      dispatch(setAvatar(emoji))
-      setEmojiPickerOpen(false)
-    } catch (error: any) {
-      window.message.error(error.message)
-    }
-  }
-  const handleReset = async () => {
-    try {
-      await ImageStorage.set('avatar', DefaultAvatar)
-      dispatch(setAvatar(DefaultAvatar))
-      setDropdownOpen(false)
-    } catch (error: any) {
-      window.message.error(error.message)
-    }
-  }
-  const items = [
-    {
-      key: 'upload',
-      label: (
-        <div style={{ width: '100%', textAlign: 'center' }}>
-          <Upload
-            customRequest={() => {}}
-            accept="image/png, image/jpeg, image/gif"
-            itemRender={() => null}
-            maxCount={1}
-            onChange={async ({ file }) => {
-              try {
-                const _file = file.originFileObj as File
-                if (_file.type === 'image/gif') {
-                  await ImageStorage.set('avatar', _file)
-                } else {
-                  const compressedFile = await compressImage(_file)
-                  await ImageStorage.set('avatar', compressedFile)
-                }
-                dispatch(setAvatar(await ImageStorage.get('avatar')))
-                setDropdownOpen(false)
-              } catch (error: any) {
-                window.message.error(error.message)
-              }
-            }}>
-            {t('settings.general.image_upload')}
-          </Upload>
-        </div>
-      )
-    },
-    {
-      key: 'emoji',
-      label: (
-        <div
-          style={{ width: '100%', textAlign: 'center' }}
-          onClick={(e) => {
-            e.stopPropagation()
-            setEmojiPickerOpen(true)
-            setDropdownOpen(false)
-          }}>
-          {t('settings.general.emoji_picker')}
-        </div>
-      )
-    },
-    {
-      key: 'reset',
-      label: (
-        <div
-          style={{ width: '100%', textAlign: 'center' }}
-          onClick={(e) => {
-            e.stopPropagation()
-            handleReset()
-          }}>
-          {t('settings.general.avatar.reset')}
-        </div>
-      )
-    }
-  ]
 
   return (
     <>
@@ -350,23 +266,6 @@ const UserAvatar = styled(Avatar)`
   width: 80px;
   height: 80px;
   transition: opacity 0.3s ease;
-  &:hover {
-    opacity: 0.8;
-  }
-`
-
-const EmojiAvatar = styled.div`
-  cursor: pointer;
-  width: 80px;
-  height: 80px;
-  border-radius: 20%;
-  background-color: var(--color-background-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  transition: opacity 0.3s ease;
-  border: 0.5px solid var(--color-border);
   &:hover {
     opacity: 0.8;
   }
