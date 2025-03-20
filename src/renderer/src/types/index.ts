@@ -159,6 +159,7 @@ export type MinAppType = {
   bodered?: boolean
   background?: string
   style?: React.CSSProperties
+  group?: string
 }
 
 export interface FileType {

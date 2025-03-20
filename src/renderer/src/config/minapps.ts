@@ -58,99 +58,115 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     name: 'ChatGPT',
     url: 'https://chatgpt.com/',
     logo: OpenAiProviderLogo,
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'gemini',
     name: 'Gemini',
     url: 'https://gemini.google.com/',
-    logo: GeminiAppLogo
+    logo: GeminiAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'silicon',
     name: 'SiliconFlow',
     url: 'https://cloud.siliconflow.cn/playground/chat',
-    logo: SiliconFlowProviderLogo
+    logo: SiliconFlowProviderLogo,
+    group: 'AI大模型'
   },
   {
     id: 'deepseek',
     name: 'DeepSeek',
     url: 'https://chat.deepseek.com/',
-    logo: DeepSeekProviderLogo
+    logo: DeepSeekProviderLogo,
+    group: 'AI大模型'
   },
   {
     id: 'yi',
     name: '万知',
     url: 'https://www.wanzhi.com/',
     logo: WanZhiAppLogo,
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'zhipu',
     name: '智谱清言',
     url: 'https://chatglm.cn/main/alltoolsdetail',
-    logo: ZhipuProviderLogo
+    logo: ZhipuProviderLogo,
+    group: 'AI大模型'
   },
   {
     id: 'moonshot',
     name: 'Kimi',
     url: 'https://kimi.moonshot.cn/',
-    logo: KimiAppLogo
+    logo: KimiAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'baichuan',
     name: '百小应',
     url: 'https://ying.baichuan-ai.com/chat',
-    logo: BaicuanAppLogo
+    logo: BaicuanAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'dashscope',
     name: '通义千问',
     url: 'https://tongyi.aliyun.com/qianwen/',
-    logo: QwenModelLogo
+    logo: QwenModelLogo,
+    group: 'AI大模型'
   },
   {
     id: 'stepfun',
     name: '跃问',
     url: 'https://yuewen.cn/chats/new',
     logo: YuewenAppLogo,
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'doubao',
     name: '豆包',
     url: 'https://www.doubao.com/chat/',
-    logo: DoubaoAppLogo
+    logo: DoubaoAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'cici',
     name: 'Cici',
     url: 'https://www.cici.com/chat/',
-    logo: CiciAppLogo
+    logo: CiciAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'minimax',
     name: '海螺',
     url: 'https://hailuoai.com/',
-    logo: HailuoModelLogo
+    logo: HailuoModelLogo,
+    group: 'AI大模型'
   },
   {
     id: 'groq',
     name: 'Groq',
     url: 'https://chat.groq.com/',
-    logo: GroqProviderLogo
+    logo: GroqProviderLogo,
+    group: 'AI大模型'
   },
   {
     id: 'anthropic',
     name: 'Claude',
     url: 'https://claude.ai/',
-    logo: ClaudeAppLogo
+    logo: ClaudeAppLogo,
+    group: 'AI大模型'
   },
   {
     id: 'baidu-ai-chat',
     name: '文心一言',
     logo: BaiduAiAppLogo,
-    url: 'https://yiyan.baidu.com/'
+    url: 'https://yiyan.baidu.com/',
+    group: 'AI大模型'
   },
   {
     id: 'baidu-ai-search',
@@ -160,33 +176,38 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: true,
     style: {
       padding: 5
-    }
+    },
+    group: 'AI大模型'
   },
   {
     id: 'tencent-yuanbao',
     name: '腾讯元宝',
     logo: TencentYuanbaoAppLogo,
     url: 'https://yuanbao.tencent.com/chat',
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'sensetime-chat',
     name: '商量',
     logo: SensetimeAppLogo,
     url: 'https://chat.sensetime.com/wb/chat',
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'spark-desk',
     name: 'SparkDesk',
     logo: SparkDeskAppLogo,
-    url: 'https://xinghuo.xfyun.cn/desk'
+    url: 'https://xinghuo.xfyun.cn/desk',
+    group: 'AI大模型'
   },
   {
     id: 'metaso',
     name: '秘塔AI搜索',
     logo: MetasoAppLogo,
-    url: 'https://metaso.cn/'
+    url: 'https://metaso.cn/',
+    group: 'AI搜索'
   },
   {
     id: 'poe',
@@ -198,34 +219,39 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     id: 'perplexity',
     name: 'Perplexity',
     logo: PerplexityAppLogo,
-    url: 'https://www.perplexity.ai/'
+    url: 'https://www.perplexity.ai/',
+    group: 'AI搜索'
   },
   {
     id: 'devv',
     name: 'DEVV_',
     logo: DevvAppLogo,
-    url: 'https://devv.ai/'
+    url: 'https://devv.ai/',
+    group: 'AI搜索'
   },
   {
     id: 'tiangong-ai',
     name: '天工AI',
     logo: TiangongAiLogo,
     url: 'https://www.tiangong.cn/',
-    bodered: true
+    bodered: true,
+    group: 'AI搜索'
   },
   {
     id: 'hugging-chat',
     name: 'HuggingChat',
     logo: HuggingChatLogo,
     url: 'https://huggingface.co/chat/',
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'Felo',
     name: 'Felo',
     logo: FeloAppLogo,
     url: 'https://felo.ai/',
-    bodered: true
+    bodered: true,
+    group: 'AI搜索'
   },
   {
     id: 'duckduckgo',
@@ -238,21 +264,24 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     name: 'bolt',
     logo: BoltAppLogo,
     url: 'https://bolt.new/',
-    bodered: true
+    bodered: true,
+    group: '创新实验'
   },
   {
     id: 'nm',
     name: '纳米AI',
     logo: NamiAiLogo,
     url: 'https://bot.n.cn/',
-    bodered: true
+    bodered: true,
+    group: 'AI大模型'
   },
   {
     id: 'nm-search',
     name: '纳米AI搜索',
     logo: NamiAiSearchLogo,
     url: 'https://www.n.cn/',
-    bodered: true
+    bodered: true,
+    group: 'AI搜索'
   },
   {
     id: 'thinkany',
@@ -262,26 +291,30 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: true,
     style: {
       padding: 5
-    }
+    },
+    group: 'AI搜索'
   },
   {
     id: 'hika',
     name: 'Hika',
     logo: HikaLogo,
     url: 'https://hika.fyi/',
-    bodered: true
+    bodered: true,
+    group: 'AI搜索'
   },
   {
     id: 'github-copilot',
     name: 'GitHub Copilot',
     logo: GithubCopilotLogo,
-    url: 'https://github.com/copilot'
+    url: 'https://github.com/copilot',
+    group: '编程辅助'
   },
   {
     id: 'genspark',
     name: 'Genspark',
     logo: GensparkLogo,
-    url: 'https://www.genspark.ai/'
+    url: 'https://www.genspark.ai/',
+    group: 'AI搜索'
   },
   {
     id: 'grok',
