@@ -91,7 +91,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       const result = await getConfig(userId, accessToken)
       if (!result) return
       const config = JSON.parse(result.info)
-      console.log(config)
       updateProviders(config.llm.providers)
       setDefaultModel(config.llm.defaultModel)
       setTopicNamingModel(config.llm.topicNamingModel)
