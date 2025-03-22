@@ -2,10 +2,13 @@ import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
-import { changePassword, getApiKey, login, logout } from '@renderer/services/AdminService'
+import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
+import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService'
 import { useAppDispatch } from '@renderer/store'
 import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
+import { setDefaultProvider } from '@renderer/store/websearch'
+import { initialState as initialStateWebSearch } from '@renderer/store/websearch'
 import { Avatar, Button, Form, Input, message, Modal, Space } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +32,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const { isLoggedIn, username } = user
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
+  const { updateWebSearchProviders } = useWebSearchProviders()
 
   // 新增密码修改相关状态
   const [changePasswordVisible, setChangePasswordVisible] = useState(false)
@@ -59,6 +63,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       const values = await form.validateFields()
       // 使用feach请求后端登录端口，url是ADMIN_API_URL
       const data = await login(values)
+
       dispatch(
         setUserState({
           isLoggedIn: true,
@@ -69,15 +74,31 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
           expiresTime: data.expiresTime
         })
       )
-      const apiKey = await getApiKey(data.userId, data.accessToken)
-      updateProviders(apiKey.providers)
-      setDefaultModel(apiKey.defaultModel)
-      setTopicNamingModel(apiKey.topicNamingModel)
-      setTranslateModel(apiKey.translateModel)
+
+      getUserConfig(data.userId, data.accessToken)
 
       setOpen(false)
       resolve({ success: true })
       message.success(t('login.success')) // 显示登录成功的消息
+    } catch (error) {
+      const msg = (error as Error).message
+      if (msg) message.error(msg)
+    }
+  }
+
+  const getUserConfig = async (userId, accessToken) => {
+    try {
+      const result = await getConfig(userId, accessToken)
+      if (!result) return
+      const config = JSON.parse(result.info)
+      console.log(config)
+      updateProviders(config.llm.providers)
+      setDefaultModel(config.llm.defaultModel)
+      setTopicNamingModel(config.llm.topicNamingModel)
+      setTranslateModel(config.llm.translateModel)
+
+      updateWebSearchProviders(config.webSearch.providers)
+      dispatch(setDefaultProvider(config.webSearch.defaultProvider))
     } catch (error) {
       const msg = (error as Error).message
       if (msg) message.error(msg)
@@ -102,7 +123,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       })
     )
     updateProviders(initialState.providers)
-    // updateProviders([])
+    updateWebSearchProviders(initialStateWebSearch.providers)
     setOpen(false)
     resolve({})
     message.success(t('logout.success')) // 显示登出成功的消息

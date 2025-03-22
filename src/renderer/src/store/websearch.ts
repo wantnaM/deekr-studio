@@ -8,7 +8,7 @@ export interface WebSearchState {
   excludeDomains: string[]
 }
 
-const initialState: WebSearchState = {
+export const initialState: WebSearchState = {
   defaultProvider: '',
   providers: [
     {

@@ -91,7 +91,7 @@ class WebSearchService {
 
     let formattedQuery = query
     if (searchWithTime) {
-      formattedQuery = `today is ${dayjs().format('YYYY-MM-DD')} \r\n ${query}`
+      formattedQuery = `今天是 ${dayjs().format('YYYY年MM月DD日')} \r\n ${query}`
     }
 
     try {

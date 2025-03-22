@@ -110,3 +110,27 @@ export const changePassword = async (data: any) => {
   }
   return res.data
 }
+
+export const getConfig = async (userId: number, accessToken: string) => {
+  const response = await fetchWithTimeout(
+    `${ADMIN_API_URL}/admin-api/ds/config/get-by-user?id=${userId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    },
+    60000
+  ) // 设置超时时间为5000毫秒（5秒）
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const res = await response.json()
+  if (res.code !== 0) {
+    throw new Error(res.msg)
+  }
+  return res.data
+}
