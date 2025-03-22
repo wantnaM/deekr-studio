@@ -1258,17 +1258,8 @@ const migrateConfig = {
     return state
   },
   '80': (state: RootState) => {
-    state.llm.providers.push({
-      id: 'alayanew',
-      name: 'AlayaNew',
-      type: 'openai',
-      apiKey: '',
-      apiHost: 'https://deepseek.alayanew.com',
-      models: SYSTEM_MODELS.alayanew,
-      isSystem: true,
-      enabled: false
-    })
-    state.llm.providers = moveProvider(state.llm.providers, 'alayanew', 10)
+    state.minapps.enabled = DEFAULT_MIN_APPS
+    state.minapps.disabled = []
     return state
   }
 }
