@@ -160,6 +160,7 @@ export type MinAppType = {
   background?: string
   style?: React.CSSProperties
   group?: string
+  desc?: string
 }
 
 export interface FileType {

@@ -3,7 +3,7 @@ import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import { Center } from '@renderer/components/Layout'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { Empty, Input } from 'antd'
-import { isEmpty } from 'lodash'
+import { groupBy, isEmpty } from 'lodash'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -21,13 +21,10 @@ const AppsPage: FC = () => {
       )
     : minapps
 
-  // Calculate the required number of lines
-  const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
-  const rowCount = Math.ceil(filteredApps.length / itemsPerRow)
-  // Each line height is 85px (60px icon + 5px margin + 12px text + spacing)
-  const containerHeight = rowCount * 85 + (rowCount - 1) * 25 // 25px is the line spacing.
+  // 按分组分类，未分组的应用归类到'其他'
+  const groupedApps = groupBy(filteredApps, (app) => app.group || t('common.other'))
 
-  // Disable right-click menu in blank area
+  // 禁用右键菜单
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
   }
@@ -56,11 +53,18 @@ const AppsPage: FC = () => {
             <Empty />
           </Center>
         ) : (
-          <AppsContainer style={{ height: containerHeight }}>
-            {filteredApps.map((app) => (
-              <App key={app.id} app={app} />
+          <div style={{ width: '100%', maxWidth: 930 }}>
+            {Object.entries(groupedApps).map(([groupName, apps]) => (
+              <div key={groupName} style={{ marginBottom: 40 }}>
+                <GroupTitle>{groupName}</GroupTitle>
+                <AppsContainer>
+                  {apps.map((app) => (
+                    <App key={app.id} app={app} />
+                  ))}
+                </AppsContainer>
+              </div>
             ))}
-          </AppsContainer>
+          </div>
         )}
       </ContentContainer>
     </Container>
@@ -77,21 +81,27 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: row;
-  justify-content: center;
-  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 50px;
   overflow-y: auto;
-  padding: 50px;
 `
 
 const AppsContainer = styled.div`
   display: grid;
-  min-width: 0;
-  max-width: 930px;
-  width: 100%;
   grid-template-columns: repeat(auto-fill, 90px);
   gap: 25px;
   justify-content: center;
+  margin-top: 15px;
+`
+
+const GroupTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
 `
 
 export default AppsPage

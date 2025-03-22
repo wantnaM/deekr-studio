@@ -3,7 +3,7 @@ import MinApp from '@renderer/components/MinApp'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { MinAppType } from '@renderer/types'
 import type { MenuProps } from 'antd'
-import { Dropdown } from 'antd'
+import { Dropdown, Tooltip } from 'antd'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -40,21 +40,29 @@ const App: FC<Props> = ({ app, onClick, size = 60 }) => {
 
   return (
     <Dropdown menu={{ items: menuItems }} trigger={['contextMenu']}>
-      <Container onClick={handleClick}>
-        <MinAppIcon size={size} app={app} />
-        <AppTitle>{app.name}</AppTitle>
-      </Container>
+      {/* 添加Tooltip包裹 */}
+      <Tooltip title={app.desc} placement="top" mouseEnterDelay={0.3}>
+        <Container onClick={handleClick}>
+          <MinAppIcon size={size} app={app} />
+          <AppTitle>{app.name}</AppTitle>
+        </Container>
+      </Tooltip>
     </Dropdown>
   )
 }
 
 const Container = styled.div`
-  display: flex;
+  display: inline-flex; // 改为inline-flex确保Tooltip定位准确
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   overflow: hidden;
+  padding: 8px;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `
 
 const AppTitle = styled.div`
@@ -64,6 +72,9 @@ const AppTitle = styled.div`
   text-align: center;
   user-select: none;
   white-space: nowrap;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 export default App
