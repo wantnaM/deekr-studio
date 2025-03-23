@@ -5,13 +5,14 @@ import BaiduAiAppLogo from '@renderer/assets/images/apps/baidu-ai.png?url'
 import BaiduAiSearchLogo from '@renderer/assets/images/apps/baidu-ai-search.webp?url'
 import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
 import BoltAppLogo from '@renderer/assets/images/apps/bolt.svg?url'
+// import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png?url'
+import CanvaAppLogo from '@renderer/assets/images/apps/canva.jpg?url'
 // import CiciAppLogo from '@renderer/assets/images/apps/cici.webp?url'
 import CozeAppLogo from '@renderer/assets/images/apps/coze.webp?url'
 // import DevvAppLogo from '@renderer/assets/images/apps/devv.png?url'
 // import DifyAppLogo from '@renderer/assets/images/apps/dify.svg?url'
 import DoubaoAppLogo from '@renderer/assets/images/apps/doubao.png?url'
 // import DuckDuckGoAppLogo from '@renderer/assets/images/apps/duckduckgo.webp?url'
-import FeloAppLogo from '@renderer/assets/images/apps/felo.png?url'
 // import FlowithAppLogo from '@renderer/assets/images/apps/flowith.svg?url'
 import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
 // import GensparkLogo from '@renderer/assets/images/apps/genspark.jpg?url'
@@ -49,7 +50,6 @@ import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
 // import GroqProviderLogo from '@renderer/assets/images/providers/groq.png?url'
 import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
-// import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png?url'
 import MinApp from '@renderer/components/MinApp'
 import { MinAppType } from '@renderer/types'
 
@@ -189,15 +189,6 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     desc: '昆仑万维研发的智能助手'
   },
   {
-    id: 'Felo',
-    name: 'Felo',
-    logo: FeloAppLogo,
-    url: 'https://felo.ai/',
-    bodered: true,
-    group: 'AI搜索',
-    desc: '多语言实时翻译AI工具'
-  },
-  {
     id: 'nm',
     name: '纳米AI',
     logo: NamiAiLogo,
@@ -232,6 +223,15 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: false,
     group: '效率工具',
     desc: '快速生成摘要的效率工具'
+  },
+  {
+    id: 'canva',
+    name: '可画',
+    logo: CanvaAppLogo,
+    url: 'https://www.canva.com',
+    bodered: false,
+    group: '效率工具',
+    desc: 'Canva可画为用户提供零门槛的设计编辑工具，海量免费精美设计模板和千万级版权素材内容'
   },
   {
     id: 'xiaoyi',
