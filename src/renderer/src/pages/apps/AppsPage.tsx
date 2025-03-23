@@ -98,7 +98,7 @@ const AppsContainer = styled.div`
 const GroupTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--color-text-soft);
   padding-bottom: 8px;
   border-bottom: 1px solid #eee;
   margin-bottom: 15px;
