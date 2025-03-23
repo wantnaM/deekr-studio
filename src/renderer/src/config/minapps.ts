@@ -1,10 +1,11 @@
-import ThreeMinTopAppLogo from '@renderer/assets/images/apps/3mintop.png?url'
+// import ThreeMinTopAppLogo from '@renderer/assets/images/apps/3mintop.png?url'
 // import AbacusLogo from '@renderer/assets/images/apps/abacus.webp?url'
 // import AIStudioLogo from '@renderer/assets/images/apps/aistudio.svg?url'
+import AiPPTLogo from '@renderer/assets/images/apps/aippt.png?url'
 import BaiduAiAppLogo from '@renderer/assets/images/apps/baidu-ai.png?url'
 import BaiduAiSearchLogo from '@renderer/assets/images/apps/baidu-ai-search.webp?url'
 import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
-import BoltAppLogo from '@renderer/assets/images/apps/bolt.svg?url'
+import BoardmixLogo from '@renderer/assets/images/apps/boardmix.png?url'
 // import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png?url'
 import CanvaAppLogo from '@renderer/assets/images/apps/canva.jpg?url'
 // import CiciAppLogo from '@renderer/assets/images/apps/cici.webp?url'
@@ -22,9 +23,11 @@ import HikaLogo from '@renderer/assets/images/apps/hika.webp?url'
 // import HuggingChatLogo from '@renderer/assets/images/apps/huggingchat.svg?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
+import LaiHuaLogo from '@renderer/assets/images/apps/laihua.png?url'
 // import LambdaChatLogo from '@renderer/assets/images/apps/lambdachat.webp?url'
 // import LeChatLogo from '@renderer/assets/images/apps/lechat.png?url'
 import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
+import MindMasterLogo from '@renderer/assets/images/apps/mindmaster.png?url'
 // import MonicaLogo from '@renderer/assets/images/apps/monica.webp?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
 import NamiAiSearchLogo from '@renderer/assets/images/apps/nm-search.webp?url'
@@ -43,6 +46,8 @@ import XiaoYiAppLogo from '@renderer/assets/images/apps/xiaoyi.webp?url'
 // import YouLogo from '@renderer/assets/images/apps/you.jpg?url'
 import TencentYuanbaoAppLogo from '@renderer/assets/images/apps/yuanbao.webp?url'
 import YuewenAppLogo from '@renderer/assets/images/apps/yuewen.png?url'
+import LingoWhaleLogo from '@renderer/assets/images/apps/yujing.png?url'
+import ZenVideoLogo from '@renderer/assets/images/apps/zenvideo.png?url'
 import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
 // import ClaudeAppLogo from '@renderer/assets/images/models/claude.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
@@ -145,16 +150,6 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     desc: '百度研发的生成式对话模型'
   },
   {
-    id: 'baidu-ai-search',
-    name: '百度AI搜索',
-    logo: BaiduAiSearchLogo,
-    url: 'https://chat.baidu.com/',
-    bodered: true,
-    style: { padding: 5 },
-    group: 'AI搜索',
-    desc: '百度推出的AI增强搜索引擎'
-  },
-  {
     id: 'tencent-yuanbao',
     name: '腾讯元宝',
     logo: TencentYuanbaoAppLogo,
@@ -172,23 +167,6 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     desc: '讯飞星火认知大模型平台'
   },
   {
-    id: 'metaso',
-    name: '秘塔AI搜索',
-    logo: MetasoAppLogo,
-    url: 'https://metaso.cn/',
-    group: 'AI搜索',
-    desc: 'AI驱动的专业搜索引擎'
-  },
-  {
-    id: 'tiangong-ai',
-    name: '天工AI',
-    logo: TiangongAiLogo,
-    url: 'https://www.tiangong.cn/',
-    bodered: true,
-    group: 'AI搜索',
-    desc: '昆仑万维研发的智能助手'
-  },
-  {
     id: 'nm',
     name: '纳米AI',
     logo: NamiAiLogo,
@@ -196,42 +174,6 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: true,
     group: 'AI大模型',
     desc: '轻量化AI对话解决方案'
-  },
-  {
-    id: 'nm-search',
-    name: '纳米AI搜索',
-    logo: NamiAiSearchLogo,
-    url: 'https://www.n.cn/',
-    bodered: true,
-    group: 'AI搜索',
-    desc: '精准答案型AI搜索引擎'
-  },
-  {
-    id: 'hika',
-    name: 'Hika',
-    logo: HikaLogo,
-    url: 'https://hika.fyi/',
-    bodered: true,
-    group: 'AI搜索',
-    desc: '知识图谱增强搜索工具'
-  },
-  {
-    id: '3mintop',
-    name: '3MinTop',
-    logo: ThreeMinTopAppLogo,
-    url: 'https://3min.top',
-    bodered: false,
-    group: '效率工具',
-    desc: '快速生成摘要的效率工具'
-  },
-  {
-    id: 'canva',
-    name: '可画',
-    logo: CanvaAppLogo,
-    url: 'https://www.canva.com',
-    bodered: false,
-    group: '效率工具',
-    desc: 'Canva可画为用户提供零门槛的设计编辑工具，海量免费精美设计模板和千万级版权素材内容'
   },
   {
     id: 'xiaoyi',
@@ -243,13 +185,67 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     desc: '华为智能终端AI助手'
   },
   {
-    id: 'coze',
-    name: 'Coze',
-    logo: CozeAppLogo,
-    url: 'https://www.coze.com/space',
+    id: 'zhihu',
+    name: '知乎直答',
+    logo: ZhihuAppLogo,
+    url: 'https://zhida.zhihu.com/',
     bodered: true,
-    group: '开发平台',
-    desc: '字节跳动AI Bot开发平台'
+    group: 'AI大模型',
+    desc: '知乎问答社区AI'
+  },
+  {
+    id: 'baidu-ai-search',
+    name: '百度AI搜索',
+    logo: BaiduAiSearchLogo,
+    url: 'https://chat.baidu.com/',
+    bodered: true,
+    style: { padding: 5 },
+    group: '搜索引擎',
+    desc: '百度推出的AI增强搜索引擎'
+  },
+  {
+    id: 'metaso',
+    name: '秘塔AI搜索',
+    logo: MetasoAppLogo,
+    url: 'https://metaso.cn/',
+    group: '搜索引擎',
+    desc: 'AI驱动的专业搜索引擎'
+  },
+  {
+    id: 'tiangong-ai',
+    name: '天工AI',
+    logo: TiangongAiLogo,
+    url: 'https://www.tiangong.cn/',
+    bodered: true,
+    group: '搜索引擎',
+    desc: '昆仑万维研发的智能助手'
+  },
+  {
+    id: 'nm-search',
+    name: '纳米AI搜索',
+    logo: NamiAiSearchLogo,
+    url: 'https://www.n.cn/',
+    bodered: true,
+    group: '搜索引擎',
+    desc: '精准答案型AI搜索引擎'
+  },
+  {
+    id: 'hika',
+    name: 'Hika',
+    logo: HikaLogo,
+    url: 'https://hika.fyi/',
+    bodered: true,
+    group: '搜索引擎',
+    desc: '知识图谱增强搜索工具'
+  },
+  {
+    id: 'canva',
+    name: '可画',
+    logo: CanvaAppLogo,
+    url: 'https://www.canva.com',
+    bodered: false,
+    group: '办公套件',
+    desc: 'Canva可画是一款助力用户轻松创建并分享专业设计的工具。它拥有丰富的功能和多样模板，无论是个人设计还是团队协作，都能满足需求，是设计领域的得力助手'
   },
   {
     id: 'wpslingxi',
@@ -257,17 +253,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: WPSLingXiLogo,
     url: 'https://copilot.wps.cn/',
     bodered: true,
-    group: '效率工具',
-    desc: '金山办公AI生产力套件'
-  },
-  {
-    id: 'zhihu',
-    name: '知乎直答',
-    logo: ZhihuAppLogo,
-    url: 'https://zhida.zhihu.com/',
-    bodered: true,
-    group: '知识社区',
-    desc: '知乎问答社区AI入口'
+    group: '办公套件',
+    desc: '金山办公AI企业智能办公助手，能帮你写文章、生成与美化PPT、分析处理数据等'
   },
   {
     id: 'islide',
@@ -275,17 +262,71 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: ISlideLogo,
     url: 'https://www.islide.cc/',
     bodered: true,
-    group: '效率工具',
-    desc: 'PPT智能设计效率工具'
+    group: 'AI PPT',
+    desc: 'AI辅助PPT制作，一键生成，个性化编辑'
   },
   {
-    id: 'bolt',
-    name: 'bolt',
-    logo: BoltAppLogo,
-    url: 'https://bolt.new/',
+    id: 'aippt',
+    name: 'AiPPT',
+    logo: AiPPTLogo,
+    url: 'https://www.aippt.cn/',
     bodered: true,
-    group: '创新实验',
-    desc: '创新型即时问答实验平台'
+    group: 'AI PPT',
+    desc: 'AI助力，高效制作优质PPT演示文稿'
+  },
+  {
+    id: 'boardmix',
+    name: '博思白板',
+    logo: BoardmixLogo,
+    url: 'https://boardmix.cn/ai-whiteboard/',
+    bodered: true,
+    group: '思维导图',
+    desc: '智能生成文字与思维导图，助力创意思维'
+  },
+  {
+    id: 'mindmaster',
+    name: '亿图脑图',
+    logo: MindMasterLogo,
+    url: 'https://mm.edrawsoft.cn/app/create',
+    bodered: false,
+    group: '思维导图',
+    desc: 'AI辅助思维导图工具'
+  },
+  {
+    id: 'lingowhale',
+    name: '语鲸',
+    logo: LingoWhaleLogo,
+    url: 'https://lingowhale.com/home',
+    bodered: true,
+    group: '办公套件',
+    desc: '语鲸是一款AI阅读工具，通过智能总结、问答、思维导图等功能，帮助用户快速把握文章核心内容和结构'
+  },
+  {
+    id: 'laihua',
+    name: '来画',
+    logo: LaiHuaLogo,
+    url: 'https://www.laihua.com/',
+    bodered: false,
+    group: 'AI视频',
+    desc: '动画与AI数字人智能创作平台'
+  },
+  {
+    id: 'zenvideo',
+    name: '腾讯智影',
+    logo: ZenVideoLogo,
+    url: 'https://zenvideo.qq.com/',
+    bodered: true,
+    group: 'AI视频',
+    desc: '腾讯智影融合多种AIGC能力，提供丰富功能与海量素材，助力智能视频创作'
+  },
+  {
+    id: 'coze',
+    name: 'Coze',
+    logo: CozeAppLogo,
+    url: 'https://www.coze.com/space',
+    bodered: true,
+    group: '开发平台',
+    desc: '字节跳动AI智能体开发平台'
   }
 ]
 
