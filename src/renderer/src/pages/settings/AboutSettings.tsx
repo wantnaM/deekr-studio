@@ -1,5 +1,5 @@
 // import MinApp from '@renderer/components/MinApp'
-import { APP_NAME, AppLogo, AppLogo2 } from '@renderer/config/env'
+import { APP_NAME, AppLogo2 } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 // import { useSettings } from '@renderer/hooks/useSettings'
@@ -103,21 +103,21 @@ const AboutSettings: FC = () => {
         <SettingDivider />
         <AboutHeader>
           <Row align="middle">
-            <AvatarWrapper>
+            {/* <AvatarWrapper>
               <Avatar src={AppLogo2} size={120} style={{ minHeight: 120 }} />
-            </AvatarWrapper>
+            </AvatarWrapper> */}
             <AvatarWrapper>
               {update.downloadProgress > 0 && (
                 <ProgressCircle
                   type="circle"
-                  size={84}
+                  size={124}
                   percent={update.downloadProgress}
                   showInfo={false}
                   strokeLinecap="butt"
                   strokeColor="#67ad5b"
                 />
               )}
-              <Avatar src={AppLogo} size={120} style={{ minHeight: 120 }} />
+              <Avatar src={AppLogo2} size={120} style={{ minHeight: 120 }} />
             </AvatarWrapper>
             <VersionWrapper>
               <Title>{APP_NAME}</Title>
