@@ -12,7 +12,7 @@ import {
   TranslationOutlined
 } from '@ant-design/icons'
 import { UploadOutlined } from '@ant-design/icons'
-import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
+// import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
 import SelectModelPopup from '@renderer/components/Popups/SelectModelPopup'
 import TextEditPopup from '@renderer/components/Popups/TextEditPopup'
 import { TranslateLanguageOptions } from '@renderer/config/translate'
@@ -24,8 +24,8 @@ import { Message, Model } from '@renderer/types'
 import { Assistant, Topic } from '@renderer/types'
 import { captureScrollableDivAsBlob, captureScrollableDivAsDataURL, removeTrailingDoubleSpaces } from '@renderer/utils'
 import {
-  exportMarkdownToNotion,
-  exportMarkdownToYuque,
+  // exportMarkdownToNotion,
+  // exportMarkdownToYuque,
   exportMessageAsMarkdown,
   messageToMarkdown
 } from '@renderer/utils/export'
@@ -195,34 +195,34 @@ const MessageMenubar: FC<Props> = (props) => {
               const markdown = messageToMarkdown(message)
               window.api.export.toWord(markdown, getMessageTitle(message))
             }
-          },
-          {
-            label: t('chat.topics.export.notion'),
-            key: 'notion',
-            onClick: async () => {
-              const title = getMessageTitle(message)
-              const markdown = messageToMarkdown(message)
-              exportMarkdownToNotion(title, markdown)
-            }
-          },
-          {
-            label: t('chat.topics.export.yuque'),
-            key: 'yuque',
-            onClick: async () => {
-              const title = getMessageTitle(message)
-              const markdown = messageToMarkdown(message)
-              exportMarkdownToYuque(title, markdown)
-            }
-          },
-          {
-            label: t('chat.topics.export.obsidian'),
-            key: 'obsidian',
-            onClick: async () => {
-              const markdown = messageToMarkdown(message)
-              const title = getMessageTitle(message)
-              await ObsidianExportPopup.show({ title, markdown })
-            }
           }
+          // {
+          //   label: t('chat.topics.export.notion'),
+          //   key: 'notion',
+          //   onClick: async () => {
+          //     const title = getMessageTitle(message)
+          //     const markdown = messageToMarkdown(message)
+          //     exportMarkdownToNotion(title, markdown)
+          //   }
+          // },
+          // {
+          //   label: t('chat.topics.export.yuque'),
+          //   key: 'yuque',
+          //   onClick: async () => {
+          //     const title = getMessageTitle(message)
+          //     const markdown = messageToMarkdown(message)
+          //     exportMarkdownToYuque(title, markdown)
+          //   }
+          // },
+          // {
+          //   label: t('chat.topics.export.obsidian'),
+          //   key: 'obsidian',
+          //   onClick: async () => {
+          //     const markdown = messageToMarkdown(message)
+          //     const title = getMessageTitle(message)
+          //     await ObsidianExportPopup.show({ title, markdown })
+          //   }
+          // }
         ]
       }
     ],

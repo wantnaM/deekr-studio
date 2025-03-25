@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons'
 import DragableList from '@renderer/components/DragableList'
 import CopyIcon from '@renderer/components/Icons/CopyIcon'
-import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
+// import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
 import PromptPopup from '@renderer/components/Popups/PromptPopup'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { isMac } from '@renderer/config/constant'
@@ -26,9 +26,9 @@ import { Assistant, Topic } from '@renderer/types'
 import { removeSpecialCharactersForFileName } from '@renderer/utils'
 import { copyTopicAsMarkdown } from '@renderer/utils/copy'
 import {
-  exportMarkdownToYuque,
+  // exportMarkdownToYuque,
   exportTopicAsMarkdown,
-  exportTopicToNotion,
+  // exportTopicToNotion,
   topicToMarkdown
 } from '@renderer/utils/export'
 import { Dropdown, MenuProps, Tooltip } from 'antd'
@@ -240,30 +240,30 @@ const Topics: FC<Props> = ({ assistant: _assistant, activeTopic, setActiveTopic 
                 const markdown = await topicToMarkdown(topic)
                 window.api.export.toWord(markdown, removeSpecialCharactersForFileName(topic.name))
               }
-            },
-            {
-              label: t('chat.topics.export.notion'),
-              key: 'notion',
-              onClick: async () => {
-                exportTopicToNotion(topic)
-              }
-            },
-            {
-              label: t('chat.topics.export.yuque'),
-              key: 'yuque',
-              onClick: async () => {
-                const markdown = await topicToMarkdown(topic)
-                exportMarkdownToYuque(topic.name, markdown)
-              }
-            },
-            {
-              label: t('chat.topics.export.obsidian'),
-              key: 'obsidian',
-              onClick: async () => {
-                const markdown = await topicToMarkdown(topic)
-                await ObsidianExportPopup.show({ title: topic.name, markdown })
-              }
             }
+            // {
+            //   label: t('chat.topics.export.notion'),
+            //   key: 'notion',
+            //   onClick: async () => {
+            //     exportTopicToNotion(topic)
+            //   }
+            // },
+            // {
+            //   label: t('chat.topics.export.yuque'),
+            //   key: 'yuque',
+            //   onClick: async () => {
+            //     const markdown = await topicToMarkdown(topic)
+            //     exportMarkdownToYuque(topic.name, markdown)
+            //   }
+            // },
+            // {
+            //   label: t('chat.topics.export.obsidian'),
+            //   key: 'obsidian',
+            //   onClick: async () => {
+            //     const markdown = await topicToMarkdown(topic)
+            //     await ObsidianExportPopup.show({ title: topic.name, markdown })
+            //   }
+            // }
           ]
         }
       ]
