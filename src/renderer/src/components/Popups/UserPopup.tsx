@@ -199,7 +199,12 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 name="username"
                 label={t('login.username.label')}
                 rules={[{ required: true, message: t('login.username.required') }]}>
-                <Input placeholder={t('login.username.placeholder')} />
+                <Input
+                  placeholder={t('login.username.placeholder')}
+                  onChange={(e) => {
+                    form.setFieldsValue({ username: e.target.value.trim() }) // 去掉用户名末尾空格
+                  }}
+                />
               </Form.Item>
 
               <Form.Item
