@@ -80,5 +80,4 @@ afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    全部模型支持网络搜索
-    精简小程序数量并分类
+    修复知识库无法创建问题
