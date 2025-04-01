@@ -1,62 +1,36 @@
-// import ThreeMinTopAppLogo from '@renderer/assets/images/apps/3mintop.png?url'
-// import AbacusLogo from '@renderer/assets/images/apps/abacus.webp?url'
-// import AIStudioLogo from '@renderer/assets/images/apps/aistudio.svg?url'
 import AiPPTLogo from '@renderer/assets/images/apps/aippt.png?url'
 import BaiduAiAppLogo from '@renderer/assets/images/apps/baidu-ai.png?url'
 import BaiduAiSearchLogo from '@renderer/assets/images/apps/baidu-ai-search.webp?url'
 import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
 import BoardmixLogo from '@renderer/assets/images/apps/boardmix.png?url'
-// import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png?url'
 import CanvaAppLogo from '@renderer/assets/images/apps/canva.jpg?url'
-// import CiciAppLogo from '@renderer/assets/images/apps/cici.webp?url'
 import CozeAppLogo from '@renderer/assets/images/apps/coze.webp?url'
-// import DevvAppLogo from '@renderer/assets/images/apps/devv.png?url'
-// import DifyAppLogo from '@renderer/assets/images/apps/dify.svg?url'
 import DoubaoAppLogo from '@renderer/assets/images/apps/doubao.png?url'
-// import DuckDuckGoAppLogo from '@renderer/assets/images/apps/duckduckgo.webp?url'
-// import FlowithAppLogo from '@renderer/assets/images/apps/flowith.svg?url'
 import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
-// import GensparkLogo from '@renderer/assets/images/apps/genspark.jpg?url'
-// import GithubCopilotLogo from '@renderer/assets/images/apps/github-copilot.webp?url'
-// import GrokAppLogo from '@renderer/assets/images/apps/grok.png?url'
 import HikaLogo from '@renderer/assets/images/apps/hika.webp?url'
-// import HuggingChatLogo from '@renderer/assets/images/apps/huggingchat.svg?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
 import LaiHuaLogo from '@renderer/assets/images/apps/laihua.png?url'
-// import LambdaChatLogo from '@renderer/assets/images/apps/lambdachat.webp?url'
-// import LeChatLogo from '@renderer/assets/images/apps/lechat.png?url'
 import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
 import MindMasterLogo from '@renderer/assets/images/apps/mindmaster.png?url'
-// import MonicaLogo from '@renderer/assets/images/apps/monica.webp?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
 import NamiAiSearchLogo from '@renderer/assets/images/apps/nm-search.webp?url'
-// import NotebookLMAppLogo from '@renderer/assets/images/apps/notebooklm.svg?url'
-// import PerplexityAppLogo from '@renderer/assets/images/apps/perplexity.webp?url'
-// import PoeAppLogo from '@renderer/assets/images/apps/poe.webp?url'
 import ZhipuProviderLogo from '@renderer/assets/images/apps/qingyan.png?url'
-// import QwenlmAppLogo from '@renderer/assets/images/apps/qwenlm.webp?url'
-// import SensetimeAppLogo from '@renderer/assets/images/apps/sensetime.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
-// import ThinkAnyLogo from '@renderer/assets/images/apps/thinkany.webp?url'
 import TiangongAiLogo from '@renderer/assets/images/apps/tiangong.png?url'
-// import WanZhiAppLogo from '@renderer/assets/images/apps/wanzhi.jpg?url'
 import WPSLingXiLogo from '@renderer/assets/images/apps/wpslingxi.webp?url'
 import XiaoYiAppLogo from '@renderer/assets/images/apps/xiaoyi.webp?url'
-// import YouLogo from '@renderer/assets/images/apps/you.jpg?url'
 import TencentYuanbaoAppLogo from '@renderer/assets/images/apps/yuanbao.webp?url'
 import YuewenAppLogo from '@renderer/assets/images/apps/yuewen.png?url'
 import LingoWhaleLogo from '@renderer/assets/images/apps/yujing.png?url'
 import ZenVideoLogo from '@renderer/assets/images/apps/zenvideo.png?url'
 import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
-// import ClaudeAppLogo from '@renderer/assets/images/models/claude.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
-// import GroqProviderLogo from '@renderer/assets/images/providers/groq.png?url'
 import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
 import MinApp from '@renderer/components/MinApp'
-import { MinAppType } from '@renderer/types'
+import { MinAppType, SubjectTypes } from '@renderer/types'
 
 export const DEFAULT_MIN_APPS: MinAppType[] = [
   {
@@ -66,7 +40,17 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: OpenAiProviderLogo,
     bodered: true,
     group: 'AI大模型',
-    desc: 'OpenAI开发的通用对话型AI'
+    desc: 'OpenAI开发的通用对话型AI',
+    subject: [
+      SubjectTypes.CHINESE,
+      SubjectTypes.MATH,
+      SubjectTypes.ENGLISH,
+      SubjectTypes.PHYSICS,
+      SubjectTypes.CHEMISTRY,
+      SubjectTypes.INFORMATION_SCIENCE,
+      SubjectTypes.INFORMATION_TECHNOLOGY,
+      SubjectTypes.STEM
+    ]
   },
   {
     id: 'gemini',
@@ -82,7 +66,22 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://chat.deepseek.com/',
     logo: DeepSeekProviderLogo,
     group: 'AI大模型',
-    desc: '深度求索公司研发的智能对话系统'
+    desc: '深度求索公司研发的智能对话系统',
+    subject: [
+      SubjectTypes.CHINESE,
+      SubjectTypes.MATH,
+      SubjectTypes.ENGLISH,
+      SubjectTypes.PHYSICS,
+      SubjectTypes.CHEMISTRY,
+      SubjectTypes.HISTORY,
+      SubjectTypes.BIOLOGY,
+      SubjectTypes.GEOGRAPHY,
+      SubjectTypes.INFORMATION_SCIENCE,
+      SubjectTypes.INFORMATION_TECHNOLOGY,
+      SubjectTypes.GENERAL_TECHNOLOGY,
+      SubjectTypes.SCIENCE,
+      SubjectTypes.STEM
+    ]
   },
   {
     id: 'zhipu',
@@ -90,7 +89,14 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://chatglm.cn/main/alltoolsdetail',
     logo: ZhipuProviderLogo,
     group: 'AI大模型',
-    desc: '智谱AI开发的多模态对话模型'
+    desc: '智谱AI开发的多模态对话模型',
+    subject: [
+      SubjectTypes.MATH,
+      SubjectTypes.PHYSICS,
+      SubjectTypes.CHEMISTRY,
+      SubjectTypes.INFORMATION_SCIENCE,
+      SubjectTypes.INFORMATION_TECHNOLOGY
+    ]
   },
   {
     id: 'moonshot',
@@ -131,7 +137,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://www.doubao.com/chat/',
     logo: DoubaoAppLogo,
     group: 'AI大模型',
-    desc: '字节跳动推出的AI对话助手'
+    desc: '字节跳动推出的AI对话助手',
+    subject: [SubjectTypes.CHINESE, SubjectTypes.ENGLISH]
   },
   {
     id: 'minimax',
@@ -147,7 +154,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: BaiduAiAppLogo,
     url: 'https://yiyan.baidu.com/',
     group: 'AI大模型',
-    desc: '百度研发的生成式对话模型'
+    desc: '百度研发的生成式对话模型',
+    subject: [SubjectTypes.CHINESE]
   },
   {
     id: 'tencent-yuanbao',
@@ -164,7 +172,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: SparkDeskAppLogo,
     url: 'https://xinghuo.xfyun.cn/desk',
     group: 'AI大模型',
-    desc: '讯飞星火认知大模型平台'
+    desc: '讯飞星火认知大模型平台',
+    subject: [SubjectTypes.CHEMISTRY, SubjectTypes.HISTORY, SubjectTypes.BIOLOGY, SubjectTypes.GEOGRAPHY]
   },
   {
     id: 'nm',
@@ -245,7 +254,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://www.canva.com',
     bodered: false,
     group: '办公套件',
-    desc: 'Canva可画是一款助力用户轻松创建并分享专业设计的工具。它拥有丰富的功能和多样模板，无论是个人设计还是团队协作，都能满足需求，是设计领域的得力助手'
+    desc: 'Canva可画是一款助力用户轻松创建并分享专业设计的工具。它拥有丰富的功能和多样模板，无论是个人设计还是团队协作，都能满足需求，是设计领域的得力助手',
+    subject: [SubjectTypes.ART]
   },
   {
     id: 'wpslingxi',
@@ -299,7 +309,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://lingowhale.com/home',
     bodered: true,
     group: '办公套件',
-    desc: '语鲸是一款AI阅读工具，通过智能总结、问答、思维导图等功能，帮助用户快速把握文章核心内容和结构'
+    desc: '语鲸是一款AI阅读工具，通过智能总结、问答、思维导图等功能，帮助用户快速把握文章核心内容和结构',
+    subject: [SubjectTypes.CHINESE, SubjectTypes.ENGLISH]
   },
   {
     id: 'laihua',
@@ -308,7 +319,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://www.laihua.com/',
     bodered: false,
     group: 'AI视频',
-    desc: '动画与AI数字人智能创作平台'
+    desc: '动画与AI数字人智能创作平台',
+    subject: [SubjectTypes.ART]
   },
   {
     id: 'zenvideo',
@@ -326,7 +338,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://www.coze.com/space',
     bodered: true,
     group: '开发平台',
-    desc: '字节跳动AI智能体开发平台'
+    desc: '字节跳动AI智能体开发平台',
+    subject: [SubjectTypes.STEM]
   }
 ]
 

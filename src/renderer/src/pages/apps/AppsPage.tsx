@@ -2,7 +2,8 @@ import { SearchOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import { Center } from '@renderer/components/Layout'
 import { useMinapps } from '@renderer/hooks/useMinapps'
-import { Empty, Input } from 'antd'
+import { SubjectTypes } from '@renderer/types'
+import { Empty, Input, Tag } from 'antd'
 import { groupBy, isEmpty } from 'lodash'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +14,7 @@ import App from './App'
 const AppsPage: FC = () => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
+  const [selectedSubject, setSelectedSubject] = useState<SubjectTypes | null>(null)
   const { minapps } = useMinapps()
 
   const filteredApps = search
@@ -21,13 +23,21 @@ const AppsPage: FC = () => {
       )
     : minapps
 
+  // 按学科筛选
+  const subjectFilteredApps = selectedSubject
+    ? filteredApps.filter((app) => app.subject?.includes(selectedSubject))
+    : filteredApps
+
   // 按分组分类，未分组的应用归类到'其他'
-  const groupedApps = groupBy(filteredApps, (app) => app.group || t('common.other'))
+  const groupedApps = groupBy(subjectFilteredApps, (app) => app.group || t('common.other'))
 
   // 禁用右键菜单
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
   }
+
+  // 获取所有学科枚举值
+  const allSubjects = Object.values(SubjectTypes)
 
   return (
     <Container onContextMenu={handleContextMenu}>
@@ -48,7 +58,44 @@ const AppsPage: FC = () => {
         </NavbarCenter>
       </Navbar>
       <ContentContainer id="content-container">
-        {isEmpty(filteredApps) ? (
+        {/* 学科标签筛选区域 */}
+        <SubjectFilterContainer>
+          <SubjectRow>
+            {/* "全部"标签放在第一行第一个位置 */}
+            <Tag
+              color={!selectedSubject ? 'blue' : 'default'}
+              onClick={() => setSelectedSubject(null)}
+              style={{ cursor: 'pointer' }}>
+              {t('minapp.all')}
+            </Tag>
+            {/* 第一行显示前8个学科标签 */}
+            {allSubjects.slice(0, 9).map((subject) => (
+              <Tag
+                key={subject}
+                color={selectedSubject === subject ? 'blue' : 'default'}
+                onClick={() => setSelectedSubject(subject)}
+                style={{ cursor: 'pointer' }}>
+                {subject}
+              </Tag>
+            ))}
+          </SubjectRow>
+          {/* 第二行显示剩余的学科标签 */}
+          {allSubjects.length > 9 && (
+            <SubjectRow>
+              {allSubjects.slice(9).map((subject) => (
+                <Tag
+                  key={subject}
+                  color={selectedSubject === subject ? 'blue' : 'default'}
+                  onClick={() => setSelectedSubject(subject)}
+                  style={{ cursor: 'pointer' }}>
+                  {subject}
+                </Tag>
+              ))}
+            </SubjectRow>
+          )}
+        </SubjectFilterContainer>
+
+        {isEmpty(subjectFilteredApps) ? (
           <Center>
             <Empty />
           </Center>
@@ -102,6 +149,24 @@ const GroupTitle = styled.div`
   padding-bottom: 8px;
   border-bottom: 1px solid #eee;
   margin-bottom: 15px;
+`
+
+const SubjectFilterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 930px;
+`
+
+const SubjectRow = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 8px;
 `
 
 export default AppsPage

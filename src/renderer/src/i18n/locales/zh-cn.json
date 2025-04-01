@@ -482,7 +482,8 @@
     "minapp": {
       "sidebar.add.title": "添加到侧边栏",
       "sidebar.remove.title": "从侧边栏移除",
-      "title": "小程序"
+      "title": "小程序",
+      "all": "全部"
     },
     "miniwindow": {
       "clipboard": {

@@ -161,6 +161,28 @@ export type MinAppType = {
   style?: React.CSSProperties
   group?: string
   desc?: string
+  subject?: SubjectTypes[]
+}
+
+export enum SubjectTypes {
+  CHINESE = '语文',
+  MATH = '数学',
+  ENGLISH = '英语',
+  PHYSICS = '物理',
+  CHEMISTRY = '化学',
+  HISTORY = '历史',
+  BIOLOGY = '生物',
+  GEOGRAPHY = '地理',
+  INFORMATION_SCIENCE = '信息科技',
+  INFORMATION_TECHNOLOGY = '信息技术',
+  GENERAL_TECHNOLOGY = '通用技术',
+  MUSIC = '音乐',
+  ART = '美术',
+  PE = '体育',
+  SCIENCE = '科学',
+  LABOR = '劳动',
+  INTEGRATED_PRACTICE = '综合实践',
+  STEM = 'STEM'
 }
 
 export interface FileType {
