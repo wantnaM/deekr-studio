@@ -1,10 +1,10 @@
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, SwapOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
 import { Agent } from '@renderer/types'
 import { uuid } from '@renderer/utils'
-import { Col, Empty, Input, Row, Tabs as TabsAntd, Typography } from 'antd'
+import { Button, Col, Empty, Input, Row, Tabs as TabsAntd, Typography } from 'antd'
 import { groupBy, omit } from 'lodash'
 import { FC, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,31 +18,26 @@ import MyAgents from './components/MyAgents'
 
 const { Title } = Typography
 
-let _agentGroups: Record<string, Agent[]> = {}
-
 const AgentsPage: FC = () => {
   const [search, setSearch] = useState('')
   const [searchInput, setSearchInput] = useState('')
+  const [subjectViewMode, setSubjectViewMode] = useState(true)
   const systemAgents = useSystemAgents()
 
   const agentGroups = useMemo(() => {
-    if (Object.keys(_agentGroups).length === 0) {
-      _agentGroups = groupBy(getAgentsFromSystemAgents(systemAgents), 'group')
-    }
-    return _agentGroups
-  }, [systemAgents])
+    return groupBy(getAgentsFromSystemAgents(systemAgents, subjectViewMode), 'group')
+  }, [systemAgents, subjectViewMode])
 
   const { t, i18n } = useTranslation()
 
   const filteredAgentGroups = useMemo(() => {
     const groups: Record<string, Agent[]> = {
-      我的: [],
-      精选: agentGroups['精选'] || []
+      我的: []
     }
 
     if (!search.trim()) {
       Object.entries(agentGroups).forEach(([group, agents]) => {
-        if (group !== '精选') {
+        if (!groups[group]) {
           groups[group] = agents
         }
       })
@@ -111,7 +106,7 @@ const AgentsPage: FC = () => {
       return (
         <Row gutter={[20, 20]}>
           {agents.map((agent, index) => (
-            <Col span={6} key={agent.id || index}>
+            <Col span={6} key={agent.id || index} style={{ minWidth: '250px' }}>
               <AgentCard
                 onClick={() => onAddAgentConfirm(getAgentFromSystemAgent(agent as any))}
                 agent={agent as any}
@@ -159,7 +154,18 @@ const AgentsPage: FC = () => {
     <Container>
       <Navbar>
         <NavbarCenter style={{ borderRight: 'none', justifyContent: 'space-between' }}>
-          {t('agents.title')}
+          <div>
+            {t('agents.title')}
+            <Button
+              className="nodrag"
+              color="default"
+              style={{ marginLeft: 20 }}
+              type="text"
+              icon={<SwapOutlined />}
+              onClick={() => setSubjectViewMode(!subjectViewMode)}
+            />
+            {subjectViewMode ? '按学科' : '按主题'}
+          </div>
           <Input
             placeholder={t('common.search')}
             className="nodrag"
