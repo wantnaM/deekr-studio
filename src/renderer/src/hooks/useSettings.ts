@@ -9,6 +9,7 @@ import {
   SettingsState,
   setTopicPosition,
   setTray,
+  setUserState,
   setWindowStyle
 } from '@renderer/store/settings'
 import { SidebarIcon, ThemeMode, TranslateLanguageVarious } from '@renderer/types'
@@ -66,6 +67,19 @@ export const getStoreSetting = (key: keyof SettingsState) => {
   return store.getState().settings[key]
 }
 
-export const getToken = () => {
+export const getAccessToken = () => {
   return store.getState().settings.user.accessToken
+}
+
+export const getRefreshToken = () => {
+  return store.getState().settings.user.refreshToken
+}
+
+// 新增：直接导出的 token 操作函数
+export const removeToken = () => {
+  store.dispatch(setUserState({ accessToken: '', refreshToken: '' }))
+}
+
+export const setToken = (accessToken: string, refreshToken: string) => {
+  store.dispatch(setUserState({ accessToken, refreshToken }))
 }

@@ -3,7 +3,7 @@ import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
-import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService'
+import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/login'
 import { useAppDispatch } from '@renderer/store'
 import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
@@ -64,7 +64,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       // 使用feach请求后端登录端口，url是ADMIN_API_URL
       const data = await login(values)
 
-      dispatch(
+      await dispatch(
         setUserState({
           isLoggedIn: true,
           userId: data.userId,
@@ -75,7 +75,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         })
       )
 
-      getUserConfig(data.userId, data.accessToken)
+      getUserConfig(data.userId)
 
       setOpen(false)
       resolve({ success: true })
@@ -86,9 +86,9 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     }
   }
 
-  const getUserConfig = async (userId, accessToken) => {
+  const getUserConfig = async (userId) => {
     try {
-      const result = await getConfig(userId, accessToken)
+      const result = await getConfig(userId)
       if (!result) return
       const config = JSON.parse(result.info)
       updateProviders(config.llm.providers)
