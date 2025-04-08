@@ -9,6 +9,7 @@ import {
   SettingsState,
   setTopicPosition,
   setTray,
+  setUserConfigStatus,
   setUserState,
   setWindowStyle
 } from '@renderer/store/settings'
@@ -50,6 +51,9 @@ export function useSettings() {
     },
     setShowAssistantIcon(showAssistantIcon: boolean) {
       dispatch(setShowAssistantIcon(showAssistantIcon))
+    },
+    setUserConfigStatus(key: string, success: boolean) {
+      dispatch(setUserConfigStatus({ key, success }))
     }
   }
 }

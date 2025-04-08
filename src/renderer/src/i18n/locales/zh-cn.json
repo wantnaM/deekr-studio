@@ -1123,7 +1123,16 @@
       "changePasswordSuccess": "密码修改成功",
       "newPasswordRequired": "请输入新密码",
       "confirmPasswordRequired": "请确认新密码",
-      "passwordMinLength": "密码至少需要6个字符"
+      "passwordMinLength": "密码至少需要6个字符",
+      "configLoading": "加载中...",
+      "configSuccess": "加载成功",
+      "configFailed": "加载失败",
+      "configNotLoaded": "未加载",
+      "configModel": "模型",
+      "configAgent": "智能体",
+      "configTopic": "话题",
+      "configMiniApp": "小程序",
+      "configStatus": "配置状态"
     }
   },
   "sys": {

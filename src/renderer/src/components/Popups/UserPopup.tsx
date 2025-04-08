@@ -1,3 +1,4 @@
+import { ReloadOutlined } from '@ant-design/icons'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
@@ -9,7 +10,7 @@ import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
 import { setDefaultProvider } from '@renderer/store/websearch'
 import { initialState as initialStateWebSearch } from '@renderer/store/websearch'
-import { Avatar, Button, Form, Input, message, Modal, Space } from 'antd'
+import { Avatar, Button, Form, Input, List, message, Modal, Space, Typography } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -21,19 +22,31 @@ interface Props {
   resolve: (data: any) => void
 }
 
+interface ConfigItem {
+  key: string
+  label: string
+  success: boolean
+  loading: boolean
+}
+
 const PopupContainer: React.FC<Props> = ({ resolve }) => {
-  // 使用 useState 钩子来管理模态框的显示状态，初始值为 true
   const [open, setOpen] = useState(true)
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useAppDispatch()
   const avatar = useAvatar()
-  const { userName, user } = useSettings()
+  const { userName, user, setUserConfigStatus } = useSettings()
   const { isLoggedIn, username } = user
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
   const { updateWebSearchProviders } = useWebSearchProviders()
 
+  const [configItems, setConfigItems] = useState<ConfigItem[]>([
+    { key: 'model', label: 'user.configModel', success: user.configStatus.model, loading: false },
+    { key: 'agent', label: 'user.configAgent', success: user.configStatus.agent, loading: false }
+    // { key: 'topic', label: 'user.configTopic', success: user.configStatus.topic, loading: false },
+    // { key: 'miniApp', label: 'user.configMiniApp', success: user.configStatus.miniApp, loading: false }
+  ])
   // 新增密码修改相关状态
   const [changePasswordVisible, setChangePasswordVisible] = useState(false)
   const [formPassword] = Form.useForm()
@@ -71,13 +84,19 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
           username: values.username,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
-          expiresTime: data.expiresTime
+          expiresTime: data.expiresTime,
+          configStatus: {
+            model: false,
+            agent: false,
+            topic: false,
+            miniApp: false
+          }
         })
       )
 
-      getUserConfig(data.userId)
+      await getUserConfig(data.userId)
 
-      setOpen(false)
+      // setOpen(false)
       resolve({ success: true })
       message.success(t('login.success')) // 显示登录成功的消息
     } catch (error) {
@@ -86,21 +105,57 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     }
   }
 
+  const updateConfigItem = (key: string, updates: Partial<ConfigItem>) => {
+    setConfigItems((prev) => prev.map((item) => (item.key === key ? { ...item, ...updates } : item)))
+    setUserConfigStatus(key, updates.success ?? false)
+  }
+
   const getUserConfig = async (userId) => {
+    // 重置所有配置项为加载状态
+    setConfigItems((prev) => prev.map((item) => ({ ...item, loading: true, success: false })))
+
     try {
       const result = await getConfig(userId)
-      if (!result) return
-      const config = JSON.parse(result.info)
-      updateProviders(config.llm.providers)
-      setDefaultModel(config.llm.defaultModel)
-      setTopicNamingModel(config.llm.topicNamingModel)
-      setTranslateModel(config.llm.translateModel)
+      if (!result) {
+        setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
+        return
+      }
 
-      updateWebSearchProviders(config.webSearch.providers)
-      dispatch(setDefaultProvider(config.webSearch.defaultProvider))
+      const config = JSON.parse(result.info)
+
+      try {
+        // LLM 配置
+        updateProviders(config.llm.providers)
+        setDefaultModel(config.llm.defaultModel)
+        setTopicNamingModel(config.llm.topicNamingModel)
+        setTranslateModel(config.llm.translateModel)
+
+        updateWebSearchProviders(config.webSearch.providers)
+        dispatch(setDefaultProvider(config.webSearch.defaultProvider))
+        updateConfigItem('model', { loading: false, success: true })
+
+        // 模拟智能体配置加载
+        updateConfigItem('agent', { loading: false, success: true })
+
+        updateConfigItem('topic', { loading: false, success: true })
+
+        // 模拟小程序配置加载
+        updateConfigItem('miniApp', { loading: false, success: true })
+      } catch (error) {
+        setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
+        const msg = (error as Error).message
+        if (msg) message.error(msg)
+      }
     } catch (error) {
+      setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
       const msg = (error as Error).message
       if (msg) message.error(msg)
+    }
+  }
+
+  const handleRefreshConfig = async () => {
+    if (user.userId) {
+      await getUserConfig(user.userId)
     }
   }
 
@@ -191,6 +246,44 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 maxLength={30}
               />
             </HStack>
+
+            <div style={{ margin: '0 20px' }}>
+              <List
+                size="small"
+                header={
+                  <HStack alignItems="center" justifyContent="space-between">
+                    <Typography.Text strong>{t('user.configStatus')}</Typography.Text>
+                    <Button
+                      icon={<ReloadOutlined />}
+                      size="small"
+                      loading={configItems.some((item) => item.loading)}
+                      onClick={handleRefreshConfig}
+                    />
+                  </HStack>
+                }
+                bordered
+                dataSource={configItems}
+                renderItem={(item) => (
+                  <List.Item>
+                    <HStack alignItems="center" justifyContent="space-between" width="100%">
+                      <Typography.Text>{t(item.label)}</Typography.Text>
+                      {item.loading ? (
+                        <Typography.Text type="secondary">{t('user.configLoading')}</Typography.Text>
+                      ) : (
+                        <Typography.Text
+                          type={item.success ? 'success' : item.success === false ? 'danger' : undefined}>
+                          {item.success === null
+                            ? t('user.configNotLoaded')
+                            : item.success
+                              ? t('user.configSuccess')
+                              : t('user.configFailed')}
+                        </Typography.Text>
+                      )}
+                    </HStack>
+                  </List.Item>
+                )}
+              />
+            </div>
           </>
         ) : (
           <>

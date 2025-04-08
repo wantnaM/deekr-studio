@@ -13,6 +13,12 @@ export interface UserState {
   refreshToken: string | null
   expiresTime: number | null
   isLoggedIn: boolean
+  configStatus: {
+    model: boolean
+    agent: boolean
+    topic: boolean
+    miniApp: boolean
+  }
 }
 
 export const DEFAULT_SIDEBAR_ICONS: SidebarIcon[] = [
@@ -167,7 +173,13 @@ const initialState: SettingsState = {
     username: '',
     accessToken: null,
     refreshToken: null,
-    expiresTime: null
+    expiresTime: null,
+    configStatus: {
+      model: false,
+      agent: false,
+      topic: false,
+      miniApp: false
+    }
   }
 }
 
@@ -369,6 +381,9 @@ const settingsSlice = createSlice({
     },
     setObsidianUrl: (state, action: PayloadAction<string>) => {
       state.obsidianUrl = action.payload
+    },
+    setUserConfigStatus: (state, action: PayloadAction<{ key: string; success: boolean }>) => {
+      state.user.configStatus[action.payload.key] = action.payload.success
     }
   }
 })
@@ -436,7 +451,8 @@ export const {
   setYuqueRepoId,
   setYuqueUrl,
   setObsidianApiKey,
-  setObsidianUrl
+  setObsidianUrl,
+  setUserConfigStatus
 } = settingsSlice.actions
 
 export default settingsSlice.reducer
