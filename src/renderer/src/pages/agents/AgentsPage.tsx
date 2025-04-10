@@ -1,4 +1,4 @@
-import { SearchOutlined, SwapOutlined } from '@ant-design/icons'
+import { SearchOutlined, SwapOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
@@ -132,8 +132,20 @@ const AgentsPage: FC = () => {
         key: id,
         children: (
           <TabContent key={group}>
-            <Title level={5} key={group} style={{ marginBottom: 10 }}>
+            <Title
+              level={5}
+              key={group}
+              style={{ marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               {localizedGroupName}
+              {group === '我的' && (
+                <Button
+                  type="text"
+                  icon={<UnorderedListOutlined />}
+                  onClick={() => {}}
+                  style={{ marginLeft: 8, padding: '0 4px', color: '#0958d9' }}>
+                  {t('agents.organize.button')}
+                </Button>
+              )}
             </Title>
             {group === '我的' ? <MyAgents onClick={onAddAgentConfirm} search={search} /> : renderAgentList(agents)}
           </TabContent>
@@ -164,7 +176,7 @@ const AgentsPage: FC = () => {
               icon={<SwapOutlined />}
               onClick={() => setSubjectViewMode(!subjectViewMode)}
             />
-            {subjectViewMode ? '按学科' : '按主题'}
+            {subjectViewMode ? t('agents.changeSubject') : t('agents.changeTheme')}
           </div>
           <Input
             placeholder={t('common.search')}

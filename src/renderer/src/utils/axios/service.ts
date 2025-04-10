@@ -1,7 +1,6 @@
 // import { resetRouter } from '@/router'
 import { getAccessToken, getRefreshToken, removeToken, setToken } from '@renderer/hooks/useSettings'
 import i18n from '@renderer/i18n'
-import { message as Message } from 'antd'
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import qs from 'qs'
 
@@ -140,7 +139,7 @@ service.interceptors.response.use(
         })
       }
     } else if (code === 500) {
-      Message.error(t('sys.api.errMsg500'))
+      window.message.error(t('sys.api.errMsg500'))
       return Promise.reject(new Error(msg))
     } else if (code !== 200) {
       if (msg === '无效的刷新令牌') {
@@ -148,7 +147,8 @@ service.interceptors.response.use(
         console.log(msg)
         return handleAuthorized()
       } else {
-        Message.error(msg)
+        console.log(msg)
+        window.message.error(msg)
       }
       return Promise.reject('error')
     } else {
@@ -166,7 +166,7 @@ service.interceptors.response.use(
     } else if (message.includes('Request failed with status code')) {
       message = t('sys.api.apiRequestFailed') + message.substr(message.length - 3)
     }
-    Message.error(message)
+    window.message.error(message)
     return Promise.reject(error)
   }
 )
@@ -175,14 +175,9 @@ const refreshToken = async () => {
   return await axios.post(base_url + '/system/auth/refresh-token?refreshToken=' + getRefreshToken())
 }
 const handleAuthorized = () => {
+  removeToken()
   const { t } = i18n
-  if (!isRelogin.show) {
-    isRelogin.show = true
-    removeToken()
-    isRelogin.show = false
-    // 干掉token后再走一次路由让它过router.beforeEach的校验
-    // window.location.href = window.location.href
-  }
-  return Promise.reject(t('sys.api.timeoutMessage'))
+  window.message.error(t('sys.api.notlogin'))
+  return Promise.reject(t('sys.api.notlogin'))
 }
 export { service }

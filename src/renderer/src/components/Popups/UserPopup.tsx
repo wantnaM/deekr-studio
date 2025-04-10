@@ -4,8 +4,10 @@ import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
+import { getAgents } from '@renderer/services/AdminService/Agent'
 import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/login'
 import { useAppDispatch } from '@renderer/store'
+import { updateAgents } from '@renderer/store/agents'
 import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
 import { setDefaultProvider } from '@renderer/store/websearch'
@@ -110,47 +112,49 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     setUserConfigStatus(key, updates.success ?? false)
   }
 
-  const getUserConfig = async (userId) => {
-    // 重置所有配置项为加载状态
-    setConfigItems((prev) => prev.map((item) => ({ ...item, loading: true, success: false })))
-
+  const loadModelConfig = async (userId) => {
     try {
       const result = await getConfig(userId)
       if (!result) {
-        setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
+        updateConfigItem('model', { loading: false, success: false })
         return
       }
-
       const config = JSON.parse(result.info)
+      // LLM 配置
+      updateProviders(config.llm.providers)
+      setDefaultModel(config.llm.defaultModel)
+      setTopicNamingModel(config.llm.topicNamingModel)
+      setTranslateModel(config.llm.translateModel)
 
-      try {
-        // LLM 配置
-        updateProviders(config.llm.providers)
-        setDefaultModel(config.llm.defaultModel)
-        setTopicNamingModel(config.llm.topicNamingModel)
-        setTranslateModel(config.llm.translateModel)
-
-        updateWebSearchProviders(config.webSearch.providers)
-        dispatch(setDefaultProvider(config.webSearch.defaultProvider))
-        updateConfigItem('model', { loading: false, success: true })
-
-        // 模拟智能体配置加载
-        updateConfigItem('agent', { loading: false, success: true })
-
-        updateConfigItem('topic', { loading: false, success: true })
-
-        // 模拟小程序配置加载
-        updateConfigItem('miniApp', { loading: false, success: true })
-      } catch (error) {
-        setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
-        const msg = (error as Error).message
-        if (msg) message.error(msg)
-      }
+      updateWebSearchProviders(config.webSearch.providers)
+      dispatch(setDefaultProvider(config.webSearch.defaultProvider))
+      updateConfigItem('model', { loading: false, success: true })
     } catch (error) {
-      setConfigItems((prev) => prev.map((item) => ({ ...item, loading: false, success: false })))
+      updateConfigItem('model', { loading: false, success: false })
       const msg = (error as Error).message
       if (msg) message.error(msg)
     }
+  }
+
+  const loadAgentsConfig = async (userId: string) => {
+    try {
+      const list = await getAgents(userId)
+      console.log('Agents:', list)
+      dispatch(updateAgents(list))
+      updateConfigItem('agent', { loading: false, success: true })
+    } catch (error) {
+      updateConfigItem('agent', { loading: false, success: false })
+      const msg = (error as Error).message
+      if (msg) message.error(msg)
+    }
+  }
+
+  const getUserConfig = (userId) => {
+    // 重置所有配置项为加载状态
+    setConfigItems((prev) => prev.map((item) => ({ ...item, loading: true, success: false })))
+
+    loadModelConfig(userId)
+    loadAgentsConfig(userId)
   }
 
   const handleRefreshConfig = async () => {
@@ -178,6 +182,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     )
     updateProviders(initialState.providers)
     updateWebSearchProviders(initialStateWebSearch.providers)
+    dispatch(updateAgents([]))
     setOpen(false)
     resolve({})
     message.success(t('logout.success')) // 显示登出成功的消息

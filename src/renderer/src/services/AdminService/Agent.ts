@@ -11,3 +11,7 @@ export const updateAgent = async (data: any) => {
 export const deleteAgent = async (id: string) => {
   return await request.delete({ url: `/ds/agent/delete-by-id?id=${id}` })
 }
+
+export const getAgents = async (creator: string) => {
+  return await request.get({ url: `/ds/agent/list?id=${creator}` })
+}
