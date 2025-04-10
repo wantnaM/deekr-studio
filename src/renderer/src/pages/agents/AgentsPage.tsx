@@ -15,6 +15,7 @@ import { getAgentsFromSystemAgents, useSystemAgents } from '.'
 import { groupTranslations } from './agentGroupTranslations'
 import AgentCard from './components/AgentCard'
 import MyAgents from './components/MyAgents'
+import OrganizeAgentsPopup from './components/OrganizeAgentsPopup'
 
 const { Title } = Typography
 
@@ -141,7 +142,7 @@ const AgentsPage: FC = () => {
                 <Button
                   type="text"
                   icon={<UnorderedListOutlined />}
-                  onClick={() => {}}
+                  onClick={() => OrganizeAgentsPopup.show()}
                   style={{ marginLeft: 8, padding: '0 4px', color: '#0958d9' }}>
                   {t('agents.organize.button')}
                 </Button>

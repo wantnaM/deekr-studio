@@ -34,7 +34,10 @@
       "changeSubject": "按学科",
       "organize": {
         "title": "整理智能体",
-        "button": "整理智能体"
+        "button": "整理智能体",
+        "unorganizedList": "未分类智能体",
+        "placeholderTheme": "请选择主题",
+        "placeholderSubject": "请选择学科"
       }
     },
     "assistants": {

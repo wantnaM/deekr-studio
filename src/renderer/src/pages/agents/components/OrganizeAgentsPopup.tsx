@@ -1,171 +1,95 @@
-import { EditOutlined, MenuOutlined } from '@ant-design/icons'
-import DragableList from '@renderer/components/DragableList'
-import { Box, HStack } from '@renderer/components/Layout'
 import { TopView } from '@renderer/components/TopView'
 import { useAgents } from '@renderer/hooks/useAgents'
 import { useAssistants } from '@renderer/hooks/useAssistant'
-import { Agent, Assistant } from '@renderer/types'
-import { Button, Empty, Form, Input, Modal } from 'antd'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { Agent } from '@renderer/types'
+import { Button, Empty, List, message, Modal, Select, Skeleton } from 'antd'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-
-const { TextArea } = Input
-
-interface UnorganizedItem {
-  id: string
-  name: string
-  type: 'agent' | 'assistant'
-  data: Agent | Assistant
-}
 
 const PopupContainer: FC = () => {
   const [open, setOpen] = useState(true)
   const { t } = useTranslation()
-  const { agents } = useAgents()
+  const { agents, updateAgents } = useAgents()
   const { assistants } = useAssistants()
-  const [selectedItem, setSelectedItem] = useState<UnorganizedItem | null>(null)
-  const [form] = Form.useForm()
+  const [saving, setSaving] = useState(false)
+  const [list, setList] = useState<Agent[]>([])
 
-  // 收集未整理的智能体和助手
-  const unorganizedItems = useMemo(() => {
-    const items: UnorganizedItem[] = []
+  useEffect(() => {
+    const initListData: Agent[] = []
 
-    // 未整理的助手是没有设置主题或学科的
-    assistants.forEach((assistant) => {
-      if (!assistant.topics || assistant.topics.length === 0) {
-        items.push({
-          id: assistant.id,
-          name: assistant.name,
-          type: 'assistant',
-          data: assistant
-        })
-      }
-    })
-
-    // 未整理的智能体是没有设置主题或学科的
     agents.forEach((agent) => {
-      if (!agent.topics || agent.topics.length === 0) {
-        items.push({
-          id: agent.id,
-          name: agent.name,
-          type: 'agent',
-          data: agent
-        })
+      if (!agent.theme || !agent.subject) {
+        initListData.push({ ...agent })
       }
     })
 
-    return items
+    setList(initListData)
   }, [agents, assistants])
-
-  const onOk = () => {
-    setOpen(false)
-  }
-
-  const onCancel = () => {
-    setOpen(false)
-  }
 
   const onClose = async () => {
     OrganizeAgentsPopup.hide()
   }
 
-  const handleItemSelect = (item: UnorganizedItem) => {
-    setSelectedItem(item)
-    form.setFieldsValue({
-      name: item.name,
-      prompt: item.type === 'assistant' ? (item.data as Assistant).prompt : '',
-      subjects: [],
-      theme: ''
-    })
-  }
-
-  const handleSaveChanges = () => {
-    const values = form.getFieldsValue()
-    // 这里应该添加保存修改的逻辑
-    console.log('保存修改:', values)
-  }
-
-  useEffect(() => {
-    if (agents.length === 0 && assistants.length === 0) {
+  const handleSaveAll = async () => {
+    setSaving(true)
+    try {
+      message.success(t('common.saveSuccess'))
       setOpen(false)
+    } catch (error) {
+      message.error(t('common.saveFailed'))
+    } finally {
+      setSaving(false)
     }
-  }, [agents, assistants])
+  }
 
   return (
     <Modal
       title={t('agents.organize.title')}
       open={open}
-      onOk={onOk}
-      onCancel={onCancel}
-      afterClose={onClose}
-      footer={null}
+      onCancel={onClose}
+      footer={[
+        <Button key="cancel" onClick={onClose}>
+          {t('common.cancel')}
+        </Button>,
+        <Button key="save" type="primary" loading={saving} onClick={handleSaveAll}>
+          {t('common.save')}
+        </Button>
+      ]}
       centered
       width={800}>
       <Container>
-        <ContentWrapper>
-          <LeftPanel>
-            <PanelTitle>{t('agents.unorganizedList')}</PanelTitle>
-            <ScrollableList>
-              {unorganizedItems.length > 0 ? (
-                <DragableList list={unorganizedItems} onUpdate={() => {}}>
-                  {(item) => (
-                    <AgentItem onClick={() => handleItemSelect(item)} $selected={selectedItem?.id === item.id}>
-                      <Box mr={8}>
-                        {item.emoji} {item.name} (
-                        {item.type === 'assistant' ? t('agents.assistant') : t('agents.agent')})
-                      </Box>
-                      <HStack gap="15px">
-                        <MenuOutlined style={{ cursor: 'move' }} />
-                      </HStack>
-                    </AgentItem>
-                  )}
-                </DragableList>
-              ) : (
-                <Empty description={t('agents.noUnorganizedItems')} />
-              )}
-            </ScrollableList>
-          </LeftPanel>
-
-          <RightPanel>
-            <PanelTitle>{t('agents.organizeSettings')}</PanelTitle>
-            {selectedItem ? (
-              <FormContainer>
-                <Form form={form} layout="vertical">
-                  <Form.Item name="name" label={t('agents.name')}>
-                    <Input />
-                  </Form.Item>
-
-                  <Form.Item name="prompt" label={t('agents.prompt')}>
-                    <TextArea rows={4} />
-                  </Form.Item>
-
-                  <Form.Item name="subjects" label={t('agents.subjects')}>
-                    {/* <Select mode="multiple">
-                      {Object.values(SubjectTypes).map((subject) => (
-                        <Option key={subject} value={subject}>
-                          {subject}
-                        </Option>
-                      ))}
-                    </Select> */}
-                  </Form.Item>
-
-                  <Form.Item name="theme" label={t('agents.theme')}>
-                    <Input />
-                  </Form.Item>
-
-                  <ActionButtons>
-                    <Button type="primary" icon={<EditOutlined />} onClick={handleSaveChanges}>
-                      {t('common.save')}
-                    </Button>
-                  </ActionButtons>
-                </Form>
-              </FormContainer>
-            ) : (
-              <Empty description={t('agents.selectItemToEdit')} />
+        {list.length > 0 ? (
+          <List
+            itemLayout="horizontal"
+            dataSource={list}
+            renderItem={(item) => (
+              <ListItem key={item.id}>
+                <LeftContent>
+                  <Skeleton avatar title={false} loading={false} active>
+                    <List.Item.Meta avatar={item.emoji} title={item.name} />
+                  </Skeleton>
+                </LeftContent>
+                <SelectsContainer>
+                  <Select
+                    mode="tags"
+                    placeholder={t('agents.organize.placeholderSubject')}
+                    value={item.subject}
+                    style={{ width: 180 }}
+                  />
+                  <Select
+                    mode="tags"
+                    placeholder={t('agents.organize.placeholderTheme')}
+                    value={item.theme}
+                    style={{ width: 180, marginLeft: 20 }}
+                  />
+                </SelectsContainer>
+              </ListItem>
             )}
-          </RightPanel>
-        </ContentWrapper>
+          />
+        ) : (
+          <Empty description={t('agents.noUnorganizedItems')} />
+        )}
       </Container>
     </Modal>
   )
@@ -174,79 +98,28 @@ const PopupContainer: FC = () => {
 const Container = styled.div`
   padding: 12px 0;
   height: 60vh;
-`
-
-const ContentWrapper = styled.div`
-  display: flex;
-  height: 100%;
-  gap: 16px;
-`
-
-const LeftPanel = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid var(--color-border);
-  padding-right: 16px;
-`
-
-const RightPanel = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`
-
-const PanelTitle = styled.h3`
-  margin-bottom: 16px;
-  font-size: 16px;
-  color: var(--color-text);
-`
-
-const ScrollableList = styled.div`
-  flex: 1;
   overflow-y: auto;
-  padding-right: 8px;
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-border);
-    border-radius: 3px;
-  }
 `
 
-const AgentItem = styled.div<{ $selected?: boolean }>`
+const ListItem = styled(List.Item)`
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  padding: 8px;
-  border-radius: 8px;
-  user-select: none;
-  background-color: ${({ $selected }) => ($selected ? 'var(--color-background-mute)' : 'var(--color-background-soft)')};
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  .anticon {
-    font-size: 16px;
-    color: var(--color-icon);
-  }
-
-  &:hover {
-    background-color: var(--color-background-mute);
-  }
+  align-items: center;
+  padding: 12px 0;
 `
 
-const FormContainer = styled.div`
+const LeftContent = styled.div`
   flex: 1;
-  overflow-y: auto;
+  min-width: 200px;
 `
 
-const ActionButtons = styled.div`
+const SelectsContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  margin-top: 16px;
+  flex: 2;
+  min-width: 400px;
+  padding: 0 30px;
 `
 
 export default class OrganizeAgentsPopup {

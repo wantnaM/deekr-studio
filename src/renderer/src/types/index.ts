@@ -42,7 +42,11 @@ export type AssistantSettings = {
   reasoning_effort?: 'low' | 'medium' | 'high'
 }
 
-export type Agent = Omit<Assistant, 'model'>
+export type Agent = Omit<Assistant, 'model'> & {
+  theme: string
+  subject: string
+  status: '未整理' | '已归档'
+}
 
 export type Message = {
   id: string
