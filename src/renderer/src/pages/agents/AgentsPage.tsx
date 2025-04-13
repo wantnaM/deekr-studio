@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
-import { getAgentsFromSystemAgents, useSystemAgents } from '.'
+import { getAgentsFromSystemAgents, useAllAgents } from '.'
 import { groupTranslations } from './agentGroupTranslations'
 import AgentCard from './components/AgentCard'
 import MyAgents from './components/MyAgents'
@@ -24,7 +24,7 @@ const AgentsPage: FC = () => {
   const [search, setSearch] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [subjectViewMode, setSubjectViewMode] = useState(true)
-  const systemAgents = useSystemAgents()
+  const systemAgents = useAllAgents()
   const { agents } = useAgents()
   const [hasUnorganizedAgents, setHasUnorganizedAgents] = useState(false)
 
@@ -171,7 +171,7 @@ const AgentsPage: FC = () => {
         )
       }
     })
-  }, [filteredAgentGroups, getLocalizedGroupName, onAddAgentConfirm, search, renderAgentList])
+  }, [filteredAgentGroups, getLocalizedGroupName, onAddAgentConfirm, search, renderAgentList, hasUnorganizedAgents, t])
 
   const handleSearch = () => {
     if (searchInput.trim() === '') {
