@@ -82,7 +82,9 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       defaultModel: getDefaultModel(),
       type: 'agent',
       topics: [],
-      messages: []
+      messages: [],
+      subject: undefined,
+      theme: undefined
     }
 
     addAgent(_agent)

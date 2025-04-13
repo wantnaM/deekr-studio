@@ -43,9 +43,8 @@ export type AssistantSettings = {
 }
 
 export type Agent = Omit<Assistant, 'model'> & {
-  theme: string
-  subject: string
-  status: '未整理' | '已归档'
+  theme: string | undefined
+  subject: string | undefined
 }
 
 export type Message = {
@@ -397,4 +396,15 @@ export interface MCPToolResponse {
   tool: MCPTool // tool info
   status: string // 'invoking' | 'done'
   response?: any
+}
+
+export interface DictDataType {
+  dictType: string
+  label: string
+  value: string | number | boolean
+}
+
+export enum DICT_TYPE {
+  DS_SUBJECT = 'ds_subject',
+  DS_THEME = 'ds_theme'
 }

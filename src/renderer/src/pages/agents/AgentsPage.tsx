@@ -1,12 +1,13 @@
 import { SearchOutlined, SwapOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import Scrollbar from '@renderer/components/Scrollbar'
+import { useAgents } from '@renderer/hooks/useAgents'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
 import { Agent } from '@renderer/types'
 import { uuid } from '@renderer/utils'
-import { Button, Col, Empty, Input, Row, Tabs as TabsAntd, Typography } from 'antd'
+import { Badge, Button, Col, Empty, Input, Row, Tabs as TabsAntd, Typography } from 'antd'
 import { groupBy, omit } from 'lodash'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
@@ -24,6 +25,8 @@ const AgentsPage: FC = () => {
   const [searchInput, setSearchInput] = useState('')
   const [subjectViewMode, setSubjectViewMode] = useState(true)
   const systemAgents = useSystemAgents()
+  const { agents } = useAgents()
+  const [hasUnorganizedAgents, setHasUnorganizedAgents] = useState(false)
 
   const agentGroups = useMemo(() => {
     return groupBy(getAgentsFromSystemAgents(systemAgents, subjectViewMode), 'group')
@@ -61,6 +64,17 @@ const AgentsPage: FC = () => {
 
     return { 搜索结果: Array.from(uniqueAgents.values()) }
   }, [agentGroups, search])
+
+  // 初始化或agents变化时检查未整理项
+  useEffect(() => {
+    setHasUnorganizedAgents(agents.some((agent) => !agent.subject || !agent.theme))
+  }, [agents])
+
+  // 点击整理按钮时设为false
+  const handleOrganizeClick = () => {
+    setHasUnorganizedAgents(false)
+    OrganizeAgentsPopup.show()
+  }
 
   const onAddAgentConfirm = useCallback(
     (agent: Agent) => {
@@ -141,8 +155,12 @@ const AgentsPage: FC = () => {
               {group === '我的' && (
                 <Button
                   type="text"
-                  icon={<UnorderedListOutlined />}
-                  onClick={() => OrganizeAgentsPopup.show()}
+                  icon={
+                    <Badge dot={hasUnorganizedAgents}>
+                      <UnorderedListOutlined />
+                    </Badge>
+                  }
+                  onClick={handleOrganizeClick}
                   style={{ marginLeft: 8, padding: '0 4px', color: '#0958d9' }}>
                   {t('agents.organize.button')}
                 </Button>

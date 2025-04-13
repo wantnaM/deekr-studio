@@ -37,7 +37,11 @@
         "button": "整理智能体",
         "unorganizedList": "未分类智能体",
         "placeholderTheme": "请选择主题",
-        "placeholderSubject": "请选择学科"
+        "placeholderSubject": "请选择学科",
+        "noUnorganizedItems": "没有未分类智能体",
+        "agentName": "智能体名称",
+        "subject": "学科",
+        "theme": "主题"
       }
     },
     "assistants": {
