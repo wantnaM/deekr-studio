@@ -1273,6 +1273,12 @@ const migrateConfig = {
         }
       })
     }
+    state.settings.user.configStatus = {
+      model: false,
+      agent: false,
+      topic: false,
+      miniApp: false
+    }
     return state
   }
 }
