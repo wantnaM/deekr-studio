@@ -1264,15 +1264,13 @@ const migrateConfig = {
     return state
   },
   '81': (state: RootState) => {
-    if (state.agents) {
-      state.agents.agents.forEach((a) => {
-        a.theme = undefined
-        a.subject = undefined
-        if (state.settings.user.isLoggedIn) {
-          createAgent(a)
-        }
-      })
-    }
+    state.agents.agents.forEach((a) => {
+      a.theme = undefined
+      a.subject = undefined
+      if (state.settings.user.isLoggedIn) {
+        createAgent(a)
+      }
+    })
     state.settings.user.configStatus = {
       model: false,
       agent: false,
