@@ -36,7 +36,7 @@ const persistedReducer = persistReducer(
   {
     key: 'deekr-studio',
     storage,
-    version: 80,
+    version: 81,
     blacklist: ['runtime', 'messages'],
     migrate
   },

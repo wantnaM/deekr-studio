@@ -4,6 +4,7 @@ import { SYSTEM_MODELS } from '@renderer/config/models'
 import { TRANSLATE_PROMPT } from '@renderer/config/prompts'
 import db from '@renderer/databases'
 import i18n from '@renderer/i18n'
+import { createAgent } from '@renderer/services/AdminService/Agent'
 import { Assistant } from '@renderer/types'
 import { getDefaultGroupName, getLeadingEmoji, runAsyncFunction, uuid } from '@renderer/utils'
 import { isEmpty } from 'lodash'
@@ -1260,6 +1261,18 @@ const migrateConfig = {
   '80': (state: RootState) => {
     state.minapps.enabled = DEFAULT_MIN_APPS
     state.minapps.disabled = []
+    return state
+  },
+  '81': (state: RootState) => {
+    if (state.agents) {
+      state.agents.agents.forEach((a) => {
+        a.theme = undefined
+        a.subject = undefined
+        if (state.settings.user.isLoggedIn) {
+          createAgent(a)
+        }
+      })
+    }
     return state
   }
 }
