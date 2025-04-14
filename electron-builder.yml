@@ -80,4 +80,7 @@ afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    修复知识库无法创建问题
+    智能体云端同步功能上线
+    新增高考学科数据分析智能体
+    智能体、小程序支持学科分类
+
