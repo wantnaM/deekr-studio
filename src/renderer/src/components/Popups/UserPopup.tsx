@@ -5,7 +5,7 @@ import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
 import { getAgents } from '@renderer/services/AdminService/Agent'
-import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/login'
+import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/Login'
 import { useAppDispatch } from '@renderer/store'
 import { updateAgents } from '@renderer/store/agents'
 import { initialState } from '@renderer/store/llm'
@@ -139,7 +139,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const loadAgentsConfig = async (userId: string) => {
     try {
       const list = await getAgents(userId)
-      console.log('Agents:', list)
       dispatch(updateAgents(list))
       updateConfigItem('agent', { loading: false, success: true })
     } catch (error) {
