@@ -40,11 +40,15 @@ service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 是否需要设置 token
     let isToken = (config!.headers || {}).isToken === false
-    whiteList.some((v) => {
+    const isWhiteListed = whiteList.some((v) => {
       if (config.url && config.url.indexOf(v) > -1) {
-        return (isToken = false)
+        return true
       }
+      return false
     })
+    if (isWhiteListed) {
+      isToken = false
+    }
     if (getAccessToken() && !isToken) {
       config.headers.Authorization = 'Bearer ' + getAccessToken() // 让每个请求携带自定义token
     }
