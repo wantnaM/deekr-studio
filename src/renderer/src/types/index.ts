@@ -16,6 +16,8 @@ export type Assistant = {
   settings?: Partial<AssistantSettings>
   messages?: AssistantMessage[]
   enableWebSearch?: boolean
+  theme?: string | undefined
+  subject?: string | undefined
 }
 
 export type AssistantMessage = {
@@ -42,10 +44,7 @@ export type AssistantSettings = {
   reasoning_effort?: 'low' | 'medium' | 'high'
 }
 
-export type Agent = Omit<Assistant, 'model'> & {
-  theme: string | undefined
-  subject: string | undefined
-}
+export type Agent = Omit<Assistant, 'model'>
 
 export type Message = {
   id: string
