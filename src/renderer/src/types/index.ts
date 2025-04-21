@@ -176,7 +176,6 @@ export enum SubjectTypes {
   BIOLOGY = '生物',
   GEOGRAPHY = '地理',
   INFORMATION_SCIENCE = '信息科技',
-  INFORMATION_TECHNOLOGY = '信息技术',
   GENERAL_TECHNOLOGY = '通用技术',
   MUSIC = '音乐',
   ART = '美术',

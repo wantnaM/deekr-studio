@@ -1278,6 +1278,11 @@ const migrateConfig = {
       miniApp: false
     }
     return state
+  },
+  '82': (state: RootState) => {
+    state.minapps.enabled = DEFAULT_MIN_APPS
+    state.minapps.disabled = []
+    return state
   }
 }
 

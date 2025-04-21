@@ -15,6 +15,8 @@ import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
 import MindMasterLogo from '@renderer/assets/images/apps/mindmaster.png?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
 import NamiAiSearchLogo from '@renderer/assets/images/apps/nm-search.webp?url'
+// import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
+import PythonTutorLogo from '@renderer/assets/images/apps/python-tutor.png?url'
 import ZhipuProviderLogo from '@renderer/assets/images/apps/qingyan.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
 import TiangongAiLogo from '@renderer/assets/images/apps/tiangong.png?url'
@@ -28,30 +30,29 @@ import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
-import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
 import MinApp from '@renderer/components/MinApp'
 import { MinAppType, SubjectTypes } from '@renderer/types'
 
 export const DEFAULT_MIN_APPS: MinAppType[] = [
-  {
-    id: 'openai',
-    name: 'ChatGPT',
-    url: 'https://chatgpt.com/',
-    logo: OpenAiProviderLogo,
-    bodered: true,
-    group: 'AI大模型',
-    desc: 'OpenAI开发的通用对话型AI',
-    subject: [
-      SubjectTypes.CHINESE,
-      SubjectTypes.MATH,
-      SubjectTypes.ENGLISH,
-      SubjectTypes.PHYSICS,
-      SubjectTypes.CHEMISTRY,
-      SubjectTypes.INFORMATION_SCIENCE,
-      SubjectTypes.INFORMATION_TECHNOLOGY,
-      SubjectTypes.STEM
-    ]
-  },
+  // {
+  //   id: 'openai',
+  //   name: 'ChatGPT',
+  //   url: 'https://chatgpt.com/',
+  //   logo: OpenAiProviderLogo,
+  //   bodered: true,
+  //   group: 'AI大模型',
+  //   desc: 'OpenAI开发的通用对话型AI',
+  //   subject: [
+  //     SubjectTypes.CHINESE,
+  //     SubjectTypes.MATH,
+  //     SubjectTypes.ENGLISH,
+  //     SubjectTypes.PHYSICS,
+  //     SubjectTypes.CHEMISTRY,
+  //     SubjectTypes.INFORMATION_SCIENCE,
+  //     SubjectTypes.INFORMATION_TECHNOLOGY,
+  //     SubjectTypes.STEM
+  //   ]
+  // },
   {
     id: 'gemini',
     name: 'Gemini',
@@ -77,7 +78,6 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
       SubjectTypes.BIOLOGY,
       SubjectTypes.GEOGRAPHY,
       SubjectTypes.INFORMATION_SCIENCE,
-      SubjectTypes.INFORMATION_TECHNOLOGY,
       SubjectTypes.GENERAL_TECHNOLOGY,
       SubjectTypes.SCIENCE,
       SubjectTypes.STEM
@@ -90,13 +90,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: ZhipuProviderLogo,
     group: 'AI大模型',
     desc: '智谱AI开发的多模态对话模型',
-    subject: [
-      SubjectTypes.MATH,
-      SubjectTypes.PHYSICS,
-      SubjectTypes.CHEMISTRY,
-      SubjectTypes.INFORMATION_SCIENCE,
-      SubjectTypes.INFORMATION_TECHNOLOGY
-    ]
+    subject: [SubjectTypes.MATH, SubjectTypes.PHYSICS, SubjectTypes.CHEMISTRY, SubjectTypes.INFORMATION_SCIENCE]
   },
   {
     id: 'moonshot',
@@ -272,7 +266,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: ISlideLogo,
     url: 'https://www.islide.cc/',
     bodered: true,
-    group: 'AI PPT',
+    group: 'PPT与视频',
     desc: 'AI辅助PPT制作，一键生成，个性化编辑'
   },
   {
@@ -281,7 +275,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: AiPPTLogo,
     url: 'https://www.aippt.cn/',
     bodered: true,
-    group: 'AI PPT',
+    group: 'PPT与视频',
     desc: 'AI助力，高效制作优质PPT演示文稿'
   },
   {
@@ -318,7 +312,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: LaiHuaLogo,
     url: 'https://www.laihua.com/',
     bodered: false,
-    group: 'AI视频',
+    group: 'PPT与视频',
     desc: '动画与AI数字人智能创作平台',
     subject: [SubjectTypes.ART]
   },
@@ -328,7 +322,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: ZenVideoLogo,
     url: 'https://zenvideo.qq.com/',
     bodered: true,
-    group: 'AI视频',
+    group: 'PPT与视频',
     desc: '腾讯智影融合多种AIGC能力，提供丰富功能与海量素材，助力智能视频创作'
   },
   {
@@ -340,6 +334,16 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     group: '开发平台',
     desc: '字节跳动AI智能体开发平台',
     subject: [SubjectTypes.STEM]
+  },
+  {
+    id: 'python-tutor',
+    name: 'Python教学工具',
+    logo: PythonTutorLogo,
+    url: 'https://pythontutor.com/visualize.html#mode=edit',
+    bodered: true,
+    group: '教学工具',
+    desc: 'Python Tutor是一个强大的编程学习工具，尤其适合初学者和教育工作者。它通过可视化的方式帮助用户理解代码的执行过程，使得编程学习变得更加直观和有趣',
+    subject: [SubjectTypes.INFORMATION_SCIENCE]
   }
 ]
 
