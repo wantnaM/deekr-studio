@@ -5,21 +5,22 @@ import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
 import BoardmixLogo from '@renderer/assets/images/apps/boardmix.png?url'
 import CanvaAppLogo from '@renderer/assets/images/apps/canva.jpg?url'
 import CozeAppLogo from '@renderer/assets/images/apps/coze.webp?url'
+import DesignkitLogo from '@renderer/assets/images/apps/designkit.png?url'
 import DoubaoAppLogo from '@renderer/assets/images/apps/doubao.png?url'
+import FittenCodeLogo from '@renderer/assets/images/apps/fitten-code.png?url'
 // import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
-import HikaLogo from '@renderer/assets/images/apps/hika.webp?url'
+import IflyrecLogo from '@renderer/assets/images/apps/iflyrec.png?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
 import LaiHuaLogo from '@renderer/assets/images/apps/laihua.png?url'
+import MathgptLogo from '@renderer/assets/images/apps/mathgpt.jpg?url'
 import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
 import MindMasterLogo from '@renderer/assets/images/apps/mindmaster.png?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
-import NamiAiSearchLogo from '@renderer/assets/images/apps/nm-search.webp?url'
 // import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
 import PythonTutorLogo from '@renderer/assets/images/apps/python-tutor.png?url'
 import ZhipuProviderLogo from '@renderer/assets/images/apps/qingyan.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
-import TiangongAiLogo from '@renderer/assets/images/apps/tiangong.png?url'
 import WPSLingXiLogo from '@renderer/assets/images/apps/wpslingxi.webp?url'
 import XiaoYiAppLogo from '@renderer/assets/images/apps/xiaoyi.webp?url'
 import TencentYuanbaoAppLogo from '@renderer/assets/images/apps/yuanbao.webp?url'
@@ -27,6 +28,7 @@ import YuewenAppLogo from '@renderer/assets/images/apps/yuewen.png?url'
 import LingoWhaleLogo from '@renderer/assets/images/apps/yujing.png?url'
 import ZenVideoLogo from '@renderer/assets/images/apps/zenvideo.png?url'
 import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
+import ZhiWenLogo from '@renderer/assets/images/apps/zhiwen.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
@@ -203,7 +205,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     url: 'https://chat.baidu.com/',
     bodered: true,
     style: { padding: 5 },
-    group: '搜索引擎',
+    group: '学术研究',
     desc: '百度推出的AI增强搜索引擎'
   },
   {
@@ -211,35 +213,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     name: '秘塔AI搜索',
     logo: MetasoAppLogo,
     url: 'https://metaso.cn/',
-    group: '搜索引擎',
-    desc: 'AI驱动的专业搜索引擎'
-  },
-  {
-    id: 'tiangong-ai',
-    name: '天工AI',
-    logo: TiangongAiLogo,
-    url: 'https://www.tiangong.cn/',
-    bodered: true,
-    group: '搜索引擎',
-    desc: '昆仑万维研发的智能助手'
-  },
-  {
-    id: 'nm-search',
-    name: '纳米AI搜索',
-    logo: NamiAiSearchLogo,
-    url: 'https://www.n.cn/',
-    bodered: true,
-    group: '搜索引擎',
-    desc: '精准答案型AI搜索引擎'
-  },
-  {
-    id: 'hika',
-    name: 'Hika',
-    logo: HikaLogo,
-    url: 'https://hika.fyi/',
-    bodered: true,
-    group: '搜索引擎',
-    desc: '知识图谱增强搜索工具'
+    group: '学术研究',
+    desc: '通过AI技术实现语义理解、问题分析和信息整合，能自动生成结构化结果（如思维导图、大纲、时间线表格），并支持一键导出文件或生成演示文稿，适用于学术研究、职场办公、内容创作等场景'
   },
   {
     id: 'canva',
@@ -247,8 +222,18 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: CanvaAppLogo,
     url: 'https://www.canva.com',
     bodered: false,
-    group: '办公套件',
+    group: '图文加工',
     desc: 'Canva可画是一款助力用户轻松创建并分享专业设计的工具。它拥有丰富的功能和多样模板，无论是个人设计还是团队协作，都能满足需求，是设计领域的得力助手',
+    subject: [SubjectTypes.ART]
+  },
+  {
+    id: 'designkit',
+    name: '美图设计室',
+    logo: DesignkitLogo,
+    url: 'https://www.designkit.com',
+    bodered: false,
+    group: '图文加工',
+    desc: '让你轻松在线制作海报! 丰富的海报模板,独特的设计元素,一键生成个性化海报,让你的创意无处不在',
     subject: [SubjectTypes.ART]
   },
   {
@@ -257,7 +242,7 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     logo: WPSLingXiLogo,
     url: 'https://copilot.wps.cn/',
     bodered: true,
-    group: '办公套件',
+    group: '效率工具',
     desc: '金山办公AI企业智能办公助手，能帮你写文章、生成与美化PPT、分析处理数据等'
   },
   {
@@ -301,8 +286,8 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     name: '语鲸',
     logo: LingoWhaleLogo,
     url: 'https://lingowhale.com/home',
-    bodered: true,
-    group: '办公套件',
+    bodered: false,
+    group: '效率工具',
     desc: '语鲸是一款AI阅读工具，通过智能总结、问答、思维导图等功能，帮助用户快速把握文章核心内容和结构',
     subject: [SubjectTypes.CHINESE, SubjectTypes.ENGLISH]
   },
@@ -344,6 +329,52 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     group: '教学工具',
     desc: 'Python Tutor是一个强大的编程学习工具，尤其适合初学者和教育工作者。它通过可视化的方式帮助用户理解代码的执行过程，使得编程学习变得更加直观和有趣',
     subject: [SubjectTypes.INFORMATION_SCIENCE]
+  },
+  {
+    id: 'iflyrec',
+    name: '讯飞听见',
+    logo: IflyrecLogo,
+    url: 'https://www.iflyrec.com/zhuanwenzi.html',
+    bodered: true,
+    group: '音视频整理',
+    desc: '讯飞听见是一款免费在线录音转文字、语音转文字、录音整理、语音翻译的软件，支持多语种、多场景、多领域，提供高准确率、高效率、高质量的服务',
+    subject: [
+      SubjectTypes.INFORMATION_SCIENCE,
+      SubjectTypes.ENGLISH,
+      SubjectTypes.CHINESE,
+      SubjectTypes.MUSIC,
+      SubjectTypes.HISTORY
+    ]
+  },
+  {
+    id: 'mathgpt',
+    name: '九章大模型',
+    logo: MathgptLogo,
+    url: 'https://playground.xes1v1.cn/MathGPT',
+    bodered: false,
+    group: '学科应用',
+    desc: '学而思九章大模型（MathGPT）是好未来自主研发的，面向全球数学爱好者和科研机构，以解题和讲题算法为核心的大模型',
+    subject: [SubjectTypes.MATH]
+  },
+  {
+    id: 'fittentech',
+    name: 'Fitten Code',
+    logo: FittenCodeLogo,
+    url: 'https://code.fittentech.com/try',
+    bodered: false,
+    group: '学科应用',
+    desc: 'Fitten Code是由非十大模型驱动的AI编程助手，它可以自动生成代码，提升开发效率，协助调试Bug，节省时间。还可以对话聊天，解决编程碰到的问题',
+    subject: [SubjectTypes.INFORMATION_SCIENCE]
+  },
+  {
+    id: 'zhiwen',
+    name: '讯飞智文',
+    logo: ZhiWenLogo,
+    url: 'https://zhiwen.xfyun.cn/home',
+    bodered: false,
+    group: 'PPT与视频',
+    desc: '讯飞智文，由科大讯飞推出的一键生成ppt/word产品。 根据一句话、长文本、音视频等指令智能生成文档，同时支持在线编辑、美化、排版、导出、一键动效、自动生成演讲稿等功能',
+    subject: []
   }
 ]
 
