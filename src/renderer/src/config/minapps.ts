@@ -6,7 +6,7 @@ import BoardmixLogo from '@renderer/assets/images/apps/boardmix.png?url'
 import CanvaAppLogo from '@renderer/assets/images/apps/canva.jpg?url'
 import CozeAppLogo from '@renderer/assets/images/apps/coze.webp?url'
 import DoubaoAppLogo from '@renderer/assets/images/apps/doubao.png?url'
-import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
+// import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
 import HikaLogo from '@renderer/assets/images/apps/hika.webp?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
@@ -53,14 +53,14 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
   //     SubjectTypes.STEM
   //   ]
   // },
-  {
-    id: 'gemini',
-    name: 'Gemini',
-    url: 'https://gemini.google.com/',
-    logo: GeminiAppLogo,
-    group: 'AI大模型',
-    desc: '谷歌开发的生成式AI对话模型'
-  },
+  // {
+  //   id: 'gemini',
+  //   name: 'Gemini',
+  //   url: 'https://gemini.google.com/',
+  //   logo: GeminiAppLogo,
+  //   group: 'AI大模型',
+  //   desc: '谷歌开发的生成式AI对话模型'
+  // },
   {
     id: 'deepseek',
     name: 'DeepSeek',
