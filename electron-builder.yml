@@ -80,7 +80,7 @@ afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    智能体云端同步功能上线
-    新增高考学科数据分析智能体
-    智能体、小程序支持学科分类
+    新增意见反馈渠道，请在设置-意见反馈中提交您的宝贵意见
+    集成更多的小程序
+    修复其他问题
 
