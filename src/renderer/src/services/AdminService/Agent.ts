@@ -13,5 +13,5 @@ export const deleteAgent = async (id: string) => {
 }
 
 export const getAgents = async (creator: string) => {
-  return await request.get({ url: `/ds/agent/list?id=${creator}` })
+  return await request.get({ url: `/ds/agent/list?creator=${creator}` })
 }
