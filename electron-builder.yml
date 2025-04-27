@@ -80,7 +80,7 @@ afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    新增意见反馈渠道，请在设置-意见反馈中提交您的宝贵意见
-    集成更多的小程序
-    修复其他问题
+    新增设置菜单中的意见反馈渠道，欢迎提交宝贵建议
+    支持更多小程序集成
+    修复智能体可能查询到他人智能体的问题
 
