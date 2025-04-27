@@ -5,12 +5,14 @@ import {
   InfoCircleOutlined,
   LayoutOutlined,
   MacCommandOutlined,
+  MessageOutlined,
   RocketOutlined,
   SaveOutlined,
   SettingOutlined
 } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import { isLocalAi } from '@renderer/config/env'
+import { useSettings } from '@renderer/hooks/useSettings'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +22,7 @@ import styled from 'styled-components'
 import AboutSettings from './AboutSettings'
 import DataSettings from './DataSettings/DataSettings'
 import DisplaySettings from './DisplaySettings/DisplaySettings'
+import FeedbackSettings from './FeedbackSettings'
 import GeneralSettings from './GeneralSettings'
 import MCPSettings from './MCPSettings'
 import ProvidersList from './ProviderSettings'
@@ -33,6 +36,8 @@ const SettingsPage: FC = () => {
 
   const isRoute = (path: string): string => (pathname.startsWith(path) ? 'active' : '')
 
+  const { user } = useSettings()
+  const { isLoggedIn } = user
   return (
     <Container>
       <Navbar>
@@ -98,6 +103,16 @@ const SettingsPage: FC = () => {
               {t('settings.data.title')}
             </MenuItem>
           </MenuItemLink>
+          {isLoggedIn && (
+            <>
+              <MenuItemLink to="/settings/feedback">
+                <MenuItem className={isRoute('/settings/feedback')}>
+                  <MessageOutlined />
+                  {t('settings.feedback.title')}
+                </MenuItem>
+              </MenuItemLink>
+            </>
+          )}
           <MenuItemLink to="/settings/about">
             <MenuItem className={isRoute('/settings/about')}>
               <InfoCircleOutlined />
@@ -116,6 +131,7 @@ const SettingsPage: FC = () => {
             <Route path="data/*" element={<DataSettings />} />
             <Route path="quickAssistant" element={<QuickAssistantSettings />} />
             <Route path="shortcut" element={<ShortcutSettings />} />
+            <Route path="feedback" element={<FeedbackSettings />} />
             <Route path="about" element={<AboutSettings />} />
           </Routes>
         </SettingContent>

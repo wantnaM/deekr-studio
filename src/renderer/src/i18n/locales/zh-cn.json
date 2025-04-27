@@ -1066,7 +1066,10 @@
           "title": "Tavily"
         },
         "title": "网络搜索"
-      }
+      },
+      "feedback.title": "意见反馈",
+      "feedback.type.suggestion": "建议",
+      "feedback.type.question": "问题"
     },
     "translate": {
       "any.language": "任意语言",
