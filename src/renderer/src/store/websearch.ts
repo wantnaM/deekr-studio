@@ -28,23 +28,23 @@ export interface WebSearchState {
 }
 
 export const initialState: WebSearchState = {
-  defaultProvider: '',
+  defaultProvider: 'local-bing',
   providers: [
-    {
-      id: 'tavily',
-      name: 'Tavily',
-      apiKey: ''
-    },
-    {
-      id: 'searxng',
-      name: 'Searxng',
-      apiHost: ''
-    },
-    {
-      id: 'exa',
-      name: 'Exa',
-      apiKey: ''
-    },
+    // {
+    //   id: 'tavily',
+    //   name: 'Tavily',
+    //   apiKey: ''
+    // },
+    // {
+    //   id: 'searxng',
+    //   name: 'Searxng',
+    //   apiHost: ''
+    // },
+    // {
+    //   id: 'exa',
+    //   name: 'Exa',
+    //   apiKey: ''
+    // },
     {
       id: 'local-google',
       name: 'Google',

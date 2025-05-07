@@ -1,4 +1,6 @@
+import { MessageOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
+import { useSettings } from '@renderer/hooks/useSettings'
 import { useSidebarIconShow } from '@renderer/hooks/useSidebarIcon'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import {
@@ -12,7 +14,6 @@ import {
   Package,
   Rocket,
   Settings2,
-  SquareTerminal,
   Zap
 } from 'lucide-react'
 // 导入useAppSelector
@@ -24,7 +25,6 @@ import styled from 'styled-components'
 import AboutSettings from './AboutSettings'
 import DataSettings from './DataSettings/DataSettings'
 import DisplaySettings from './DisplaySettings/DisplaySettings'
-import FeedbackSettings from './FeedbackSettings'
 import GeneralSettings from './GeneralSettings'
 import MCPSettings from './MCPSettings'
 import { McpSettingsNavbar } from './MCPSettings/McpSettingsNavbar'

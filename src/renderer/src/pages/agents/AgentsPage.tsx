@@ -1,4 +1,4 @@
-import { ImportOutlined, PlusOutlined, SwapOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import CustomTag from '@renderer/components/CustomTag'
 import ListItem from '@renderer/components/ListItem'
@@ -15,12 +15,12 @@ import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
-import { groupByCategories, useAllAgents } from '.'
+import { groupByCategories, useSystemAgents } from '.'
 import { groupTranslations } from './agentGroupTranslations'
 import AddAgentPopup from './components/AddAgentPopup'
 import AgentCard from './components/AgentCard'
 import { AgentGroupIcon } from './components/AgentGroupIcon'
-import ImportAgentPopup from './components/ImportAgentPopup'
+// import ImportAgentPopup from './components/ImportAgentPopup'
 
 const AgentsPage: FC = () => {
   const [search, setSearch] = useState('')
@@ -139,33 +139,21 @@ const AgentsPage: FC = () => {
     })
   }
 
-  const handleImportAgent = async () => {
-    try {
-      await ImportAgentPopup.show()
-    } catch (error) {
-      window.message.error({
-        content: error instanceof Error ? error.message : t('message.agents.import.error'),
-        key: 'agents-import-error'
-      })
-    }
-  }
+  // const handleImportAgent = async () => {
+  //   try {
+  //     await ImportAgentPopup.show()
+  //   } catch (error) {
+  //     window.message.error({
+  //       content: error instanceof Error ? error.message : t('message.agents.import.error'),
+  //       key: 'agents-import-error'
+  //     })
+  //   }
+  // }
 
   return (
     <Container>
       <Navbar>
-        <NavbarCenter style={{ borderRight: 'none', justifyContent: 'space-between' }}>
-          <div>
-            {t('agents.title')}
-            <Button
-              className="nodrag"
-              color="default"
-              style={{ marginLeft: 20 }}
-              type="text"
-              icon={<SwapOutlined />}
-              onClick={() => setSubjectViewMode(!subjectViewMode)}
-            />
-            {subjectViewMode ? t('agents.changeSubject') : t('agents.changeTheme')}
-          </div>
+        <NavbarCenter style={{ borderRight: 'none', justifyContent: 'center' }}>
           <Input
             placeholder={t('common.search')}
             className="nodrag"
@@ -232,9 +220,9 @@ const AgentsPage: FC = () => {
               }
             </AgentsListTitle>
             <Flex gap={8}>
-              <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
+              {/* <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
                 {t('agents.import.title')}
-              </Button>
+              </Button> */}
               <Button type="text" onClick={handleAddAgent} icon={<PlusOutlined />}>
                 {t('agents.add.title')}
               </Button>

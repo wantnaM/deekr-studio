@@ -32,7 +32,6 @@ import ZhiWenLogo from '@renderer/assets/images/apps/zhiwen.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
-import MinApp from '@renderer/components/MinApp'
 import { MinAppType, SubjectTypes } from '@renderer/types'
 
 export const DEFAULT_MIN_APPS: MinAppType[] = [
@@ -377,8 +376,3 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     subject: []
   }
 ]
-
-export function startMinAppById(id: string) {
-  const app = DEFAULT_MIN_APPS.find((app) => app?.id === id)
-  app && MinApp.start(app)
-}

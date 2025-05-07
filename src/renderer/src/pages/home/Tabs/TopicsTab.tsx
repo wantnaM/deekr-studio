@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons'
 import DragableList from '@renderer/components/DragableList'
 import CopyIcon from '@renderer/components/Icons/CopyIcon'
-// import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
+import ObsidianExportPopup from '@renderer/components/Popups/ObsidianExportPopup'
 import PromptPopup from '@renderer/components/Popups/PromptPopup'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { isMac } from '@renderer/config/constant'
@@ -31,7 +31,7 @@ import {
   exportMarkdownToSiyuan,
   exportMarkdownToYuque,
   exportTopicAsMarkdown,
-  // exportTopicToNotion,
+  exportTopicToNotion,
   topicToMarkdown
 } from '@renderer/utils/export'
 import { hasTopicPendingRequests } from '@renderer/utils/queue'

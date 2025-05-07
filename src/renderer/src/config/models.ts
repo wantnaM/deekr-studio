@@ -2282,13 +2282,14 @@ export function isReasoningModel(model?: Model): boolean {
     return REASONING_REGEX.test(model.name) || model.type?.includes('reasoning') || false
   }
 
-  if (model.provider === 'zhipu') {
-    return (
-      REASONING_REGEX.test(model.name) || model.type?.includes('reasoning') || model.id === 'glm-zero-preview' || false
-    )
-  }
-
-  if (model.id.includes('claude-3-7-sonnet') || model.id.includes('claude-3.7-sonnet') || isOpenAIoSeries(model)) {
+  if (
+    isClaudeReasoningModel(model) ||
+    isOpenAIReasoningModel(model) ||
+    isGeminiReasoningModel(model) ||
+    isQwenReasoningModel(model) ||
+    isGrokReasoningModel(model) ||
+    model.id.includes('glm-z1')
+  ) {
     return true
   }
 

@@ -9,7 +9,7 @@ const Options = ['aihubmix', 'silicon']
 const PaintingsRoutePage: FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<AihubmixPage Options={Options} />} />
+      <Route path="/" element={<SiliconPage Options={Options} />} />
       <Route path="/aihubmix" element={<AihubmixPage Options={Options} />} />
       <Route path="/silicon" element={<SiliconPage Options={Options} />} />
     </Routes>

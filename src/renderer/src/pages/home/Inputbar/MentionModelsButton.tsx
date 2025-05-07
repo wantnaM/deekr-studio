@@ -9,7 +9,7 @@ import { Model } from '@renderer/types'
 import { Avatar, Tooltip } from 'antd'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { first, sortBy } from 'lodash'
-import { AtSign, Plus } from 'lucide-react'
+import { AtSign } from 'lucide-react'
 import { FC, memo, useCallback, useImperativeHandle, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
@@ -100,12 +100,12 @@ const MentionModelsButton: FC<Props> = ({ ref, mentionModels, onMentionModel, To
       }
     })
 
-    items.push({
-      label: t('settings.models.add.add_model') + '...',
-      icon: <Plus />,
-      action: () => navigate('/settings/provider'),
-      isSelected: false
-    })
+    // items.push({
+    //   label: t('settings.models.add.add_model') + '...',
+    //   icon: <Plus />,
+    //   action: () => navigate('/settings/provider'),
+    //   isSelected: false
+    // })
 
     return items
   }, [providers, t, pinnedModels, mentionModels, onMentionModel, navigate])
