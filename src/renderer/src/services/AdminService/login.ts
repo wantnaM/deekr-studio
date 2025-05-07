@@ -32,3 +32,7 @@ export const getConfig = async (userId: number) => {
     url: `/ds/config/get-by-user?id=${userId}`
   })
 }
+
+export const register = async (data: any) => {
+  return await request.post({ url: `/ds/user-audit/register`, data })
+}

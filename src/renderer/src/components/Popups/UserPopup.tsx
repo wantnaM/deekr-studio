@@ -1,18 +1,20 @@
 import { ReloadOutlined } from '@ant-design/icons'
+import { UserAddOutlined } from '@ant-design/icons'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
 import { getAgents } from '@renderer/services/AdminService/Agent'
-import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/Login'
+import { changePassword, getConfig, login, logout, register } from '@renderer/services/AdminService/Login'
 import { useAppDispatch } from '@renderer/store'
 import { updateAgents } from '@renderer/store/agents'
 import { initialState } from '@renderer/store/llm'
 import { setUserName, setUserState } from '@renderer/store/settings'
 import { setDefaultProvider } from '@renderer/store/websearch'
 import { initialState as initialStateWebSearch } from '@renderer/store/websearch'
-import { Avatar, Button, Form, Input, List, message, Modal, Space, Typography } from 'antd'
+import { SubjectTypes } from '@renderer/types'
+import { Avatar, Button, Form, Input, List, message, Modal, Select, Space, Typography } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -42,6 +44,8 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
   const { updateWebSearchProviders } = useWebSearchProviders()
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
 
   const [configItems, setConfigItems] = useState<ConfigItem[]>([
     { key: 'model', label: 'user.configModel', success: user.configStatus.model, loading: false },
@@ -52,6 +56,28 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   // 新增密码修改相关状态
   const [changePasswordVisible, setChangePasswordVisible] = useState(false)
   const [formPassword] = Form.useForm()
+
+  const handleRegister = async () => {
+    try {
+      const values = await form.validateFields()
+      // 调用注册API（需要实现register服务）
+      await register({
+        username: values.username,
+        password: values.password,
+        school: values.school,
+        subject: values.subject,
+        educationLevel: values.educationLevel,
+        mobile: values.mobile,
+        nickname: values.nickname
+      })
+
+      setRegistrationSuccess(true) // 显示注册成功状态
+      form.resetFields()
+    } catch (error) {
+      const msg = (error as Error).message
+      if (msg) message.error(msg)
+    }
+  }
 
   // 修改密码处理
   const handleChangePassword = async () => {
@@ -200,7 +226,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     <>
       <Modal
         width="400px"
-        title={isLoggedIn ? t('user.profile') : t('login.title')}
+        title={isLoggedIn ? t('user.profile') : isRegistering ? t('login.register') : t('login.title')}
         open={open}
         footer={
           isLoggedIn ? (
@@ -222,12 +248,22 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 </Button>
               </Space>
             </div>
-          ) : (
-            [
-              <Button key="submit" type="primary" htmlType="submit" onClick={handleLogin}>
-                {t('login.submit')}
+          ) : isRegistering ? null : (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+              <Button type="link" icon={<UserAddOutlined />} onClick={() => setIsRegistering(true)}>
+                {t('login.register')}
               </Button>
-            ]
+              <Space>
+                <Button key="submit" type="primary" htmlType="submit" onClick={handleLogin}>
+                  {t('login.submit')}
+                </Button>
+              </Space>
+            </div>
           )
         }
         onCancel={() => setOpen(false)}
@@ -289,6 +325,122 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
               />
             </div>
           </>
+        ) : isRegistering ? (
+          registrationSuccess ? ( // 注册成功时的显示
+            <div style={{ textAlign: 'center' }}>
+              <Typography.Title level={3} style={{ marginBottom: 16 }}>
+                {t('register.success')}
+              </Typography.Title>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setIsRegistering(false)
+                  setRegistrationSuccess(false)
+                }}>
+                返回登录
+              </Button>
+            </div>
+          ) : (
+            <Form form={form} layout="vertical">
+              {/* 注册表单字段 */}
+              <Form.Item
+                name="username"
+                label={t('login.username.label')}
+                rules={[
+                  {
+                    required: true,
+                    message: '用户账号不能为空'
+                  },
+                  {
+                    pattern: /^[a-zA-Z0-9]{4,30}$/,
+                    message: '用户账号由数字、字母组成'
+                  },
+                  {
+                    min: 4,
+                    max: 30,
+                    message: '用户账号长度为4-30个字符'
+                  }
+                ]}>
+                <Input placeholder={t('register.username.placeholder')} allowClear maxLength={30} />
+              </Form.Item>
+
+              <Form.Item
+                name="nickname"
+                label={t('register.nickname')}
+                rules={[
+                  {
+                    required: true,
+                    message: '用户昵称不能为空'
+                  },
+                  {
+                    max: 30,
+                    message: '用户昵称长度不能超过30个字符'
+                  }
+                ]}>
+                <Input placeholder="请输入昵称" />
+              </Form.Item>
+
+              <Form.Item
+                name="password"
+                label={t('login.password.label')}
+                rules={[
+                  {
+                    required: true,
+                    message: '密码不能为空'
+                  },
+                  {
+                    min: 4,
+                    max: 16,
+                    message: '密码长度为4-16位'
+                  }
+                ]}>
+                <Input.Password placeholder="请输入密码" maxLength={16} />
+              </Form.Item>
+
+              <Form.Item name="school" label={t('register.school')} rules={[{ required: true }]}>
+                <Input placeholder="请填写您的学校" />
+              </Form.Item>
+              <HStack justifyContent="space-between">
+                <Form.Item
+                  name="subject"
+                  style={{ marginRight: '20px' }}
+                  label={t('register.subject')}
+                  rules={[{ required: true }]}>
+                  <Select placeholder="请选择学科" style={{ width: '160px' }}>
+                    {Object.entries(SubjectTypes).map(([key, value]) => (
+                      <Select.Option key={key} value={value}>
+                        {value}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item name="educationLevel" label={t('register.educationLevel')} rules={[{ required: true }]}>
+                  <Select placeholder="请选择学段" style={{ width: '160px' }}>
+                    <Select.Option value="小学">小学</Select.Option>
+                    <Select.Option value="初中">初中</Select.Option>
+                    <Select.Option value="高中">高中</Select.Option>
+                  </Select>
+                </Form.Item>
+              </HStack>
+
+              <Form.Item
+                name="mobile"
+                label={t('register.mobile')}
+                rules={[{ required: true }, { pattern: /^1[3-9]\d{9}$/, message: t('register.mobileInvalid') }]}>
+                <Input placeholder="请输入您的手机号" />
+              </Form.Item>
+
+              <HStack justifyContent="space-between">
+                <Button type="link" onClick={() => setIsRegistering(false)}>
+                  {t('register.hasAccount')}
+                </Button>
+                <Button type="primary" onClick={handleRegister}>
+                  {t('register.submit')}
+                </Button>
+              </HStack>
+            </Form>
+          )
         ) : (
           <>
             <Form form={form} layout="vertical">
@@ -319,11 +471,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 />
               </Form.Item>
             </Form>
-
-            {/* <HStack justifyContent="space-between" style={{ marginTop: -10 }}>
-              <a>{t('login.forgot_password')}</a>
-              <a>{t('login.register')}</a>
-            </HStack> */}
           </>
         )}
       </Modal>

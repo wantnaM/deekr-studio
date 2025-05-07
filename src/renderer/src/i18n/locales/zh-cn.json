@@ -1127,6 +1127,19 @@
     "logout": {
       "success": "退出登录成功"
     },
+    "register": {
+      "title": "申请注册账号",
+      "submit": "注册",
+      "school": "学校",
+      "subject": "学科",
+      "educationLevel": "学段",
+      "mobile": "手机号",
+      "nickname": "昵称",
+      "mobileInvalid": "请输入有效的手机号",
+      "hasAccount": "已有账号？立即登录",
+      "success": "申请注册成功，请耐心等待管理员审核",
+      "username.placeholder": "请输入用户名，推荐使用手机号"
+    },
     "user": {
       "profile": "用户资料",
       "logout": "退出登录",
