@@ -1,7 +1,7 @@
 import ZhinaoProviderLogo from '@renderer/assets/images/models/360.png'
 import HunyuanProviderLogo from '@renderer/assets/images/models/hunyuan.png'
 import AzureProviderLogo from '@renderer/assets/images/models/microsoft.png'
-import AiHubMixProviderLogo from '@renderer/assets/images/providers/aihubmix.jpg'
+import AiHubMixProviderLogo from '@renderer/assets/images/providers/aihubmix.webp'
 import AlayaNewProviderLogo from '@renderer/assets/images/providers/alayanew.webp'
 import AnthropicProviderLogo from '@renderer/assets/images/providers/anthropic.png'
 import BaichuanProviderLogo from '@renderer/assets/images/providers/baichuan.png'
@@ -14,7 +14,6 @@ import GiteeAIProviderLogo from '@renderer/assets/images/providers/gitee-ai.png'
 import GithubProviderLogo from '@renderer/assets/images/providers/github.png'
 import GoogleProviderLogo from '@renderer/assets/images/providers/google.png'
 import GPUStackProviderLogo from '@renderer/assets/images/providers/gpustack.svg'
-import GraphRagProviderLogo from '@renderer/assets/images/providers/graph-rag.png'
 import GrokProviderLogo from '@renderer/assets/images/providers/grok.png'
 import GroqProviderLogo from '@renderer/assets/images/providers/groq.png'
 import HyperbolicProviderLogo from '@renderer/assets/images/providers/hyperbolic.png'
@@ -33,11 +32,13 @@ import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png'
 import OpenRouterProviderLogo from '@renderer/assets/images/providers/openrouter.png'
 import PerplexityProviderLogo from '@renderer/assets/images/providers/perplexity.png'
 import PPIOProviderLogo from '@renderer/assets/images/providers/ppio.png'
+import QiniuProviderLogo from '@renderer/assets/images/providers/qiniu.webp'
 import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png'
 import StepProviderLogo from '@renderer/assets/images/providers/step.png'
 import TencentCloudProviderLogo from '@renderer/assets/images/providers/tencent-cloud-ti.png'
 import TogetherProviderLogo from '@renderer/assets/images/providers/together.png'
 import BytedanceProviderLogo from '@renderer/assets/images/providers/volcengine.png'
+import VoyageAIProviderLogo from '@renderer/assets/images/providers/voyageai.png'
 import XirangProviderLogo from '@renderer/assets/images/providers/xirang.png'
 import ZeroOneProviderLogo from '@renderer/assets/images/providers/zero-one.png'
 import ZhipuProviderLogo from '@renderer/assets/images/providers/zhipu.png'
@@ -63,9 +64,9 @@ const PROVIDER_LOGO_MAP = {
   gemini: GoogleProviderLogo,
   stepfun: StepProviderLogo,
   doubao: BytedanceProviderLogo,
-  'graphrag-kylin-mountain': GraphRagProviderLogo,
   minimax: MinimaxProviderLogo,
   github: GithubProviderLogo,
+  copilot: GithubProviderLogo,
   ocoolai: OcoolAiProviderLogo,
   together: TogetherProviderLogo,
   fireworks: FireworksProviderLogo,
@@ -85,12 +86,16 @@ const PROVIDER_LOGO_MAP = {
   o3: O3ProviderLogo,
   'tencent-cloud-ti': TencentCloudProviderLogo,
   gpustack: GPUStackProviderLogo,
-  alayanew: AlayaNewProviderLogo
+  alayanew: AlayaNewProviderLogo,
+  voyageai: VoyageAIProviderLogo,
+  qiniu: QiniuProviderLogo
 } as const
 
 export function getProviderLogo(providerId: string) {
   return PROVIDER_LOGO_MAP[providerId as keyof typeof PROVIDER_LOGO_MAP]
 }
+
+export const SUPPORTED_REANK_PROVIDERS = ['silicon', 'jina', 'voyageai']
 
 export const PROVIDER_CONFIG = {
   openai: {
@@ -120,10 +125,9 @@ export const PROVIDER_CONFIG = {
       url: 'https://api.ppinfra.com/v3/openai'
     },
     websites: {
-      official:
-        'https://ppinfra.com/model-api/product/llm-api?utm_source=github_cherry-studio&utm_medium=github_readme&utm_campaign=link',
-      apiKey: 'https://ppinfra.com/settings/key-management',
-      docs: 'https://ppinfra.com/docs/model-api/reference/llm/llm.html',
+      official: 'https://ppinfra.com/user/register?invited_by=JYT9GD&utm_source=github_cherry-studio',
+      apiKey: 'https://ppinfra.com/user/register?invited_by=JYT9GD&utm_source=github_cherry-studio',
+      docs: 'https://docs.cherry-ai.com/pre-basic/providers/ppio?invited_by=JYT9GD&utm_source=github_cherry-studio',
       models:
         'https://ppinfra.com/model-api/product/llm-api?utm_source=github_cherry-studio&utm_medium=github_readme&utm_campaign=link'
     }
@@ -144,8 +148,8 @@ export const PROVIDER_CONFIG = {
       url: 'https://api.siliconflow.cn'
     },
     websites: {
-      official: 'https://www.siliconflow.cn/',
-      apiKey: 'https://cloud.siliconflow.cn/account/ak?referrer=clxty1xuy0014lvqwh5z50i88',
+      official: 'https://www.siliconflow.cn',
+      apiKey: 'https://cloud.siliconflow.cn/i/d1nTBKXU',
       docs: 'https://docs.siliconflow.cn/',
       models: 'https://docs.siliconflow.cn/docs/model-names'
     }
@@ -185,7 +189,7 @@ export const PROVIDER_CONFIG = {
   },
   together: {
     api: {
-      url: 'https://api.tohgether.xyz'
+      url: 'https://api.together.xyz'
     },
     websites: {
       official: 'https://www.together.ai/',
@@ -236,6 +240,11 @@ export const PROVIDER_CONFIG = {
       apiKey: 'https://github.com/settings/tokens',
       docs: 'https://docs.github.com/en/github-models',
       models: 'https://github.com/marketplace/models'
+    }
+  },
+  copilot: {
+    api: {
+      url: 'https://api.githubcopilot.com/'
     }
   },
   yi: {
@@ -310,9 +319,9 @@ export const PROVIDER_CONFIG = {
     },
     websites: {
       official: 'https://www.aliyun.com/product/bailian',
-      apiKey: 'https://bailian.console.aliyun.com/?apiKey=1#/api-key',
+      apiKey: 'https://bailian.console.aliyun.com/?tab=model#/api-key',
       docs: 'https://help.aliyun.com/zh/model-studio/getting-started/',
-      models: 'https://bailian.console.aliyun.com/model-market#/model-market'
+      models: 'https://bailian.console.aliyun.com/?tab=model#/model-market'
     }
   },
   stepfun: {
@@ -551,6 +560,28 @@ export const PROVIDER_CONFIG = {
       official: 'https://gpustack.ai/',
       docs: 'https://docs.gpustack.ai/latest/',
       models: 'https://docs.gpustack.ai/latest/overview/#supported-models'
+    }
+  },
+  voyageai: {
+    api: {
+      url: 'https://api.voyageai.com'
+    },
+    websites: {
+      official: 'https://www.voyageai.com/',
+      apiKey: 'https://dashboard.voyageai.com/organization/api-keys',
+      docs: 'https://docs.voyageai.com/docs',
+      models: 'https://docs.voyageai.com/docs'
+    }
+  },
+  qiniu: {
+    api: {
+      url: 'https://api.qnaigc.com'
+    },
+    websites: {
+      official: 'https://qiniu.com',
+      apiKey: 'https://portal.qiniu.com/ai-inference/api-key?cps_key=1h4vzfbkxobiq',
+      docs: 'https://developer.qiniu.com/aitokenapi',
+      models: 'https://developer.qiniu.com/aitokenapi/12883/model-list'
     }
   }
 }

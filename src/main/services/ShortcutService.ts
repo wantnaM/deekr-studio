@@ -8,6 +8,9 @@ import { windowService } from './WindowService'
 let showAppAccelerator: string | null = null
 let showMiniWindowAccelerator: string | null = null
 
+// store the focus and blur handlers for each window to unregister them later
+const windowOnHandlers = new Map<BrowserWindow, { onFocusHandler: () => void; onBlurHandler: () => void }>()
+
 function getShortcutHandler(shortcut: Shortcut) {
   switch (shortcut.key) {
     case 'zoom_in':
@@ -20,17 +23,8 @@ function getShortcutHandler(shortcut: Shortcut) {
         configManager.setZoomFactor(1)
       }
     case 'show_app':
-      return (window: BrowserWindow) => {
-        if (window.isVisible()) {
-          if (window.isFocused()) {
-            window.hide()
-          } else {
-            window.focus()
-          }
-        } else {
-          window.show()
-          window.focus()
-        }
+      return () => {
+        windowService.toggleMainWindow()
       }
     case 'mini_window':
       return () => {
@@ -113,10 +107,19 @@ const convertShortcutRecordedByKeyboardEventKeyValueToElectronGlobalShortcutForm
 
 export function registerShortcuts(window: BrowserWindow) {
   window.once('ready-to-show', () => {
-    window.webContents.setZoomFactor(configManager.getZoomFactor())
+    if (configManager.getLaunchToTray()) {
+      registerOnlyUniversalShortcuts()
+    }
   })
 
-  const register = () => {
+  //only for clearer code
+  const registerOnlyUniversalShortcuts = () => {
+    register(true)
+  }
+
+  //onlyUniversalShortcuts is used to register shortcuts that are not window specific, like show_app & mini_window
+  //onlyUniversalShortcuts is needed when we launch to tray
+  const register = (onlyUniversalShortcuts: boolean = false) => {
     if (window.isDestroyed()) return
 
     const shortcuts = configManager.getShortcuts()
@@ -133,6 +136,11 @@ export function registerShortcuts(window: BrowserWindow) {
           return
         }
 
+        // only register universal shortcuts when needed
+        if (onlyUniversalShortcuts && !['show_app', 'mini_window'].includes(shortcut.key)) {
+          return
+        }
+
         const handler = getShortcutHandler(shortcut)
         if (!handler) {
           return
@@ -145,9 +153,10 @@ export function registerShortcuts(window: BrowserWindow) {
 
           case 'mini_window':
             //available only when QuickAssistant enabled
-            if (configManager.getEnableQuickAssistant()) {
-              showMiniWindowAccelerator = formatShortcutKey(shortcut.shortcut)
+            if (!configManager.getEnableQuickAssistant()) {
+              return
             }
+            showMiniWindowAccelerator = formatShortcutKey(shortcut.shortcut)
             break
 
           //the following ZOOMs will register shortcuts seperately, so will return
@@ -201,8 +210,16 @@ export function registerShortcuts(window: BrowserWindow) {
     }
   }
 
-  window.on('focus', () => register())
-  window.on('blur', () => unregister())
+  // only register the event handlers once
+  if (undefined === windowOnHandlers.get(window)) {
+    // pass register() directly to listener, the func will receive Event as argument, it's not expected
+    const registerHandler = () => {
+      register()
+    }
+    window.on('focus', registerHandler)
+    window.on('blur', unregister)
+    windowOnHandlers.set(window, { onFocusHandler: registerHandler, onBlurHandler: unregister })
+  }
 
   if (!window.isDestroyed() && window.isFocused()) {
     register()
@@ -213,6 +230,11 @@ export function unregisterAllShortcuts() {
   try {
     showAppAccelerator = null
     showMiniWindowAccelerator = null
+    windowOnHandlers.forEach((handlers, window) => {
+      window.off('focus', handlers.onFocusHandler)
+      window.off('blur', handlers.onBlurHandler)
+    })
+    windowOnHandlers.clear()
     globalShortcut.unregisterAll()
   } catch (error) {
     Logger.error('[ShortcutService] Failed to unregister all shortcuts')

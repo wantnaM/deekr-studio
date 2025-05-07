@@ -8,7 +8,8 @@ import {
 import { HStack } from '@renderer/components/Layout'
 import { useMessageOperations } from '@renderer/hooks/useMessageOperations'
 import { MultiModelMessageStyle } from '@renderer/store/settings'
-import { Message, Topic } from '@renderer/types'
+import type { Topic } from '@renderer/types'
+import type { Message } from '@renderer/types/newMessage'
 import { Button, Tooltip } from 'antd'
 import { FC, memo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,8 +22,8 @@ interface Props {
   multiModelMessageStyle: MultiModelMessageStyle
   setMultiModelMessageStyle: (style: MultiModelMessageStyle) => void
   messages: Message[]
-  selectedIndex: number
-  setSelectedIndex: (index: number) => void
+  selectMessageId: string
+  setSelectedMessage: (message: Message) => void
   topic: Topic
 }
 
@@ -30,8 +31,8 @@ const MessageGroupMenuBar: FC<Props> = ({
   multiModelMessageStyle,
   setMultiModelMessageStyle,
   messages,
-  selectedIndex,
-  setSelectedIndex,
+  selectMessageId,
+  setSelectedMessage,
   topic
 }) => {
   const { t } = useTranslation()
@@ -79,8 +80,8 @@ const MessageGroupMenuBar: FC<Props> = ({
         {multiModelMessageStyle === 'fold' && (
           <MessageGroupModelList
             messages={messages}
-            selectedIndex={selectedIndex}
-            setSelectedIndex={setSelectedIndex}
+            selectMessageId={selectMessageId}
+            setSelectedMessage={setSelectedMessage}
           />
         )}
         {multiModelMessageStyle === 'grid' && <MessageGroupSettings />}

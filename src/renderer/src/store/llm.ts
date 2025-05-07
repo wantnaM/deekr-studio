@@ -507,7 +507,7 @@ export const moveProvider = (providers: Provider[], id: string, position: number
   return newProviders
 }
 
-const settingsSlice = createSlice({
+const llmSlice = createSlice({
   name: 'llm',
   initialState: isLocalAi ? getIntegratedInitialState() : initialState,
   reducers: {
@@ -549,7 +549,6 @@ const settingsSlice = createSlice({
     },
     setDefaultModel: (state, action: PayloadAction<{ model: Model }>) => {
       state.defaultModel = action.payload.model
-      window.electron.ipcRenderer.send('miniwindow-reload')
     },
     setTopicNamingModel: (state, action: PayloadAction<{ model: Model }>) => {
       state.topicNamingModel = action.payload.model
@@ -598,6 +597,6 @@ export const {
   setLMStudioKeepAliveTime,
   setGPUStackKeepAliveTime,
   updateModel
-} = settingsSlice.actions
+} = llmSlice.actions
 
-export default settingsSlice.reducer
+export default llmSlice.reducer

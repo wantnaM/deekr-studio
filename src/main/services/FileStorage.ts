@@ -1,5 +1,5 @@
 import { getFilesDir, getFileType, getTempDir } from '@main/utils/file'
-import { documentExts, imageExts } from '@shared/config/constant'
+import { documentExts, imageExts, MB } from '@shared/config/constant'
 import { FileType } from '@types'
 import * as crypto from 'crypto'
 import {
@@ -122,7 +122,7 @@ class FileStorage {
   private async compressImage(sourcePath: string, destPath: string): Promise<void> {
     try {
       const stats = fs.statSync(sourcePath)
-      const fileSizeInMB = stats.size / (1024 * 1024)
+      const fileSizeInMB = stats.size / MB
 
       // 如果图片大于1MB才进行压缩
       if (fileSizeInMB > 1) {
@@ -263,7 +263,15 @@ class FileStorage {
     }
   }
 
-  public binaryFile = async (_: Electron.IpcMainInvokeEvent, id: string): Promise<{ data: Buffer; mime: string }> => {
+  public base64File = async (_: Electron.IpcMainInvokeEvent, id: string): Promise<{ data: string; mime: string }> => {
+    const filePath = path.join(this.storageDir, id)
+    const buffer = await fs.promises.readFile(filePath)
+    const base64 = buffer.toString('base64')
+    const mime = `application/${path.extname(filePath).slice(1)}`
+    return { data: base64, mime }
+  }
+
+  public binaryImage = async (_: Electron.IpcMainInvokeEvent, id: string): Promise<{ data: Buffer; mime: string }> => {
     const filePath = path.join(this.storageDir, id)
     const data = await fs.promises.readFile(filePath)
     const mime = `image/${path.extname(filePath).slice(1)}`

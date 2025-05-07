@@ -28,6 +28,16 @@ class FileManager {
     return Promise.all(files.map((file) => this.addFile(file)))
   }
 
+  static async readBinaryImage(file: FileType): Promise<Buffer> {
+    const fileData = await window.api.file.binaryImage(file.id + file.ext)
+    return fileData.data
+  }
+
+  static async readBase64File(file: FileType): Promise<string> {
+    const fileData = await window.api.file.base64File(file.id + file.ext)
+    return fileData.data
+  }
+
   static async uploadFile(file: FileType): Promise<FileType> {
     console.log(`[FileManager] Uploading file: ${JSON.stringify(file)}`)
 

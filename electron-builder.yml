@@ -29,7 +29,7 @@ files:
   - '!node_modules/mammoth/{mammoth.browser.js,mammoth.browser.min.js}'
 asarUnpack:
   - resources/**
-  - '**/*.{node,dll,metal,exp,lib}'
+  - '**/*.{metal,exp,lib}'
 win:
   executableName: 教师智能体
   artifactName: Deekr Studio-${version}-portable.${ext}
@@ -44,6 +44,10 @@ nsis:
   allowToChangeInstallationDirectory: true
   oneClick: false
   include: build/nsis-installer.nsh
+  buildUniversalInstaller: false
+portable:
+  artifactName: ${productName}-${version}-${arch}-portable.${ext}
+  buildUniversalInstaller: false
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
@@ -55,22 +59,18 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   target:
     - target: dmg
-      arch:
-        - arm64
-        - x64
     - target: zip
-      arch:
-        - arm64
-        - x64
 linux:
   artifactName: Deekr Studio-${version}-${arch}.${ext}
   target:
     - target: AppImage
-      arch:
-        - arm64
-        - x64
   maintainer: electronjs.org
   category: Utility
+  desktop:
+    entry:
+      StartupWMClass: CherryStudio
+  mimeTypes:
+    - x-scheme-handler/cherrystudio
 publish:
   provider: generic
   url: http://8.134.23.119:8090
@@ -78,6 +78,7 @@ electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
+artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
     新增设置菜单中的意见反馈渠道，欢迎提交宝贵建议
