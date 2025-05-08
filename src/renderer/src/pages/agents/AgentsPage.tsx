@@ -48,11 +48,11 @@ const AgentsPage: FC = () => {
 
       Object.entries(agentGroups).forEach(([, agents]) => {
         agents.forEach((agent) => {
-          if (
-            (agent.name.toLowerCase().includes(search.toLowerCase()) ||
-              agent.description?.toLowerCase().includes(search.toLowerCase())) &&
-            !uniqueAgents.has(agent.name)
-          ) {
+          const searchTerm = search.toLowerCase()
+          const matchCondition =
+            agent.name.toLowerCase().includes(searchTerm) || agent.subject?.toLowerCase().includes(searchTerm)
+
+          if (matchCondition && !uniqueAgents.has(agent.name)) {
             uniqueAgents.set(agent.name, agent)
           }
         })
@@ -61,7 +61,11 @@ const AgentsPage: FC = () => {
     } else {
       agents = agentGroups[activeGroup] || []
     }
-    return agents.filter((agent) => agent.name.toLowerCase().includes(search.toLowerCase()))
+    return agents.filter(
+      (agent) =>
+        agent.name.toLowerCase().includes(search.toLowerCase()) ||
+        agent.subject?.toLowerCase().includes(search.toLowerCase())
+    )
   }, [agentGroups, activeGroup, search])
 
   const { t, i18n } = useTranslation()
@@ -155,7 +159,7 @@ const AgentsPage: FC = () => {
       <Navbar>
         <NavbarCenter style={{ borderRight: 'none', justifyContent: 'center' }}>
           <Input
-            placeholder={t('common.search')}
+            placeholder={t('agents.search_placeholder')}
             className="nodrag"
             style={{ width: '30%', height: 28, borderRadius: 15, paddingLeft: 12 }}
             size="small"
@@ -237,7 +241,6 @@ const AgentsPage: FC = () => {
                   onClick={() => onAddAgentConfirm(getAgentFromSystemAgent(agent))}
                   agent={agent}
                   activegroup={activeGroup}
-                  getLocalizedGroupName={getLocalizedGroupName}
                 />
               ))}
             </AgentsList>

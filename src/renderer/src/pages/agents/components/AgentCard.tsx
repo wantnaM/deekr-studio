@@ -16,10 +16,9 @@ interface Props {
   agent: Agent
   activegroup?: string
   onClick: () => void
-  getLocalizedGroupName: (group: string) => string
 }
 
-const AgentCard: FC<Props> = ({ agent, onClick, activegroup, getLocalizedGroupName }) => {
+const AgentCard: FC<Props> = ({ agent, onClick, activegroup }) => {
   const { removeAgent } = useAgents()
   const [isVisible, setIsVisible] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -107,17 +106,15 @@ const AgentCard: FC<Props> = ({ agent, onClick, activegroup, getLocalizedGroupNa
             <AgentCardHeaderInfo>
               <AgentCardHeaderInfoTitle>{agent.name}</AgentCardHeaderInfoTitle>
               <AgentCardHeaderInfoTags>
-                {activegroup === '我的' && (
+                {agent.subject ? (
                   <CustomTag color="#A0A0A0" size={11}>
-                    {getLocalizedGroupName('我的')}
+                    {agent.subject}
+                  </CustomTag>
+                ) : (
+                  <CustomTag color="#A0A0A0" size={11}>
+                    通用
                   </CustomTag>
                 )}
-                {!!agent.group?.length &&
-                  agent.group.map((group) => (
-                    <CustomTag key={group} color="#A0A0A0" size={11}>
-                      {getLocalizedGroupName(group)}
-                    </CustomTag>
-                  ))}
               </AgentCardHeaderInfoTags>
             </AgentCardHeaderInfo>
             {activegroup === '我的' ? (

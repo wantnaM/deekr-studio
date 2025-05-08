@@ -58,7 +58,8 @@
         "agentName": "智能体名称",
         "subject": "学科",
         "theme": "主题"
-      }
+      },
+      "search_placeholder": "支持搜索名称或学科"
     },
     "assistants": {
       "title": "助手",
