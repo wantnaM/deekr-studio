@@ -7,7 +7,7 @@
       "add.name": "名称",
       "add.name.placeholder": "输入名称",
       "add.prompt": "提示词",
-      "add.prompt.placeholder": "输入提示词",
+      "add.prompt.placeholder": "编写你的提示词或通过自然语言描述你的智能体创建需求，点击右侧按钮使用AI创建",
       "add.title": "创建智能体",
       "import": {
         "title": "从外部导入",

@@ -12,7 +12,7 @@ import { estimateTextTokens } from '@renderer/services/TokenService'
 import { useAppSelector } from '@renderer/store'
 import { Agent, KnowledgeBase } from '@renderer/types'
 import { getLeadingEmoji, uuid } from '@renderer/utils'
-import { Button, Form, FormInstance, Input, Modal, Popover, Select, SelectProps } from 'antd'
+import { Button, Form, FormInstance, Input, Modal, Popover, Select, SelectProps, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -175,12 +175,14 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             <TextArea placeholder={t('agents.add.prompt.placeholder')} spellCheck={false} rows={10} />
           </Form.Item>
           <TokenCount>Tokens: {tokenCount}</TokenCount>
-          <Button
-            icon={loading ? <LoadingOutlined /> : <ThunderboltOutlined />}
-            onClick={handleButtonClick}
-            style={{ position: 'absolute', top: 8, right: 8 }}
-            disabled={loading}
-          />
+          <Tooltip title="自动优化提示词">
+            <Button
+              icon={loading ? <LoadingOutlined /> : <ThunderboltOutlined />}
+              onClick={handleButtonClick}
+              style={{ position: 'absolute', top: 8, right: 8 }}
+              disabled={loading}
+            />
+          </Tooltip>
         </div>
         {showKnowledgeIcon && (
           <Form.Item name="knowledge_base_ids" label={t('agents.add.knowledge_base')} rules={[{ required: false }]}>
