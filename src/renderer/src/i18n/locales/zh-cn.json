@@ -1612,6 +1612,7 @@
     },
     "register": {
       "title": "申请注册账号",
+      "role": "角色",
       "submit": "注册",
       "school": "学校",
       "subject": "学科",
@@ -1621,7 +1622,7 @@
       "mobileInvalid": "请输入有效的手机号",
       "hasAccount": "已有账号？立即登录",
       "success": "申请注册成功，请耐心等待管理员审核",
-      "username.placeholder": "请输入用户名，推荐使用手机号"
+      "username.placeholder": "推荐使用手机号"
     },
     "user": {
       "profile": "用户资料",
