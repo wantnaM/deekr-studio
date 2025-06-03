@@ -1,4 +1,4 @@
-import { register } from '@renderer/services/AdminService/Login'
+import { register } from '@renderer/services/AdminService/login'
 import { SubjectTypes } from '@renderer/types'
 import { Button, Col, Form, Input, message, Modal, Radio, Row, Select, Typography } from 'antd'
 import { useState } from 'react'

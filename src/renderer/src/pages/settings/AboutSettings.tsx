@@ -1,7 +1,7 @@
 // import MinApp from '@renderer/components/MinApp'
 import { APP_NAME, AppLogo2 } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
+// import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 // import { useSettings } from '@renderer/hooks/useSettings'
 import { useAppDispatch } from '@renderer/store'
@@ -25,7 +25,7 @@ const AboutSettings: FC = () => {
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
   const { update } = useRuntime()
-  const { openMinapp } = useMinappPopup()
+  // const { openMinapp } = useMinappPopup()
 
   const onCheckUpdate = debounce(
     async () => {
