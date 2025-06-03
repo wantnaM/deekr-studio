@@ -21,6 +21,7 @@ export interface UserState {
     topic: boolean
     miniApp: boolean
   }
+  type: number | null
 }
 
 export const DEFAULT_SIDEBAR_ICONS: SidebarIcon[] = [
@@ -262,7 +263,8 @@ export const initialState: SettingsState = {
       agent: false,
       topic: false,
       miniApp: false
-    }
+    },
+    type: null
   }
 }
 

@@ -14,6 +14,7 @@ import {
   Package,
   Rocket,
   Settings2,
+  Users,
   Zap
 } from 'lucide-react'
 // 导入useAppSelector
@@ -34,6 +35,7 @@ import ProvidersList from './ProviderSettings'
 import QuickAssistantSettings from './QuickAssistantSettings'
 import QuickPhraseSettings from './QuickPhraseSettings'
 import ShortcutSettings from './ShortcutSettings'
+import StudentsSettings from './StudentsSettings'
 import WebSearchSettings from './WebSearchSettings'
 
 const SettingsPage: FC = () => {
@@ -45,7 +47,7 @@ const SettingsPage: FC = () => {
   const isRoute = (path: string): string => (pathname.startsWith(path) ? 'active' : '')
 
   const { user } = useSettings()
-  const { isLoggedIn } = user
+  const { isLoggedIn, type } = user
   return (
     <Container>
       <Navbar>
@@ -130,6 +132,14 @@ const SettingsPage: FC = () => {
                   {t('settings.feedback.title')}
                 </MenuItem>
               </MenuItemLink>
+              {type === 3 && (
+                <MenuItemLink to="/settings/students">
+                  <MenuItem className={isRoute('/settings/students')}>
+                    <Users size={18} />
+                    {t('settings.students.title')}
+                  </MenuItem>
+                </MenuItemLink>
+              )}
             </>
           )}
           <MenuItemLink to="/settings/about">
@@ -153,6 +163,7 @@ const SettingsPage: FC = () => {
             <Route path="data" element={<DataSettings />} />
             <Route path="about" element={<AboutSettings />} />
             <Route path="feedback" element={<FeedbackSettings />} />
+            <Route path="students" element={<StudentsSettings />} />
             <Route path="quickPhrase" element={<QuickPhraseSettings />} />
           </Routes>
         </SettingContent>

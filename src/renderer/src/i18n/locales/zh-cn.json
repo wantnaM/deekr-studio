@@ -1549,7 +1549,8 @@
       },
       "feedback.title": "意见反馈",
       "feedback.type.suggestion": "建议",
-      "feedback.type.question": "问题"
+      "feedback.type.question": "问题",
+      "students.title": "我的学生"
     },
     "translate": {
       "any.language": "任意语言",

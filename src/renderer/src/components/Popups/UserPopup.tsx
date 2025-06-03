@@ -93,7 +93,8 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             agent: false,
             topic: false,
             miniApp: false
-          }
+          },
+          type: data.type
         })
       )
 
@@ -176,7 +177,14 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         username: '',
         accessToken: null,
         refreshToken: null,
-        expiresTime: null
+        expiresTime: null,
+        configStatus: {
+          model: false,
+          agent: false,
+          topic: false,
+          miniApp: false
+        },
+        type: null
       })
     )
     updateProviders(initialState.providers)

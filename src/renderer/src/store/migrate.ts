@@ -1267,6 +1267,7 @@ const migrateConfig = {
           provider.type = 'openai-compatible'
         }
       })
+      state.settings.user.type = null
       return state
     } catch (error) {
       return state
