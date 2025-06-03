@@ -19,7 +19,7 @@ interface Student {
 const StudentsSettings: FC = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [students, setStudents] = useState<Student[]>([])
+  const [students] = useState<Student[]>([])
   const [messageApi, contextHolder] = message.useMessage()
 
   const columns = [
