@@ -1,5 +1,14 @@
 appId: com.deerk.DeekrStudio
 productName: 教师智能体
+electronLanguages:
+  - zh-CN
+  - zh-TW
+  - en-US
+  - ja # macOS/linux/win
+  - ru # macOS/linux/win
+  - zh_CN # for macOS
+  - zh_TW # for macOS
+  - en # for macOS
 directories:
   buildResources: build
 files:
@@ -32,22 +41,24 @@ asarUnpack:
   - '**/*.{node,dll,metal,exp,lib}'
 win:
   executableName: 教师智能体
-  artifactName: Deekr Studio-${version}-portable.${ext}
+  artifactName: ${productName}-${version}-portable.${ext}
   target:
     - target: nsis
     - target: portable
 nsis:
-  artifactName: Deekr Studio-${version}-setup.${ext}
+  artifactName: ${productName}-${version}-setup.${ext}
   shortcutName: 教师智能体
   uninstallDisplayName: 教师智能体
   createDesktopShortcut: always
   allowToChangeInstallationDirectory: true
   oneClick: false
   include: build/nsis-installer.nsh
+portable:
+  artifactName: ${productName}-${version}-${arch}-portable.${ext}
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   notarize: false
-  artifactName: Deekr Studio-${version}-${arch}.${ext}
+  artifactName: ${productName}-${version}-${arch}.${ext}
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
@@ -55,22 +66,18 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   target:
     - target: dmg
-      arch:
-        - arm64
-        - x64
     - target: zip
-      arch:
-        - arm64
-        - x64
 linux:
-  artifactName: Deekr Studio-${version}-${arch}.${ext}
+  artifactName: ${productName}-${version}-${arch}.${ext}
   target:
     - target: AppImage
-      arch:
-        - arm64
-        - x64
   maintainer: electronjs.org
   category: Utility
+  desktop:
+    entry:
+      StartupWMClass: CherryStudio
+  mimeTypes:
+    - x-scheme-handler/cherrystudio
 publish:
   provider: generic
   url: http://8.134.23.119:8090
