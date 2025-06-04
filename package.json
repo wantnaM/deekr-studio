@@ -1,6 +1,6 @@
 {
   "name": "DeeKrStudio",
-  "version": "1.2.10",
+  "version": "1.2.2",
   "private": true,
   "main": "./out/main/index.js",
   "workspaces": {
@@ -72,7 +72,6 @@
     "adm-zip": "^0.5.16",
     "archiver": "^7.0.1",
     "async-mutex": "^0.5.0",
-    "axios": "^1.6.8",
     "bufferutil": "^4.0.9",
     "color": "^5.0.0",
     "diff": "^7.0.0",

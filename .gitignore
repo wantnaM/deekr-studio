@@ -33,6 +33,7 @@ Thumbs.db
 
 # Project
 node_modules
+node_modules*
 dist
 out
 stats.html
