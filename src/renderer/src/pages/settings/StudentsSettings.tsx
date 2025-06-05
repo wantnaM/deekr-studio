@@ -1,6 +1,6 @@
 import { DownloadOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { getStudentsList } from '@renderer/services/AdminService/Students'
+import { getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService/Students'
 import type { UploadProps } from 'antd'
 import { Button, Input, message, Table, Upload } from 'antd'
 import { FC, useEffect, useState } from 'react'
@@ -48,19 +48,21 @@ const StudentsSettings: FC = () => {
     }
   ]
 
-  const handleDownloadTemplate = () => {
-    // Create a CSV template
-    const csvContent = 'username,nickname,grade,class\nstudent1,John Doe,1,A\nstudent2,Jane Smith,2,B'
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.setAttribute('href', url)
-    link.setAttribute('download', 'students_template.csv')
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    messageApi.success(t('settings.students.template_downloaded'))
+  const handleDownloadTemplate = async () => {
+    const res = await importStudentsTemplate()
+
+    // 创建 blob
+    const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+    // 创建 href 超链接，点击进行下载
+    window.URL = window.URL || window.webkitURL
+    const href = URL.createObjectURL(blob)
+    const downA = document.createElement('a')
+    downA.href = href
+    downA.download = '学生导入模版.xlsx'
+    downA.click()
+    // 销毁超连接
+    window.URL.revokeObjectURL(href)
+    messageApi.success('下载模板成功')
   }
 
   const handleSearch = (value: string) => {
