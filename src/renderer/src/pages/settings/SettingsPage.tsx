@@ -4,7 +4,6 @@ import { useSettings } from '@renderer/hooks/useSettings'
 import { useSidebarIconShow } from '@renderer/hooks/useSidebarIcon'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import {
-  // Cloud,
   Command,
   Globe,
   HardDrive,
@@ -14,6 +13,8 @@ import {
   Package,
   Rocket,
   Settings2,
+  // Cloud,
+  Users,
   Zap
 } from 'lucide-react'
 // 导入useAppSelector
@@ -46,7 +47,7 @@ const SettingsPage: FC = () => {
   const isRoute = (path: string): string => (pathname.startsWith(path) ? 'active' : '')
 
   const { user } = useSettings()
-  const { isLoggedIn } = user
+  const { isLoggedIn, type } = user
   return (
     <Container>
       <Navbar>
@@ -131,14 +132,14 @@ const SettingsPage: FC = () => {
                   {t('settings.feedback.title')}
                 </MenuItem>
               </MenuItemLink>
-              {/* {type === 3 && (
+              {type === 3 && (
                 <MenuItemLink to="/settings/students">
                   <MenuItem className={isRoute('/settings/students')}>
                     <Users size={18} />
                     {t('settings.students.title')}
                   </MenuItem>
                 </MenuItemLink>
-              )} */}
+              )}
             </>
           )}
           <MenuItemLink to="/settings/about">

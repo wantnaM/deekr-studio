@@ -1,8 +1,9 @@
-import { DownloadOutlined, UploadOutlined } from '@ant-design/icons'
+import { DownloadOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
+import { getStudentsList } from '@renderer/services/AdminService/Students'
 import type { UploadProps } from 'antd'
-import { Button, message, Table, Upload } from 'antd'
-import { FC, useState } from 'react'
+import { Button, Input, message, Table, Upload } from 'antd'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -13,14 +14,16 @@ interface Student {
   username: string
   nickname: string
   grade: string
-  class: string
+  classroom: string
 }
 
 const StudentsSettings: FC = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const [students] = useState<Student[]>([])
+  const [students, setStudents] = useState<Student[]>([])
   const [messageApi, contextHolder] = message.useMessage()
+  const [searchText, setSearchText] = useState('')
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
 
   const columns = [
     {
@@ -60,6 +63,33 @@ const StudentsSettings: FC = () => {
     messageApi.success(t('settings.students.template_downloaded'))
   }
 
+  const handleSearch = (value: string) => {
+    setSearchText(value)
+    if (!value) {
+      setFilteredStudents(students)
+      return
+    }
+    const filtered = students.filter((student) => {
+      return (
+        student.username.toLowerCase().includes(value.toLowerCase()) ||
+        student.nickname.toLowerCase().includes(value.toLowerCase()) ||
+        student.grade.toLowerCase().includes(value.toLowerCase()) ||
+        student.classroom.toLowerCase().includes(value.toLowerCase())
+      )
+    })
+    setFilteredStudents(filtered)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getStudentsList()
+      setStudents(res)
+      setFilteredStudents(res)
+    }
+
+    fetchData()
+  }, [])
+
   const props: UploadProps = {
     name: 'file',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -85,20 +115,34 @@ const StudentsSettings: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.students.title')}</SettingTitle>
         <SettingDivider />
-
-        <ActionButtons>
-          <Upload {...props}>
-            <Button type="primary" icon={<UploadOutlined />}>
-              导入文件
+        <SettingTitle
+          style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>学生列表</span>
+          <ActionButtons>
+            <Upload {...props}>
+              <Button type="primary" icon={<UploadOutlined />}>
+                导入文件
+              </Button>
+            </Upload>
+            <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate}>
+              下载模板
             </Button>
-          </Upload>
-          <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate}>
-            下载模板
-          </Button>
-        </ActionButtons>
+          </ActionButtons>
+        </SettingTitle>
+
+        <SearchContainer>
+          <Input
+            placeholder="搜索学生"
+            allowClear
+            suffix={<SearchOutlined />}
+            value={searchText}
+            onChange={(e) => handleSearch(e.target.value)}
+            style={{ width: 250, marginTop: 10 }}
+          />
+        </SearchContainer>
 
         <StudentsTable
-          dataSource={students}
+          dataSource={filteredStudents}
           columns={columns}
           bordered
           size="middle"
@@ -112,11 +156,10 @@ const StudentsSettings: FC = () => {
 const ActionButtons = styled.div`
   display: flex;
   gap: 12px;
-  margin-bottom: 16px;
 `
 
 const StudentsTable = styled(Table)`
-  margin-top: 16px;
+  margin-top: 5px;
 
   .ant-table-thead > tr > th {
     background-color: var(--color-bg-2);
@@ -125,6 +168,11 @@ const StudentsTable = styled(Table)`
   .ant-table-tbody > tr > td {
     border-bottom: 1px solid var(--color-border);
   }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 export default StudentsSettings
