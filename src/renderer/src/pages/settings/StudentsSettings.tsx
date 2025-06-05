@@ -1,6 +1,7 @@
 import { DownloadOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService/Students'
+import { config } from '@renderer/utils/axios/config'
 import type { UploadProps } from 'antd'
 import { Button, Input, message, Table, Upload } from 'antd'
 import { FC, useEffect, useState } from 'react'
@@ -94,7 +95,7 @@ const StudentsSettings: FC = () => {
 
   const props: UploadProps = {
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: config.base_url + '/system/user/import-students',
     headers: {
       authorization: 'authorization-text'
     },
@@ -108,7 +109,8 @@ const StudentsSettings: FC = () => {
       } else if (info.file.status === 'error') {
         messageApi.error(`${info.file.name} ${t('settings.students.upload_failed')}`)
       }
-    }
+    },
+    maxCount: 1
   }
 
   return (
@@ -125,10 +127,10 @@ const StudentsSettings: FC = () => {
               <Button type="primary" icon={<UploadOutlined />}>
                 导入文件
               </Button>
+              <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate} style={{ marginLeft: 10 }}>
+                下载模板
+              </Button>
             </Upload>
-            <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate}>
-              下载模板
-            </Button>
           </ActionButtons>
         </SettingTitle>
 
