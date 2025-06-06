@@ -7,3 +7,7 @@ export const getStudentsList = async () => {
 export const importStudentsTemplate = () => {
   return request.download({ url: '/system/user/get-students-import-template' })
 }
+
+export const exportStudents = (id) => {
+  return request.download({ url: '/system/user/export-students', params: { id } })
+}

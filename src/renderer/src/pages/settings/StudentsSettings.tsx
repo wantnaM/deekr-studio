@@ -1,6 +1,8 @@
-import { DownloadOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons'
+import { DownloadOutlined, ExportOutlined, SearchOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService/Students'
+import { getAccessToken } from '@renderer/hooks/useSettings'
+import { useSettings } from '@renderer/hooks/useSettings'
+import { exportStudents, getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService/Students'
 import { config } from '@renderer/utils/axios/config'
 import type { UploadProps } from 'antd'
 import { Button, Input, message, Table, Upload } from 'antd'
@@ -25,6 +27,9 @@ const StudentsSettings: FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
   const [searchText, setSearchText] = useState('')
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
+  const [exportLoading, setExportLoading] = useState(false)
+  const { user } = useSettings()
+  const { userId } = user
 
   const columns = [
     {
@@ -40,28 +45,43 @@ const StudentsSettings: FC = () => {
     {
       title: '年级',
       dataIndex: 'grade',
-      key: 'grade'
+      key: 'grade',
+      sorter: true
     },
     {
       title: '班级',
       dataIndex: 'classroom',
-      key: 'classroom'
+      key: 'classroom',
+      sorter: true
+    },
+    {
+      title: '创建日期',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (text: string) => formatDate(text),
+      sorter: (a, b) => a.createTime - b.createTime
     }
   ]
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }
+    return new Date(dateString).toLocaleDateString(undefined, options)
+  }
 
   const handleDownloadTemplate = async () => {
     const res = await importStudentsTemplate()
 
-    // 创建 blob
     const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-    // 创建 href 超链接，点击进行下载
     window.URL = window.URL || window.webkitURL
     const href = URL.createObjectURL(blob)
     const downA = document.createElement('a')
     downA.href = href
     downA.download = '学生导入模版.xlsx'
     downA.click()
-    // 销毁超连接
     window.URL.revokeObjectURL(href)
     messageApi.success('下载模板成功')
   }
@@ -84,33 +104,57 @@ const StudentsSettings: FC = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getStudentsList()
-      setStudents(res)
-      setFilteredStudents(res)
-    }
-
     fetchData()
   }, [])
+
+  const fetchData = async () => {
+    const res = await getStudentsList()
+    setStudents(res)
+    setFilteredStudents(res)
+  }
+
+  const handleExportStudents = async () => {
+    setExportLoading(true)
+    try {
+      const res = await exportStudents(userId)
+
+      if (res) {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        window.URL = window.URL || window.webkitURL
+        const href = URL.createObjectURL(blob)
+        const downA = document.createElement('a')
+        downA.href = href
+        downA.download = '学生列表.xlsx'
+        downA.click()
+        window.URL.revokeObjectURL(href)
+
+        messageApi.success('导出成功')
+      }
+    } finally {
+      setExportLoading(false)
+    }
+  }
 
   const props: UploadProps = {
     name: 'file',
     action: config.base_url + '/system/user/import-students',
     headers: {
-      authorization: 'authorization-text'
+      authorization: 'Bearer ' + getAccessToken()
     },
     onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList)
-      }
       if (info.file.status === 'done') {
-        messageApi.success(`${info.file.name} ${t('settings.students.upload_success')}`)
-        // Here you would process the uploaded file and add students
+        if (info.file.response && info.file.response.code === 0) {
+          messageApi.success(`文件导入成功`)
+          fetchData()
+        } else {
+          messageApi.error(`文件导入失败: ${info.file.response ? info.file.response.msg : '未知错误'}`)
+        }
       } else if (info.file.status === 'error') {
-        messageApi.error(`${info.file.name} ${t('settings.students.upload_failed')}`)
+        messageApi.error(`文件导入失败`)
       }
     },
-    maxCount: 1
+    maxCount: 1,
+    showUploadList: false
   }
 
   return (
@@ -127,14 +171,18 @@ const StudentsSettings: FC = () => {
               <Button type="primary" icon={<UploadOutlined />}>
                 导入文件
               </Button>
-              <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate} style={{ marginLeft: 10 }}>
-                下载模板
-              </Button>
             </Upload>
+            <Button icon={<DownloadOutlined />} onClick={handleDownloadTemplate}>
+              下载模板
+            </Button>
+            <Button icon={<ExportOutlined />} onClick={handleExportStudents} loading={exportLoading}>
+              导出文件
+            </Button>
           </ActionButtons>
         </SettingTitle>
 
         <SearchContainer>
+          <Button icon={<SyncOutlined />} onClick={() => fetchData()} style={{ marginTop: 10 }}></Button>
           <Input
             placeholder="搜索学生"
             allowClear
@@ -164,6 +212,7 @@ const ActionButtons = styled.div`
 
 const StudentsTable = styled(Table)`
   margin-top: 5px;
+  user-select: auto;
 
   .ant-table-thead > tr > th {
     background-color: var(--color-bg-2);
@@ -176,7 +225,7 @@ const StudentsTable = styled(Table)`
 
 const SearchContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 `
 
 export default StudentsSettings
