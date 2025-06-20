@@ -1,16 +1,14 @@
-import { PlusOutlined, QuestionCircleOutlined, RedoOutlined } from '@ant-design/icons'
+import { QuestionCircleOutlined, RedoOutlined } from '@ant-design/icons'
 import ImageSize1_1 from '@renderer/assets/images/paintings/image-size-1-1.svg'
 import ImageSize1_2 from '@renderer/assets/images/paintings/image-size-1-2.svg'
 import ImageSize3_2 from '@renderer/assets/images/paintings/image-size-3-2.svg'
 import ImageSize3_4 from '@renderer/assets/images/paintings/image-size-3-4.svg'
 import ImageSize9_16 from '@renderer/assets/images/paintings/image-size-9-16.svg'
 import ImageSize16_9 from '@renderer/assets/images/paintings/image-size-16-9.svg'
-import { Navbar, NavbarCenter, NavbarRight } from '@renderer/components/app/Navbar'
-import { HStack, VStack } from '@renderer/components/Layout'
+import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
+import { VStack } from '@renderer/components/Layout'
 import Scrollbar from '@renderer/components/Scrollbar'
 import TranslateButton from '@renderer/components/TranslateButton'
-import { isMac } from '@renderer/config/constant'
-import { TEXT_TO_IMAGES_MODELS } from '@renderer/config/models'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { usePaintings } from '@renderer/hooks/usePaintings'
 import { useAllProviders } from '@renderer/hooks/useProvider'
@@ -24,7 +22,7 @@ import { useAppDispatch } from '@renderer/store'
 import { setGenerating } from '@renderer/store/runtime'
 import type { FileType, Painting } from '@renderer/types'
 import { getErrorMessage, uuid } from '@renderer/utils'
-import { Button, Input, InputNumber, Radio, Select, Slider, Switch, Tooltip } from 'antd'
+import { Input, InputNumber, Radio, Select, Slider, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -35,6 +33,7 @@ import styled from 'styled-components'
 import SendMessageButton from '../home/Inputbar/SendMessageButton'
 import { SettingTitle } from '../settings'
 import Artboard from './Artboard'
+import { TEXT_TO_IMAGES_MODELS } from './config/doubaoConfig'
 import PaintingsList from './PaintingsList'
 
 const IMAGE_SIZES = [
@@ -339,22 +338,11 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
     <Container>
       <Navbar>
         <NavbarCenter style={{ borderRight: 'none' }}>{t('paintings.title')}</NavbarCenter>
-        {isMac && (
-          <NavbarRight style={{ justifyContent: 'flex-end' }}>
-            <Button
-              size="small"
-              className="nodrag"
-              icon={<PlusOutlined />}
-              onClick={() => setPainting(addPainting('paintings', getNewPainting()))}>
-              {t('paintings.button.new.image')}
-            </Button>
-          </NavbarRight>
-        )}
       </Navbar>
       <ContentContainer id="content-container">
         <LeftContainer>
           <SettingTitle style={{ marginBottom: 5 }}>{t('common.provider')}</SettingTitle>
-          <Select value={providerOptions[1].value} onChange={handleProviderChange} options={providerOptions} />
+          <Select value={providerOptions[0].value} onChange={handleProviderChange} options={providerOptions} />
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('common.model')}</SettingTitle>
           <Select value={painting.model} options={modelOptions} onChange={onSelectModel} />
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('paintings.image.size')}</SettingTitle>
@@ -373,19 +361,6 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
           </Radio.Group>
 
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
-            {t('paintings.number_images')}
-            <Tooltip title={t('paintings.number_images_tip')}>
-              <InfoIcon />
-            </Tooltip>
-          </SettingTitle>
-          <InputNumber
-            min={1}
-            max={4}
-            value={painting.numImages}
-            onChange={(v) => updatePaintingState({ numImages: v || 1 })}
-          />
-
-          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
             {t('paintings.seed')}
             <Tooltip title={t('paintings.seed_tip')}>
               <InfoIcon />
@@ -401,22 +376,6 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
               />
             }
           />
-
-          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
-            {t('paintings.inference_steps')}
-            <Tooltip title={t('paintings.inference_steps_tip')}>
-              <InfoIcon />
-            </Tooltip>
-          </SettingTitle>
-          <SliderContainer>
-            <Slider min={1} max={50} value={painting.steps} onChange={(v) => updatePaintingState({ steps: v })} />
-            <StyledInputNumber
-              min={1}
-              max={50}
-              value={painting.steps}
-              onChange={(v) => updatePaintingState({ steps: (v as number) || 25 })}
-            />
-          </SliderContainer>
 
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
             {t('paintings.guidance_scale')}
@@ -440,30 +399,6 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
               onChange={(v) => updatePaintingState({ guidanceScale: (v as number) || 4.5 })}
             />
           </SliderContainer>
-          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
-            {t('paintings.negative_prompt')}
-            <Tooltip title={t('paintings.negative_prompt_tip')}>
-              <InfoIcon />
-            </Tooltip>
-          </SettingTitle>
-          <TextArea
-            value={painting.negativePrompt}
-            onChange={(e) => updatePaintingState({ negativePrompt: e.target.value })}
-            spellCheck={false}
-            rows={4}
-          />
-          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
-            {t('paintings.prompt_enhancement')}
-            <Tooltip title={t('paintings.prompt_enhancement_tip')}>
-              <InfoIcon />
-            </Tooltip>
-          </SettingTitle>
-          <HStack>
-            <Switch
-              checked={painting.promptEnhancement}
-              onChange={(checked) => updatePaintingState({ promptEnhancement: checked })}
-            />
-          </HStack>
         </LeftContainer>
         <MainContainer>
           <Artboard

@@ -84,6 +84,16 @@ export const INITIAL_PROVIDERS: Provider[] = [
     models: SYSTEM_MODELS.moonshot,
     isSystem: true,
     enabled: false
+  },
+  {
+    id: 'doubao',
+    name: '豆包',
+    type: 'openai-compatible',
+    apiKey: '',
+    apiHost: 'https://ark.cn-beijing.volces.com/api/v3/',
+    models: SYSTEM_MODELS.doubao,
+    isSystem: true,
+    enabled: false
   }
 ]
 
