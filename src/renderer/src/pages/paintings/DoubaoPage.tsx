@@ -1,14 +1,16 @@
-import { QuestionCircleOutlined, RedoOutlined } from '@ant-design/icons'
+import { PlusOutlined, QuestionCircleOutlined, RedoOutlined } from '@ant-design/icons'
 import ImageSize1_1 from '@renderer/assets/images/paintings/image-size-1-1.svg'
 import ImageSize1_2 from '@renderer/assets/images/paintings/image-size-1-2.svg'
 import ImageSize3_2 from '@renderer/assets/images/paintings/image-size-3-2.svg'
 import ImageSize3_4 from '@renderer/assets/images/paintings/image-size-3-4.svg'
 import ImageSize9_16 from '@renderer/assets/images/paintings/image-size-9-16.svg'
 import ImageSize16_9 from '@renderer/assets/images/paintings/image-size-16-9.svg'
-import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
+import { Navbar, NavbarCenter, NavbarRight } from '@renderer/components/app/Navbar'
 import { VStack } from '@renderer/components/Layout'
 import Scrollbar from '@renderer/components/Scrollbar'
 import TranslateButton from '@renderer/components/TranslateButton'
+import { isMac } from '@renderer/config/constant'
+import { getProviderLogo } from '@renderer/config/providers'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { usePaintings } from '@renderer/hooks/usePaintings'
 import { useAllProviders } from '@renderer/hooks/useProvider'
@@ -22,7 +24,7 @@ import { useAppDispatch } from '@renderer/store'
 import { setGenerating } from '@renderer/store/runtime'
 import type { FileType, Painting } from '@renderer/types'
 import { getErrorMessage, uuid } from '@renderer/utils'
-import { Input, InputNumber, Radio, Select, Slider, Tooltip } from 'antd'
+import { Avatar, Button, Input, InputNumber, Radio, Select, Slider, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -33,7 +35,7 @@ import styled from 'styled-components'
 import SendMessageButton from '../home/Inputbar/SendMessageButton'
 import { SettingTitle } from '../settings'
 import Artboard from './Artboard'
-import { TEXT_TO_IMAGES_MODELS } from './config/doubaoConfig'
+import { RECOMMENDED_PROMPTS, TEXT_TO_IMAGES_MODELS } from './config/doubaoConfig'
 import PaintingsList from './PaintingsList'
 
 const IMAGE_SIZES = [
@@ -75,12 +77,9 @@ const DEFAULT_PAINTING: Painting = {
   urls: [],
   files: [],
   prompt: '',
-  negativePrompt: '',
   imageSize: '1024x1024',
-  numImages: 1,
   seed: '',
-  steps: 25,
-  guidanceScale: 4.5,
+  guidanceScale: 2.5,
   model: TEXT_TO_IMAGES_MODELS[0].id
 }
 
@@ -122,7 +121,14 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
   }))
 
   const textareaRef = useRef<any>(null)
-  // _painting = painting
+
+  const handleRecommendedPromptClick = (prompt: string) => {
+    updatePaintingState({ prompt })
+    // 聚焦到文本输入框
+    setTimeout(() => {
+      textareaRef.current?.focus()
+    }, 0)
+  }
 
   const updatePaintingState = (updates: Partial<Painting>) => {
     const updatedPainting = { ...painting, ...updates }
@@ -188,14 +194,13 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
       const urls = await AI.generateImage({
         model: painting.model,
         prompt,
-        negativePrompt: painting.negativePrompt || '',
-        imageSize: painting.imageSize || '1024x1024',
-        batchSize: painting.numImages || 1,
+        imageSize: '',
+        size: painting.imageSize || '1024x1024',
+        batchSize: 1,
         seed: painting.seed || undefined,
-        numInferenceSteps: painting.steps || 25,
+        numInferenceSteps: 25,
         guidanceScale: painting.guidanceScale || 4.5,
-        signal: controller.signal,
-        promptEnhancement: painting.promptEnhancement || false
+        signal: controller.signal
       })
 
       if (urls.length > 0) {
@@ -338,11 +343,32 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
     <Container>
       <Navbar>
         <NavbarCenter style={{ borderRight: 'none' }}>{t('paintings.title')}</NavbarCenter>
+        {isMac && (
+          <NavbarRight style={{ justifyContent: 'flex-end' }}>
+            <Button
+              size="small"
+              className="nodrag"
+              icon={<PlusOutlined />}
+              onClick={() => setPainting(addPainting('paintings', getNewPainting()))}>
+              {t('paintings.button.new.image')}
+            </Button>
+          </NavbarRight>
+        )}
       </Navbar>
       <ContentContainer id="content-container">
         <LeftContainer>
           <SettingTitle style={{ marginBottom: 5 }}>{t('common.provider')}</SettingTitle>
-          <Select value={providerOptions[0].value} onChange={handleProviderChange} options={providerOptions} />
+          <Select value={providerOptions[0].value} onChange={handleProviderChange} style={{ marginBottom: 15 }}>
+            {providerOptions.map((provider) => (
+              <Select.Option value={provider.value} key={provider.value}>
+                <SelectOptionContainer>
+                  <ProviderLogo shape="square" src={getProviderLogo(provider.value || '')} size={16} />
+                  {provider.label}
+                </SelectOptionContainer>
+              </Select.Option>
+            ))}
+          </Select>
+          {/* <Select value={providerOptions[0].value} onChange={handleProviderChange} options={providerOptions} /> */}
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('common.model')}</SettingTitle>
           <Select value={painting.model} options={modelOptions} onChange={onSelectModel} />
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('paintings.image.size')}</SettingTitle>
@@ -399,6 +425,19 @@ const PaintingsPage: FC<{ Options: string[] }> = ({ Options }) => {
               onChange={(v) => updatePaintingState({ guidanceScale: (v as number) || 4.5 })}
             />
           </SliderContainer>
+
+          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('paintings.recommended')}</SettingTitle>
+          <RecommendedPromptsContainer>
+            {RECOMMENDED_PROMPTS.map((item) => (
+              <Tooltip title={item.tooltip} key={item.id}>
+                <RecommendedPromptIcon
+                  src={item.icon}
+                  theme={theme}
+                  onClick={() => handleRecommendedPromptClick(item.prompt)}
+                />
+              </Tooltip>
+            ))}
+          </RecommendedPromptsContainer>
         </LeftContainer>
         <MainContainer>
           <Artboard
@@ -560,6 +599,39 @@ const SliderContainer = styled.div`
 
 const StyledInputNumber = styled(InputNumber)`
   width: 70px;
+`
+
+const SelectOptionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+const ProviderLogo = styled(Avatar)`
+  border: 0.5px solid var(--color-border);
+`
+
+const RecommendedPromptsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+`
+
+const RecommendedPromptIcon = styled.img<{ theme: string }>`
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  padding: 0px;
+  object-fit: contain;
+  filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
+
+  &:hover {
+    border-color: var(--color-primary);
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
 `
 
 export default PaintingsPage

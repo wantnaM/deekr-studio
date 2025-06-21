@@ -921,7 +921,8 @@ export default class OpenAIProvider extends BaseProvider {
     numInferenceSteps,
     guidanceScale,
     signal,
-    promptEnhancement
+    promptEnhancement,
+    size
   }: GenerateImageParams): Promise<string[]> {
     const response = (await this.sdk.request({
       method: 'post',
@@ -936,7 +937,8 @@ export default class OpenAIProvider extends BaseProvider {
         seed: seed ? parseInt(seed) : undefined,
         num_inference_steps: numInferenceSteps,
         guidance_scale: guidanceScale,
-        prompt_enhancement: promptEnhancement
+        prompt_enhancement: promptEnhancement,
+        size
       }
     })) as { data: Array<{ url: string }> }
 

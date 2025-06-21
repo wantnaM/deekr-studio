@@ -420,6 +420,7 @@ export type GenerateImageParams = {
   guidanceScale: number
   signal?: AbortSignal
   promptEnhancement?: boolean
+  size?: string
 }
 
 export type GenerateImageResponse = {
