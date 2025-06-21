@@ -87,7 +87,5 @@ afterPack: scripts/after-pack.js
 afterSign: scripts/notarize.js
 releaseInfo:
   releaseNotes: |
-    开放用户注册
-    优化软件UI，提升用户体验
-    支持快捷短语等功能
+    AI生图支持豆包模型
 
