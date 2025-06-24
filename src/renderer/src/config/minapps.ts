@@ -1,4 +1,5 @@
 import AiPPTLogo from '@renderer/assets/images/apps/aippt.png?url'
+import ApplicationLogo from '@renderer/assets/images/apps/application.png?url'
 import BaiduAiAppLogo from '@renderer/assets/images/apps/baidu-ai.png?url'
 import BaiduAiSearchLogo from '@renderer/assets/images/apps/baidu-ai-search.webp?url'
 import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
@@ -8,7 +9,7 @@ import CozeAppLogo from '@renderer/assets/images/apps/coze.webp?url'
 import DesignkitLogo from '@renderer/assets/images/apps/designkit.png?url'
 import DoubaoAppLogo from '@renderer/assets/images/apps/doubao.png?url'
 import FittenCodeLogo from '@renderer/assets/images/apps/fitten-code.png?url'
-// import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
+import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
 import IflyrecLogo from '@renderer/assets/images/apps/iflyrec.png?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
@@ -17,7 +18,6 @@ import MathgptLogo from '@renderer/assets/images/apps/mathgpt.jpg?url'
 import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
 import MindMasterLogo from '@renderer/assets/images/apps/mindmaster.png?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
-// import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
 import PythonTutorLogo from '@renderer/assets/images/apps/python-tutor.png?url'
 import ZhipuProviderLogo from '@renderer/assets/images/apps/qingyan.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
@@ -32,36 +32,58 @@ import ZhiWenLogo from '@renderer/assets/images/apps/zhiwen.png?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
+import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
+import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png?url'
 import { MinAppType, SubjectTypes } from '@renderer/types'
 
-export const DEFAULT_MIN_APPS: MinAppType[] = [
-  // {
-  //   id: 'openai',
-  //   name: 'ChatGPT',
-  //   url: 'https://chatgpt.com/',
-  //   logo: OpenAiProviderLogo,
-  //   bodered: true,
-  //   group: 'AI大模型',
-  //   desc: 'OpenAI开发的通用对话型AI',
-  //   subject: [
-  //     SubjectTypes.CHINESE,
-  //     SubjectTypes.MATH,
-  //     SubjectTypes.ENGLISH,
-  //     SubjectTypes.PHYSICS,
-  //     SubjectTypes.CHEMISTRY,
-  //     SubjectTypes.INFORMATION_SCIENCE,
-  //     SubjectTypes.INFORMATION_TECHNOLOGY,
-  //     SubjectTypes.STEM
-  //   ]
-  // },
-  // {
-  //   id: 'gemini',
-  //   name: 'Gemini',
-  //   url: 'https://gemini.google.com/',
-  //   logo: GeminiAppLogo,
-  //   group: 'AI大模型',
-  //   desc: '谷歌开发的生成式AI对话模型'
-  // },
+// 加载自定义小应用
+const loadCustomMiniApp = async (): Promise<MinAppType[]> => {
+  try {
+    let content: string
+    try {
+      content = await window.api.file.read('custom-minapps.json')
+    } catch (error) {
+      // 如果文件不存在，创建一个空的 JSON 数组
+      content = '[]'
+      await window.api.file.writeWithId('custom-minapps.json', content)
+    }
+
+    const customApps = JSON.parse(content)
+    const now = new Date().toISOString()
+
+    return customApps.map((app: any) => ({
+      ...app,
+      type: 'Custom',
+      logo: app.logo && app.logo !== '' ? app.logo : ApplicationLogo,
+      addTime: app.addTime || now
+    }))
+  } catch (error) {
+    console.error('Failed to load custom mini apps:', error)
+    return []
+  }
+}
+
+// 初始化默认小应用
+const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
+  {
+    id: 'openai',
+    name: 'ChatGPT',
+    url: 'https://chatgpt.com/',
+    logo: OpenAiProviderLogo,
+    bodered: true
+  },
+  {
+    id: 'gemini',
+    name: 'Gemini',
+    url: 'https://gemini.google.com/',
+    logo: GeminiAppLogo
+  },
+  {
+    id: 'silicon',
+    name: 'SiliconFlow',
+    url: 'https://cloud.siliconflow.cn/playground/chat',
+    logo: SiliconFlowProviderLogo
+  },
   {
     id: 'deepseek',
     name: 'DeepSeek',
@@ -376,3 +398,12 @@ export const DEFAULT_MIN_APPS: MinAppType[] = [
     subject: []
   }
 ]
+
+// 加载自定义小应用并合并到默认应用中
+let DEFAULT_MIN_APPS = [...ORIGIN_DEFAULT_MIN_APPS, ...(await loadCustomMiniApp())]
+
+function updateDefaultMinApps(param) {
+  DEFAULT_MIN_APPS = param
+}
+
+export { DEFAULT_MIN_APPS, loadCustomMiniApp, ORIGIN_DEFAULT_MIN_APPS, updateDefaultMinApps }

@@ -98,14 +98,20 @@ export async function checkModelWithMultipleKeys(
   if (isParallel) {
     // Check all API keys in parallel
     const keyPromises = apiKeys.map(async (key) => {
-      const result = await checkModel({ ...provider, apiKey: key }, model)
-
-      return {
-        key,
-        isValid: result.valid,
-        error: result.error?.message,
-        latency: result.latency
-      } as ApiKeyCheckStatus
+      try {
+        const result = await checkModel({ ...provider, apiKey: key }, model)
+        return {
+          key,
+          isValid: true,
+          latency: result.latency
+        } as ApiKeyCheckStatus
+      } catch (error: unknown) {
+        return {
+          key,
+          isValid: false,
+          error: error instanceof Error ? error.message.slice(0, 20) + '...' : String(error).slice(0, 20) + '...'
+        } as ApiKeyCheckStatus
+      }
     })
 
     const results = await Promise.allSettled(keyPromises)
@@ -125,14 +131,20 @@ export async function checkModelWithMultipleKeys(
   } else {
     // Check all API keys serially
     for (const key of apiKeys) {
-      const result = await checkModel({ ...provider, apiKey: key }, model)
-
-      keyResults.push({
-        key,
-        isValid: result.valid,
-        error: result.error?.message,
-        latency: result.latency
-      })
+      try {
+        const result = await checkModel({ ...provider, apiKey: key }, model)
+        keyResults.push({
+          key,
+          isValid: true,
+          latency: result.latency
+        })
+      } catch (error: unknown) {
+        keyResults.push({
+          key,
+          isValid: false,
+          error: error instanceof Error ? error.message.slice(0, 20) + '...' : String(error).slice(0, 20) + '...'
+        })
+      }
     }
   }
 
@@ -216,4 +228,34 @@ export async function checkModelsHealth(
   }
 
   return results
+}
+
+export function getModelCheckSummary(results: ModelCheckResult[], providerName?: string): string {
+  const t = i18n.t
+
+  // Show summary of results after checking
+  const failedModels = results.filter((result) => result.status === ModelCheckStatus.FAILED)
+  const partialModels = results.filter((result) => result.status === ModelCheckStatus.PARTIAL)
+  const successModels = results.filter((result) => result.status === ModelCheckStatus.SUCCESS)
+
+  // Display statistics of all model check results
+  const summaryParts: string[] = []
+
+  if (failedModels.length > 0) {
+    summaryParts.push(t('settings.models.check.model_status_failed', { count: failedModels.length }))
+  }
+  if (successModels.length + partialModels.length > 0) {
+    summaryParts.push(
+      t('settings.models.check.model_status_passed', { count: successModels.length + partialModels.length })
+    )
+  }
+  if (partialModels.length > 0) {
+    summaryParts.push(t('settings.models.check.model_status_partial', { count: partialModels.length }))
+  }
+
+  const summary = summaryParts.join(', ')
+  return t('settings.models.check.model_status_summary', {
+    provider: providerName ?? 'Unknown Provider',
+    summary
+  })
 }

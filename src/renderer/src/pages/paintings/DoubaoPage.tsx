@@ -1,4 +1,5 @@
 import { PlusOutlined, QuestionCircleOutlined, RedoOutlined } from '@ant-design/icons'
+import AiProvider from '@renderer/aiCore'
 import ImageSize1_1 from '@renderer/assets/images/paintings/image-size-1-1.svg'
 import ImageSize1_2 from '@renderer/assets/images/paintings/image-size-1-2.svg'
 import ImageSize3_2 from '@renderer/assets/images/paintings/image-size-3-2.svg'
@@ -16,7 +17,6 @@ import { usePaintings } from '@renderer/hooks/usePaintings'
 import { useAllProviders } from '@renderer/hooks/useProvider'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
-import AiProvider from '@renderer/providers/AiProvider'
 import { getProviderByModel } from '@renderer/services/AssistantService'
 import FileManager from '@renderer/services/FileManager'
 import { translateText } from '@renderer/services/TranslateService'
@@ -34,9 +34,9 @@ import styled from 'styled-components'
 
 import SendMessageButton from '../home/Inputbar/SendMessageButton'
 import { SettingTitle } from '../settings'
-import Artboard from './Artboard'
+import Artboard from './components/Artboard'
+import PaintingsList from './components/PaintingsList'
 import { RECOMMENDED_PROMPTS, TEXT_TO_IMAGES_MODELS } from './config/doubaoConfig'
-import PaintingsList from './PaintingsList'
 
 const IMAGE_SIZES = [
   {

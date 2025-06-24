@@ -1,14 +1,32 @@
 import store from '@renderer/store'
-import { messageBlocksSelectors } from '@renderer/store/messageBlock'
+import { formatCitationsFromBlock, messageBlocksSelectors } from '@renderer/store/messageBlock'
+import { FileType } from '@renderer/types'
 import type {
   CitationMessageBlock,
   FileMessageBlock,
   ImageMessageBlock,
   MainTextMessageBlock,
   Message,
-  ThinkingMessageBlock
+  MessageBlock,
+  ThinkingMessageBlock,
+  TranslationMessageBlock
 } from '@renderer/types/newMessage'
 import { MessageBlockType } from '@renderer/types/newMessage'
+
+export const findAllBlocks = (message: Message): MessageBlock[] => {
+  if (!message || !message.blocks || message.blocks.length === 0) {
+    return []
+  }
+  const state = store.getState()
+  const allBlocks: MessageBlock[] = []
+  for (const blockId of message.blocks) {
+    const block = messageBlocksSelectors.selectById(state, blockId)
+    if (block) {
+      allBlocks.push(block)
+    }
+  }
+  return allBlocks
+}
 
 /**
  * Finds all MainTextMessageBlocks associated with a given message, in order.
@@ -30,6 +48,11 @@ export const findMainTextBlocks = (message: Message): MainTextMessageBlock[] => 
   return textBlocks
 }
 
+/**
+ * Finds all ThinkingMessageBlocks associated with a given message.
+ * @param message - The message object.
+ * @returns An array of ThinkingMessageBlocks (empty if none found).
+ */
 export const findThinkingBlocks = (message: Message): ThinkingMessageBlock[] => {
   if (!message || !message.blocks || message.blocks.length === 0) {
     return []
@@ -95,20 +118,48 @@ export const getMainTextContent = (message: Message): string => {
   return textBlocks.map((block) => block.content).join('\n\n')
 }
 
+/**
+ * Gets the concatenated content string from all ThinkingMessageBlocks of a message, in order.
+ * @param message
+ * @returns The concatenated content string or an empty string if no thinking blocks are found.
+ */
 export const getThinkingContent = (message: Message): string => {
   const thinkingBlocks = findThinkingBlocks(message)
   return thinkingBlocks.map((block) => block.content).join('\n\n')
 }
 
+export const getCitationContent = (message: Message): string => {
+  const citationBlocks = findCitationBlocks(message)
+  return citationBlocks
+    .map((block) => formatCitationsFromBlock(block))
+    .flat()
+    .map(
+      (citation) =>
+        `[${citation.number}] [${citation.title || citation.url.slice(0, 1999)}](${citation.url.slice(0, 1999)})`
+    )
+    .join('\n\n')
+}
+
 /**
- * Gets the knowledgeBaseIds array from the *first* MainTextMessageBlock of a message.
- * Note: Assumes knowledgeBaseIds are only relevant on the first text block, adjust if needed.
+ * Gets the file content from all FileMessageBlocks and ImageMessageBlocks of a message.
  * @param message - The message object.
- * @returns The knowledgeBaseIds array or undefined if not found.
+ * @returns The file content or an empty string if no file blocks are found.
  */
-export const getKnowledgeBaseIds = (message: Message): string[] | undefined => {
-  const firstTextBlock = findMainTextBlocks(message)
-  return firstTextBlock?.flatMap((block) => block.knowledgeBaseIds).filter((id): id is string => Boolean(id))
+export const getFileContent = (message: Message): FileType[] => {
+  const files: FileType[] = []
+  const fileBlocks = findFileBlocks(message)
+  for (const block of fileBlocks) {
+    if (block.file) {
+      files.push(block.file)
+    }
+  }
+  const imageBlocks = findImageBlocks(message)
+  for (const block of imageBlocks) {
+    if (block.file) {
+      files.push(block.file)
+    }
+  }
+  return files
 }
 
 /**
@@ -129,6 +180,26 @@ export const findCitationBlocks = (message: Message): CitationMessageBlock[] => 
     }
   }
   return citationBlocks
+}
+
+/**
+ * Finds all TranslationMessageBlocks associated with a given message.
+ * @param message - The message object.
+ * @returns An array of TranslationMessageBlocks (empty if none found).
+ */
+export const findTranslationBlocks = (message: Message): TranslationMessageBlock[] => {
+  if (!message || !message.blocks || message.blocks.length === 0) {
+    return []
+  }
+  const state = store.getState()
+  const translationBlocks: TranslationMessageBlock[] = []
+  for (const blockId of message.blocks) {
+    const block = messageBlocksSelectors.selectById(state, blockId)
+    if (block && block.type === 'translation') {
+      translationBlocks.push(block as TranslationMessageBlock)
+    }
+  }
+  return translationBlocks
 }
 
 /**

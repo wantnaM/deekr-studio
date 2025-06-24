@@ -1,4 +1,11 @@
-import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined, SortAscendingOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  ExportOutlined,
+  PlusOutlined,
+  SortAscendingOutlined
+} from '@ant-design/icons'
 import CustomTag from '@renderer/components/CustomTag'
 import { useAgents } from '@renderer/hooks/useAgents'
 import AssistantSettingsPopup from '@renderer/pages/settings/AssistantSettings'
@@ -34,6 +41,26 @@ const AgentCard: FC<Props> = ({ agent, onClick, activegroup }) => {
     [removeAgent]
   )
 
+  const exportAgent = useCallback(async () => {
+    const result = [
+      {
+        name: agent.name,
+        emoji: agent.emoji,
+        group: agent.group,
+        prompt: agent.prompt,
+        description: agent.description,
+        regularPhrases: agent.regularPhrases,
+        type: 'agent'
+      }
+    ]
+
+    const resultStr = JSON.stringify(result, null, 2)
+
+    await window.api.file.save(`${agent.name}.json`, new TextEncoder().encode(resultStr), {
+      filters: [{ name: t('agents.import.file_filter'), extensions: ['json'] }]
+    })
+  }, [agent])
+
   const menuItems = [
     {
       key: 'edit',
@@ -60,6 +87,15 @@ const AgentCard: FC<Props> = ({ agent, onClick, activegroup }) => {
       onClick: (e: any) => {
         e.domEvent.stopPropagation()
         ManageAgentsPopup.show()
+      }
+    },
+    {
+      key: 'export',
+      label: t('agents.export.agent'),
+      icon: <ExportOutlined />,
+      onClick: (e: any) => {
+        e.domEvent.stopPropagation()
+        exportAgent()
       }
     },
     {
@@ -180,7 +216,6 @@ const HeaderInfoEmoji = styled.div`
   border-radius: var(--list-item-border-radius);
   font-size: 26px;
   line-height: 1;
-  opacity: 0.8;
   flex-shrink: 0;
   opacity: 1;
   transition: opacity 0.2s ease;
@@ -209,12 +244,12 @@ const AgentCardContainer = styled.div`
 
   --shadow-color: rgba(0, 0, 0, 0.05);
   box-shadow:
-    0 5px 7px -3px var(--shadow-color),
-    0 2px 3px -4px var(--shadow-color);
+    0 5px 7px -3px var(--color-border-soft),
+    0 2px 3px -4px var(--color-border-soft);
   &:hover {
     box-shadow:
-      0 10px 15px -3px var(--shadow-color),
-      0 4px 6px -4px var(--shadow-color);
+      0 10px 15px -3px var(--color-border-soft),
+      0 4px 6px -4px var(--color-border-soft);
     transform: translateY(-2px);
 
     ${AgentCardHeaderInfoAction} ${HeaderInfoEmoji} {

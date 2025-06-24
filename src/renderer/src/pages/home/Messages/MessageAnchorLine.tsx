@@ -1,4 +1,4 @@
-import { DownOutlined } from '@ant-design/icons'
+import EmojiAvatar from '@renderer/components/Avatar/EmojiAvatar'
 import { APP_NAME, AppLogo, isLocalAi } from '@renderer/config/env'
 import { getModelLogo } from '@renderer/config/models'
 import { useTheme } from '@renderer/context/ThemeProvider'
@@ -13,9 +13,11 @@ import type { Message } from '@renderer/types/newMessage'
 import { isEmoji, removeLeadingEmoji } from '@renderer/utils'
 import { getMainTextContent } from '@renderer/utils/messageUtils/find'
 import { Avatar } from 'antd'
+import { CircleChevronDown } from 'lucide-react'
 import { type FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+
 interface MessageLineProps {
   messages: Message[]
 }
@@ -102,14 +104,18 @@ const MessageAnchorLine: FC<MessageLineProps> = ({ messages }) => {
       if (groupMessages.length > 1) {
         for (const m of groupMessages) {
           dispatch(
-            newMessagesActions.updateMessage({ topicId: m.topicId, messageId: m.id, updates: { foldSelected: true } })
+            newMessagesActions.updateMessage({
+              topicId: m.topicId,
+              messageId: m.id,
+              updates: { foldSelected: m.id === message.id }
+            })
           )
         }
 
         setTimeout(() => {
           const messageElement = document.getElementById(`message-${message.id}`)
           if (messageElement) {
-            messageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+            messageElement.scrollIntoView({ behavior: 'auto', block: 'start' })
           }
         }, 100)
       }
@@ -181,16 +187,9 @@ const MessageAnchorLine: FC<MessageLineProps> = ({ messages }) => {
             opacity: mouseY ? 0.5 + calculateValueByDistance('bottom-anchor', 1) : 0.6
           }}
           onClick={scrollToBottom}>
-          <MessageItemContainer
-            style={{ transform: `scale(${1 + calculateValueByDistance('bottom-anchor', 1)})` }}></MessageItemContainer>
-          <Avatar
-            icon={<DownOutlined style={{ color: theme === 'dark' ? 'var(--color-text)' : 'var(--color-primary)' }} />}
+          <CircleChevronDown
             size={10 + calculateValueByDistance('bottom-anchor', 20)}
-            style={{
-              backgroundColor: theme === 'dark' ? 'var(--color-background-soft)' : 'var(--color-primary-light)',
-              border: `1px solid ${theme === 'dark' ? 'var(--color-border-soft)' : 'var(--color-primary-soft)'}`,
-              opacity: 0.9
-            }}
+            style={{ color: theme === 'dark' ? 'var(--color-text)' : 'var(--color-primary)' }}
           />
         </MessageItem>
         {messages.map((message, index) => {
@@ -200,6 +199,8 @@ const MessageAnchorLine: FC<MessageLineProps> = ({ messages }) => {
           const avatarSource = getAvatarSource(isLocalAi, getMessageModelId(message))
           const username = removeLeadingEmoji(getUserName(message))
           const content = getMainTextContent(message)
+
+          if (message.type === 'clear') return null
 
           return (
             <MessageItem
@@ -230,7 +231,15 @@ const MessageAnchorLine: FC<MessageLineProps> = ({ messages }) => {
               ) : (
                 <>
                   {isEmoji(avatar) ? (
-                    <EmojiAvatar size={size}>{avatar}</EmojiAvatar>
+                    <EmojiAvatar
+                      size={size}
+                      fontSize={size * 0.6}
+                      style={{
+                        cursor: 'default',
+                        pointerEvents: 'none'
+                      }}>
+                      {avatar}
+                    </EmojiAvatar>
                   ) : (
                     <Avatar src={avatar} size={size} />
                   )}
@@ -252,7 +261,6 @@ const MessageItemContainer = styled.div`
   justify-content: space-between;
   text-align: right;
   gap: 4px;
-  text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
   opacity: 0;
   transform-origin: right center;
 `
@@ -312,18 +320,6 @@ const MessageItemContent = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
-`
-
-const EmojiAvatar = styled.div<{ size: number }>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  background-color: var(--color-background-soft);
-  border-radius: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: ${(props) => props.size * 0.6}px;
-  border: 0.5px solid var(--color-border);
 `
 
 export default MessageAnchorLine

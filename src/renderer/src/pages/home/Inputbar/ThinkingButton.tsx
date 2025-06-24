@@ -6,7 +6,13 @@ import {
   MdiLightbulbOn90
 } from '@renderer/components/Icons/SVGIcon'
 import { useQuickPanel } from '@renderer/components/QuickPanel'
-import { isSupportedReasoningEffortGrokModel, isSupportedThinkingTokenGeminiModel } from '@renderer/config/models'
+import {
+  isDoubaoThinkingAutoModel,
+  isSupportedReasoningEffortGrokModel,
+  isSupportedThinkingTokenDoubaoModel,
+  isSupportedThinkingTokenGeminiModel,
+  isSupportedThinkingTokenQwenModel
+} from '@renderer/config/models'
 import { useAssistant } from '@renderer/hooks/useAssistant'
 import { Assistant, Model, ReasoningEffortOptions } from '@renderer/types'
 import { Tooltip } from 'antd'
@@ -30,13 +36,15 @@ interface Props {
 const MODEL_SUPPORTED_OPTIONS: Record<string, ThinkingOption[]> = {
   default: ['off', 'low', 'medium', 'high'],
   grok: ['off', 'low', 'high'],
-  gemini: ['off', 'low', 'medium', 'high', 'auto']
+  gemini: ['off', 'low', 'medium', 'high', 'auto'],
+  qwen: ['off', 'low', 'medium', 'high'],
+  doubao: ['off', 'auto', 'high']
 }
 
 // 选项转换映射表：当选项不支持时使用的替代选项
 const OPTION_FALLBACK: Record<ThinkingOption, ThinkingOption> = {
   off: 'off',
-  low: 'low',
+  low: 'high',
   medium: 'high', // medium -> high (for Grok models)
   high: 'high',
   auto: 'high' // auto -> high (for non-Gemini models)
@@ -49,6 +57,8 @@ const ThinkingButton: FC<Props> = ({ ref, model, assistant, ToolbarButton }): Re
 
   const isGrokModel = isSupportedReasoningEffortGrokModel(model)
   const isGeminiModel = isSupportedThinkingTokenGeminiModel(model)
+  const isQwenModel = isSupportedThinkingTokenQwenModel(model)
+  const isDoubaoModel = isSupportedThinkingTokenDoubaoModel(model)
 
   const currentReasoningEffort = useMemo(() => {
     return assistant.settings?.reasoning_effort || 'off'
@@ -58,13 +68,21 @@ const ThinkingButton: FC<Props> = ({ ref, model, assistant, ToolbarButton }): Re
   const modelType = useMemo(() => {
     if (isGeminiModel) return 'gemini'
     if (isGrokModel) return 'grok'
+    if (isQwenModel) return 'qwen'
+    if (isDoubaoModel) return 'doubao'
     return 'default'
-  }, [isGeminiModel, isGrokModel])
+  }, [isGeminiModel, isGrokModel, isQwenModel, isDoubaoModel])
 
   // 获取当前模型支持的选项
   const supportedOptions = useMemo(() => {
+    if (modelType === 'doubao') {
+      if (isDoubaoThinkingAutoModel(model)) {
+        return ['off', 'auto', 'high'] as ThinkingOption[]
+      }
+      return ['off', 'high'] as ThinkingOption[]
+    }
     return MODEL_SUPPORTED_OPTIONS[modelType]
-  }, [modelType])
+  }, [model, modelType])
 
   // 检查当前设置是否与当前模型兼容
   useEffect(() => {
@@ -73,7 +91,8 @@ const ThinkingButton: FC<Props> = ({ ref, model, assistant, ToolbarButton }): Re
       const fallbackOption = OPTION_FALLBACK[currentReasoningEffort as ThinkingOption]
 
       updateAssistantSettings({
-        reasoning_effort: fallbackOption === 'off' ? undefined : fallbackOption
+        reasoning_effort: fallbackOption === 'off' ? undefined : fallbackOption,
+        qwenThinkMode: fallbackOption === 'off'
       })
     }
   }, [currentReasoningEffort, supportedOptions, updateAssistantSettings, model.id])
@@ -103,12 +122,14 @@ const ThinkingButton: FC<Props> = ({ ref, model, assistant, ToolbarButton }): Re
       // 然后更新设置
       if (!isEnabled) {
         updateAssistantSettings({
-          reasoning_effort: undefined
+          reasoning_effort: undefined,
+          qwenThinkMode: false
         })
         return
       }
       updateAssistantSettings({
-        reasoning_effort: option
+        reasoning_effort: option,
+        qwenThinkMode: true
       })
       return
     },

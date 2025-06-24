@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   firstLetter,
   generateColorFromChar,
+  getBaseModelName,
   getBriefInfo,
   getDefaultGroupName,
   getFirstCharacter,
@@ -115,14 +116,77 @@ describe('naming', () => {
       expect(getDefaultGroupName('group:model')).toBe('group')
     })
 
+    it('should extract group name from ID with space', () => {
+      // 验证从包含空格的 ID 中提取组名
+      expect(getDefaultGroupName('foo bar')).toBe('foo')
+    })
+
     it('should extract group name from ID with hyphen', () => {
       // 验证从包含连字符的 ID 中提取组名
       expect(getDefaultGroupName('group-subgroup-model')).toBe('group-subgroup')
     })
 
-    it('should return original ID if no separators', () => {
-      // 验证没有分隔符时返回原始 ID
-      expect(getDefaultGroupName('group')).toBe('group')
+    it('should use first delimiters for special providers', () => {
+      // 这些 provider 下，'/', ' ', '-', '_', ':' 都属于第一类分隔符，分割后取第0部分
+      const specialProviders = ['aihubmix', 'silicon', 'ocoolai', 'o3', 'dmxapi']
+      specialProviders.forEach((provider) => {
+        expect(getDefaultGroupName('Qwen/Qwen3-32B', provider)).toBe('qwen')
+        expect(getDefaultGroupName('gpt-4.1-mini', provider)).toBe('gpt')
+        expect(getDefaultGroupName('gpt-4.1', provider)).toBe('gpt')
+        expect(getDefaultGroupName('gpt_4.1', provider)).toBe('gpt')
+        expect(getDefaultGroupName('DeepSeek Chat', provider)).toBe('deepseek')
+        expect(getDefaultGroupName('foo:bar', provider)).toBe('foo')
+      })
+    })
+
+    it('should use first and second delimiters for default providers', () => {
+      // 默认情况下，'/', ' ', ':' 属于第一类分隔符，'-' '_' 属于第二类
+      expect(getDefaultGroupName('Qwen/Qwen3-32B', 'foobar')).toBe('qwen')
+      expect(getDefaultGroupName('gpt-4.1-mini', 'foobar')).toBe('gpt-4.1')
+      expect(getDefaultGroupName('gpt-4.1', 'foobar')).toBe('gpt-4.1')
+      expect(getDefaultGroupName('DeepSeek Chat', 'foobar')).toBe('deepseek')
+      expect(getDefaultGroupName('foo:bar', 'foobar')).toBe('foo')
+    })
+
+    it('should fallback to id if no delimiters', () => {
+      // 没有分隔符时返回 id
+      const specialProviders = ['aihubmix', 'silicon', 'ocoolai', 'o3', 'dmxapi']
+      specialProviders.forEach((provider) => {
+        expect(getDefaultGroupName('o3', provider)).toBe('o3')
+      })
+      expect(getDefaultGroupName('o3', 'openai')).toBe('o3')
+    })
+  })
+
+  describe('getBaseModelName', () => {
+    it('should extract base model name with single delimiter', () => {
+      expect(getBaseModelName('DeepSeek/DeepSeek-R1')).toBe('DeepSeek-R1')
+      expect(getBaseModelName('openai/gpt-4.1')).toBe('gpt-4.1')
+      expect(getBaseModelName('anthropic/claude-3.5-sonnet')).toBe('claude-3.5-sonnet')
+    })
+
+    it('should extract base model name with multiple levels', () => {
+      expect(getBaseModelName('Pro/deepseek-ai/DeepSeek-R1')).toBe('DeepSeek-R1')
+      expect(getBaseModelName('org/team/group/model')).toBe('model')
+    })
+
+    it('should return original id if no delimiter found', () => {
+      expect(getBaseModelName('deepseek-r1')).toBe('deepseek-r1')
+      expect(getBaseModelName('deepseek-r1:free')).toBe('deepseek-r1:free')
+    })
+
+    it('should handle edge cases', () => {
+      // 验证空字符串的情况
+      expect(getBaseModelName('')).toBe('')
+      // 验证以分隔符结尾的字符串
+      expect(getBaseModelName('model/')).toBe('')
+      expect(getBaseModelName('model/name/')).toBe('')
+      // 验证以分隔符开头的字符串
+      expect(getBaseModelName('/model')).toBe('model')
+      expect(getBaseModelName('/path/to/model')).toBe('model')
+      // 验证连续分隔符的情况
+      expect(getBaseModelName('model//name')).toBe('name')
+      expect(getBaseModelName('model///name')).toBe('name')
     })
   })
 

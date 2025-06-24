@@ -1,21 +1,22 @@
-import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
-import { Center } from '@renderer/components/Layout'
+import { Navbar, NavbarMain } from '@renderer/components/app/Navbar'
 import { useMinapps } from '@renderer/hooks/useMinapps'
-import { SubjectTypes } from '@renderer/types'
-import { Empty, Input, Tag } from 'antd'
-import { groupBy, isEmpty } from 'lodash'
-import { Search } from 'lucide-react'
-import React, { FC, useState } from 'react'
+import { Button, Input } from 'antd'
+import { Search, SettingsIcon, X } from 'lucide-react'
+import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router'
 import styled from 'styled-components'
 
 import App from './App'
+import MiniAppSettings from './MiniappSettings/MiniAppSettings'
+import NewAppButton from './NewAppButton'
 
 const AppsPage: FC = () => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
-  const [selectedSubject, setSelectedSubject] = useState<SubjectTypes | null>(null)
   const { minapps } = useMinapps()
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const location = useLocation()
 
   const filteredApps = search
     ? minapps.filter(
@@ -23,95 +24,61 @@ const AppsPage: FC = () => {
       )
     : minapps
 
-  // 按学科筛选
-  const subjectFilteredApps = selectedSubject
-    ? filteredApps.filter((app) => app.subject?.includes(selectedSubject))
-    : filteredApps
-
-  // 按分组分类，未分组的应用归类到'其他'
-  const groupedApps = groupBy(subjectFilteredApps, (app) => app.group || t('common.other'))
+  // Calculate the required number of lines
+  const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
+  const rowCount = Math.ceil((filteredApps.length + 1) / itemsPerRow) // +1 for the add button
+  // Each line height is 85px (60px icon + 5px margin + 12px text + spacing)
+  const containerHeight = rowCount * 85 + (rowCount - 1) * 25 // 25px is the line spacing.
 
   // 禁用右键菜单
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
   }
 
-  // 获取所有学科枚举值
-  const allSubjects = Object.values(SubjectTypes)
+  useEffect(() => {
+    setIsSettingsOpen(false)
+  }, [location.key])
 
   return (
     <Container onContextMenu={handleContextMenu}>
       <Navbar>
-        <NavbarCenter style={{ borderRight: 'none', justifyContent: 'space-between' }}>
+        <NavbarMain>
           {t('minapp.title')}
           <Input
             placeholder={t('common.search')}
             className="nodrag"
-            style={{ width: '30%', height: 28, borderRadius: 15 }}
+            style={{
+              width: '30%',
+              height: 28,
+              borderRadius: 15,
+              position: 'absolute',
+              left: '50vw',
+              transform: 'translateX(-50%)'
+            }}
             size="small"
             variant="filled"
             suffix={<Search size={18} />}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            disabled={isSettingsOpen}
           />
-          <div style={{ width: 80 }} />
-        </NavbarCenter>
+          <Button
+            type="text"
+            className="nodrag"
+            icon={isSettingsOpen ? <X size={18} /> : <SettingsIcon size={18} color="var(--color-text-2)" />}
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+          />
+        </NavbarMain>
       </Navbar>
       <ContentContainer id="content-container">
-        {/* 学科标签筛选区域 */}
-        <SubjectFilterContainer>
-          <SubjectRow>
-            {/* "全部"标签放在第一行第一个位置 */}
-            <Tag
-              color={!selectedSubject ? 'blue' : 'default'}
-              onClick={() => setSelectedSubject(null)}
-              style={{ cursor: 'pointer' }}>
-              {t('minapp.all')}
-            </Tag>
-            {/* 第一行显示前8个学科标签 */}
-            {allSubjects.slice(0, 9).map((subject) => (
-              <Tag
-                key={subject}
-                color={selectedSubject === subject ? 'blue' : 'default'}
-                onClick={() => setSelectedSubject(subject)}
-                style={{ cursor: 'pointer' }}>
-                {subject}
-              </Tag>
+        {isSettingsOpen && <MiniAppSettings />}
+        {!isSettingsOpen && (
+          <AppsContainer style={{ height: containerHeight }}>
+            {filteredApps.map((app) => (
+              <App key={app.id} app={app} />
             ))}
-          </SubjectRow>
-          {/* 第二行显示剩余的学科标签 */}
-          {allSubjects.length > 9 && (
-            <SubjectRow>
-              {allSubjects.slice(9).map((subject) => (
-                <Tag
-                  key={subject}
-                  color={selectedSubject === subject ? 'blue' : 'default'}
-                  onClick={() => setSelectedSubject(subject)}
-                  style={{ cursor: 'pointer' }}>
-                  {subject}
-                </Tag>
-              ))}
-            </SubjectRow>
-          )}
-        </SubjectFilterContainer>
-
-        {isEmpty(subjectFilteredApps) ? (
-          <Center>
-            <Empty />
-          </Center>
-        ) : (
-          <div style={{ width: '100%', maxWidth: 930 }}>
-            {Object.entries(groupedApps).map(([groupName, apps]) => (
-              <div key={groupName} style={{ marginBottom: 40 }}>
-                <GroupTitle>{groupName}</GroupTitle>
-                <AppsContainer>
-                  {apps.map((app) => (
-                    <App key={app.id} app={app} />
-                  ))}
-                </AppsContainer>
-              </div>
-            ))}
-          </div>
+            <NewAppButton />
+          </AppsContainer>
         )}
       </ContentContainer>
     </Container>
@@ -142,31 +109,31 @@ const AppsContainer = styled.div`
   margin-top: 15px;
 `
 
-const GroupTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-text-soft);
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 15px;
-`
+// const GroupTitle = styled.div`
+//   font-size: 16px;
+//   font-weight: 600;
+//   color: var(--color-text-soft);
+//   padding-bottom: 8px;
+//   border-bottom: 1px solid #eee;
+//   margin-bottom: 15px;
+// `
 
-const SubjectFilterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 930px;
-`
+// const SubjectFilterContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin-bottom: 20px;
+//   width: 100%;
+//   max-width: 930px;
+// `
 
-const SubjectRow = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: 100%;
-  margin-bottom: 8px;
-`
+// const SubjectRow = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   flex-wrap: wrap;
+//   gap: 8px;
+//   width: 100%;
+//   margin-bottom: 8px;
+// `
 
 export default AppsPage

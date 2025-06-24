@@ -1,4 +1,4 @@
-import { CompletionUsage } from 'openai/resources'
+import type { CompletionUsage } from 'openai/resources'
 
 import type {
   Assistant,
@@ -11,7 +11,8 @@ import type {
   Model,
   Topic,
   Usage,
-  WebSearchResponse
+  WebSearchResponse,
+  WebSearchSource
 } from '.'
 
 // MessageBlock 类型枚举 - 根据实际API返回特性优化
@@ -63,6 +64,7 @@ export interface MainTextMessageBlock extends BaseMessageBlock {
   // Citation references
   citationReferences?: {
     citationBlockId?: string
+    citationBlockSource?: WebSearchSource
   }[]
 }
 
@@ -161,17 +163,19 @@ export type Message = {
   assistantId: string
   topicId: string
   createdAt: string
-  //   updatedAt?: string
+  updatedAt?: string
   status: UserMessageStatus | AssistantMessageStatus
 
   // 消息元数据
   modelId?: string
   model?: Model
   type?: 'clear'
-  isPreset?: boolean
   useful?: boolean
   askId?: string // 关联的问题消息ID
   mentions?: Model[]
+  /**
+   * @deprecated
+   */
   enabledMCPs?: MCPServer[]
 
   usage?: Usage
@@ -203,8 +207,14 @@ export interface MessageInputBaseParams {
   topic: Topic
   content?: string
   files?: FileType[]
+  /**
+   * @deprecated
+   */
   knowledgeBaseIds?: string[]
   mentions?: Model[]
+  /**
+   * @deprecated
+   */
   enabledMCPs?: MCPServer[]
   usage?: CompletionUsage
 }
