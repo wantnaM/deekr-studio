@@ -35,7 +35,7 @@ import styled from 'styled-components'
 
 import DragableList from '../DragableList'
 import MinAppIcon from '../Icons/MinAppIcon'
-import UserPopup from '../Popups/UserPopup'
+import UserPopup from '../Popups/UserManagerPopup/UserLoginPopup'
 
 const Sidebar: FC = () => {
   const { hideMinappPopup, openMinapp } = useMinappPopup()

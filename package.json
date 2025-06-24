@@ -1,11 +1,11 @@
 {
-  "name": "CherryStudio",
+  "name": "DeekrStudio",
   "version": "1.4.5",
   "private": true,
   "description": "A powerful AI assistant for producer.",
   "main": "./out/main/index.js",
-  "author": "support@cherry-ai.com",
-  "homepage": "https://github.com/CherryHQ/cherry-studio",
+  "author": "",
+  "homepage": "",
   "workspaces": {
     "packages": [
       "local",
@@ -24,7 +24,7 @@
     "build": "npm run typecheck && electron-vite build",
     "build:check": "yarn typecheck && yarn check:i18n && yarn test",
     "build:unpack": "dotenv npm run build && electron-builder --dir",
-    "build:win": "dotenv npm run build && electron-builder --win --x64 --arm64",
+    "build:win": "dotenv npm run build && electron-builder --win",
     "build:win:x64": "dotenv npm run build && electron-builder --win --x64",
     "build:win:arm64": "dotenv npm run build && electron-builder --win --arm64",
     "build:mac": "dotenv electron-vite build && electron-builder --mac --arm64 --x64",

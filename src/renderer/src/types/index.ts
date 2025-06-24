@@ -322,6 +322,9 @@ export type MinAppType = {
   style?: CSSProperties
   addTime?: string
   type?: 'Custom' | 'Default' // Added the 'type' property
+  group?: string
+  desc?: string
+  subject?: SubjectTypes[]
 }
 
 export interface FileType {
@@ -722,3 +725,34 @@ export interface StoreSyncAction {
 export type OpenAISummaryText = 'auto' | 'concise' | 'detailed' | 'off'
 export type OpenAIServiceTier = 'auto' | 'default' | 'flex'
 export type { Message } from './newMessage'
+
+export enum SubjectTypes {
+  CHINESE = '语文',
+  MATH = '数学',
+  ENGLISH = '英语',
+  PHYSICS = '物理',
+  CHEMISTRY = '化学',
+  HISTORY = '历史',
+  BIOLOGY = '生物',
+  GEOGRAPHY = '地理',
+  INFORMATION_SCIENCE = '信息科技',
+  GENERAL_TECHNOLOGY = '通用技术',
+  MUSIC = '音乐',
+  ART = '美术',
+  PE = '体育',
+  SCIENCE = '科学',
+  LABOR = '劳动',
+  INTEGRATED_PRACTICE = '综合实践',
+  STEM = 'STEM'
+}
+
+export interface DictDataType {
+  dictType: string
+  label: string
+  value: string | number | boolean
+}
+
+export enum DICT_TYPE {
+  DS_SUBJECT = 'ds_subject',
+  DS_THEME = 'ds_theme'
+}
