@@ -48,9 +48,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserState: (state, action: PayloadAction<Partial<UserState>>) => {
-      state = { ...state, ...action.payload }
-    },
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload
     },
@@ -89,12 +86,14 @@ const userSlice = createSlice({
     },
     setIsLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.isLoggedIn = action.payload
+    },
+    setType: (state, action: PayloadAction<number | null>) => {
+      state.type = action.payload
     }
   }
 })
 
 export const {
-  setUserState,
   setNickname,
   setUserConfigStatus,
   setUserId,
@@ -107,7 +106,8 @@ export const {
   setAccessToken,
   setRefreshToken,
   setExpiresTime,
-  setIsLoggedIn
+  setIsLoggedIn,
+  setType
 } = userSlice.actions
 
 export default userSlice.reducer

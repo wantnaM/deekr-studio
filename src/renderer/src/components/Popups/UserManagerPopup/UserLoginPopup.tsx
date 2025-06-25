@@ -39,7 +39,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const dispatch = useAppDispatch()
   const avatar = useAvatar()
   const { userName } = useSettings()
-  const { setUserConfigStatus, setUserState, isLoggedIn, username, configStatus, userId } = useUser()
+  const { isLoggedIn, username, configStatus, userId, setUserConfigStatus, setUserState } = useUser()
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
   const { updateWebSearchProviders } = useWebSearchProviders()
@@ -200,11 +200,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     message.success(t('logout.success'))
   }
 
-  // 用户名更新
-  const handleUpdateUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // dispatch(setUserName(e.target.value))
-  }
-
   const onClose = () => {
     resolve({})
   }
@@ -268,7 +263,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
               <Input
                 placeholder={t('settings.general.user_name.placeholder')}
                 value={userName}
-                onChange={handleUpdateUsername}
                 style={{ flex: 1, textAlign: 'center' }}
                 maxLength={30}
               />

@@ -1,4 +1,4 @@
-import { getAccessToken, getRefreshToken, removeToken, setToken } from '@renderer/hooks/useSettings'
+import { getAccessToken, getRefreshToken, removeToken, setToken } from '@renderer/hooks/useUser'
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import qs from 'qs'
 
@@ -47,6 +47,8 @@ service.interceptors.request.use(
     if (isWhiteListed) {
       isToken = false
     }
+    console.log('getAccessToken()', getAccessToken())
+
     if (getAccessToken() && !isToken) {
       config.headers.Authorization = 'Bearer ' + getAccessToken() // 让每个请求携带自定义token
     }
