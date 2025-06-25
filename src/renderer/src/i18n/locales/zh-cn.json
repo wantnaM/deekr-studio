@@ -2167,7 +2167,13 @@
       "configAgent": "智能体",
       "configTopic": "话题",
       "configMiniApp": "小程序",
-      "configStatus": "配置状态"
+      "configStatus": "配置状态",
+      "nickname": "昵称",
+      "school": "学校",
+      "subject": "学科",
+      "grade": "年级",
+      "grade2": "学段",
+      "classroom": "班级"
     }
   }
 }

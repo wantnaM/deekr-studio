@@ -44,6 +44,23 @@ export function useUser() {
       dispatch(_setUserConfigStatus({ key: 'agent', success: user.configStatus.agent }))
       dispatch(_setUserConfigStatus({ key: 'topic', success: user.configStatus.topic }))
       dispatch(_setUserConfigStatus({ key: 'miniApp', success: user.configStatus.miniApp }))
+    },
+    setLoginInfo(user: any) {
+      dispatch(setUserId(user.userId))
+      dispatch(setUsername(user.username))
+      dispatch(setIsLoggedIn(true))
+      dispatch(setType(user.type))
+      dispatch(setAccessToken(user.accessToken))
+      dispatch(setRefreshToken(user.refreshToken))
+      dispatch(setExpiresTime(user.expiresTime))
+    },
+    setUserInfo(user: any) {
+      dispatch(setNickname(user.nickname))
+      dispatch(setMobile(user.mobile))
+      dispatch(setSchool(user.school))
+      dispatch(setSubject(user.subject))
+      dispatch(setGrade(user.grade))
+      dispatch(setClassroom(user.classroom))
     }
   }
 }

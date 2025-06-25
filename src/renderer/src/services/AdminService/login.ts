@@ -36,3 +36,7 @@ export const getConfig = async (userId: number) => {
 export const register = async (data: any) => {
   return await request.post({ url: `/ds/user-audit/register`, data })
 }
+
+export const getUserInfo = async () => {
+  return await request.get({ url: `/system/user/profile/get` })
+}

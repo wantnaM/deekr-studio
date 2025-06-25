@@ -1,23 +1,20 @@
 import { ReloadOutlined } from '@ant-design/icons'
 import { UserAddOutlined } from '@ant-design/icons'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
-import useAvatar from '@renderer/hooks/useAvatar'
 import { useProviders } from '@renderer/hooks/useProvider'
-import { useSettings } from '@renderer/hooks/useSettings'
 import { useUser } from '@renderer/hooks/useUser'
 import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
 import { getAgents } from '@renderer/services/AdminService/Agent'
-import { changePassword, getConfig, login, logout } from '@renderer/services/AdminService/login'
+import { changePassword, getConfig, getUserInfo, login, logout } from '@renderer/services/AdminService/login'
 import { useAppDispatch } from '@renderer/store'
 import { updateAgents } from '@renderer/store/agents'
 import { initialState } from '@renderer/store/llm'
 import { setDefaultProvider } from '@renderer/store/websearch'
-import { Avatar, Button, Form, Input, List, message, Modal, Space, Typography } from 'antd'
+import { Button, Descriptions, Form, Input, List, message, Modal, Space, Typography } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
-import { Center, HStack } from '../../Layout'
+import { HStack } from '../../Layout'
 import { TopView } from '../../TopView'
 import RegisterPopup from './RegisterPopup'
 
@@ -37,9 +34,22 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const dispatch = useAppDispatch()
-  const avatar = useAvatar()
-  const { userName } = useSettings()
-  const { isLoggedIn, username, configStatus, userId, setUserConfigStatus, setUserState } = useUser()
+  const {
+    isLoggedIn,
+    username,
+    configStatus,
+    userId,
+    setUserConfigStatus,
+    setUserState,
+    setLoginInfo,
+    setUserInfo,
+    type,
+    nickname,
+    school,
+    subject,
+    grade,
+    classroom
+  } = useUser()
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
   const { updateWebSearchProviders } = useWebSearchProviders()
@@ -78,29 +88,20 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       const values = await form.validateFields()
       const data = await login(values)
 
-      setUserState({
-        isLoggedIn: true,
+      await setLoginInfo({
         userId: data.userId,
         username: values.username,
-        nickname: '',
-        mobile: '',
-        school: '',
-        subject: '',
-        grade: '',
-        classroom: '',
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
         expiresTime: data.expiresTime,
-        configStatus: {
-          model: false,
-          agent: false,
-          topic: false,
-          miniApp: false
-        },
         type: data.type
       })
 
       await getUserConfig(data.userId)
+      const userInfo = await getUserInfo()
+      console.log('userInfo', userInfo)
+
+      setUserInfo(userInfo)
 
       resolve({ success: true })
       message.success(t('login.success'))
@@ -256,19 +257,27 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             <HStack alignItems="center" justifyContent="center" mt="10px">
               <div>{t('user.current_username') + ': ' + username}</div>
             </HStack>
-            <Center mt="20px">
-              <UserAvatar src={avatar} />
-            </Center>
-            <HStack alignItems="center" gap="10px" p="20px">
-              <Input
-                placeholder={t('settings.general.user_name.placeholder')}
-                value={userName}
-                style={{ flex: 1, textAlign: 'center' }}
-                maxLength={30}
-              />
-            </HStack>
 
-            <div style={{ margin: '0 20px' }}>
+            <div style={{ margin: '20px 0' }}>
+              <Descriptions column={2} size="small">
+                <Descriptions.Item label={t('user.nickname')}>{nickname || '-'}</Descriptions.Item>
+                <Descriptions.Item label={t('user.school')}>{school || '-'}</Descriptions.Item>
+                {type === 3 && (
+                  <>
+                    <Descriptions.Item label={t('user.subject')}>{subject || '-'}</Descriptions.Item>
+                    <Descriptions.Item label={t('user.grade2')}>{grade || '-'}</Descriptions.Item>
+                  </>
+                )}
+                {type === 4 && (
+                  <>
+                    <Descriptions.Item label={t('user.grade')}>{grade || '-'}</Descriptions.Item>
+                    <Descriptions.Item label={t('user.classroom')}>{classroom || '-'}</Descriptions.Item>
+                  </>
+                )}
+              </Descriptions>
+            </div>
+
+            <div style={{ margin: '20px 0' }}>
               <List
                 size="small"
                 header={
@@ -395,16 +404,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     </>
   )
 }
-
-const UserAvatar = styled(Avatar)`
-  cursor: pointer;
-  width: 80px;
-  height: 80px;
-  transition: opacity 0.3s ease;
-  &:hover {
-    opacity: 0.8;
-  }
-`
 
 export default class UserPopup {
   static topviewId = 0

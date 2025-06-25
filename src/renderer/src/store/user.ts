@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface UserState {
   userId: string | number
   username: string
-  nickname: string
-  mobile: string
-  school: string
-  subject: string
-  grade: string
-  classroom: string
+  nickname: string | null
+  mobile: string | null
+  school: string | null
+  subject: string | null
+  grade: string | null
+  classroom: string | null
   accessToken: string | null
   refreshToken: string | null
   expiresTime: number | null
@@ -48,7 +48,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setNickname: (state, action: PayloadAction<string>) => {
+    setNickname: (state, action: PayloadAction<string | null>) => {
       state.nickname = action.payload
     },
     setUserConfigStatus: (state, action: PayloadAction<{ key: string; success: boolean }>) => {
@@ -60,19 +60,19 @@ const userSlice = createSlice({
     setUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload
     },
-    setMobile: (state, action: PayloadAction<string>) => {
+    setMobile: (state, action: PayloadAction<string | null>) => {
       state.mobile = action.payload
     },
-    setSchool: (state, action: PayloadAction<string>) => {
+    setSchool: (state, action: PayloadAction<string | null>) => {
       state.school = action.payload
     },
-    setSubject: (state, action: PayloadAction<string>) => {
+    setSubject: (state, action: PayloadAction<string | null>) => {
       state.subject = action.payload
     },
-    setGrade: (state, action: PayloadAction<string>) => {
+    setGrade: (state, action: PayloadAction<string | null>) => {
       state.grade = action.payload
     },
-    setClassroom: (state, action: PayloadAction<string>) => {
+    setClassroom: (state, action: PayloadAction<string | null>) => {
       state.classroom = action.payload
     },
     setAccessToken: (state, action: PayloadAction<string | null>) => {
