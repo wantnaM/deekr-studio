@@ -226,9 +226,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 <Button key="changePassword" onClick={() => setChangePasswordVisible(true)}>
                   {t('user.changePassword')}
                 </Button>
-                <Button key="confirm" type="primary" onClick={() => setOpen(false)}>
-                  {t('common.save')}
-                </Button>
               </Space>
             </div>
           ) : (
@@ -361,7 +358,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             {t('common.cancel')}
           </Button>,
           <Button key="submit" type="primary" onClick={handleChangePassword}>
-            {t('common.submit')}
+            {t('common.save')}
           </Button>
         ]}
         centered>
