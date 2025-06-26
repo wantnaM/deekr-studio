@@ -1,22 +1,21 @@
-import { GithubOutlined } from '@ant-design/icons'
+// import { GithubOutlined } from '@ant-design/icons'
 import IndicatorLight from '@renderer/components/IndicatorLight'
-import { HStack } from '@renderer/components/Layout'
-import { APP_NAME, AppLogo } from '@renderer/config/env'
+// import { HStack } from '@renderer/components/Layout'
+import { APP_NAME, AppLogo2 } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
+// import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useAppDispatch } from '@renderer/store'
 import { setUpdateState } from '@renderer/store/runtime'
-import { ThemeMode } from '@renderer/types'
 import { compareVersions, runAsyncFunction } from '@renderer/utils'
-import { Avatar, Button, Progress, Row, Switch, Tag, Tooltip } from 'antd'
+import { Avatar, Button, Progress, Row, Switch, Tag } from 'antd'
 import { debounce } from 'lodash'
-import { Bug, FileCheck, Github, Globe, Mail, Rss } from 'lucide-react'
+import { Github } from 'lucide-react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { SettingContainer, SettingDivider, SettingGroup, SettingRow, SettingTitle } from '.'
@@ -29,7 +28,7 @@ const AboutSettings: FC = () => {
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
   const { update } = useRuntime()
-  const { openMinapp } = useMinappPopup()
+  // const { openMinapp } = useMinappPopup()
 
   const onCheckUpdate = debounce(
     async () => {
@@ -60,38 +59,38 @@ const AboutSettings: FC = () => {
     window.api.openWebsite(url)
   }
 
-  const mailto = async () => {
-    const email = 'support@cherry-ai.com'
-    const subject = `${APP_NAME} Feedback`
-    const version = (await window.api.getAppInfo()).version
-    const platform = window.electron.process.platform
-    const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
-    onOpenWebsite(url)
-  }
+  // const mailto = async () => {
+  //   const email = 'support@cherry-ai.com'
+  //   const subject = `${APP_NAME} Feedback`
+  //   const version = (await window.api.getAppInfo()).version
+  //   const platform = window.electron.process.platform
+  //   const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
+  //   onOpenWebsite(url)
+  // }
 
-  const debug = async () => {
-    await window.api.devTools.toggle()
-  }
+  // const debug = async () => {
+  //   await window.api.devTools.toggle()
+  // }
 
-  const showLicense = async () => {
-    const { appPath } = await window.api.getAppInfo()
-    openMinapp({
-      id: 'cherrystudio-license',
-      name: t('settings.about.license.title'),
-      url: `file://${appPath}/resources/cherry-studio/license.html`,
-      logo: AppLogo
-    })
-  }
+  // const showLicense = async () => {
+  //   const { appPath } = await window.api.getAppInfo()
+  //   openMinapp({
+  //     id: 'cherrystudio-license',
+  //     name: t('settings.about.license.title'),
+  //     url: `file://${appPath}/resources/cherry-studio/license.html`,
+  //     logo: AppLogo
+  //   })
+  // }
 
-  const showReleases = async () => {
-    const { appPath } = await window.api.getAppInfo()
-    openMinapp({
-      id: 'cherrystudio-releases',
-      name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
-      logo: AppLogo
-    })
-  }
+  // const showReleases = async () => {
+  //   const { appPath } = await window.api.getAppInfo()
+  //   openMinapp({
+  //     id: 'cherrystudio-releases',
+  //     name: t('settings.about.releases.title'),
+  //     url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+  //     logo: AppLogo
+  //   })
+  // }
 
   const hasNewVersion = update?.info?.version && version ? compareVersions(update.info.version, version) > 0 : false
 
@@ -110,27 +109,27 @@ const AboutSettings: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>
           {t('settings.about.title')}
-          <HStack alignItems="center">
+          {/* <HStack alignItems="center">
             <Link to="https://github.com/CherryHQ/cherry-studio">
               <GithubOutlined style={{ marginRight: 4, color: 'var(--color-text)', fontSize: 20 }} />
             </Link>
-          </HStack>
+          </HStack> */}
         </SettingTitle>
         <SettingDivider />
         <AboutHeader>
           <Row align="middle">
-            <AvatarWrapper onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio')}>
+            <AvatarWrapper>
               {update.downloadProgress > 0 && (
                 <ProgressCircle
                   type="circle"
-                  size={84}
+                  size={124}
                   percent={update.downloadProgress}
                   showInfo={false}
                   strokeLinecap="butt"
                   strokeColor="#67ad5b"
                 />
               )}
-              <Avatar src={AppLogo} size={80} style={{ minHeight: 80 }} />
+              <Avatar src={AppLogo2} size={124} style={{ minHeight: 80 }} />
             </AvatarWrapper>
             <VersionWrapper>
               <Title>{APP_NAME}</Title>
@@ -163,13 +162,13 @@ const AboutSettings: FC = () => {
               <SettingRowTitle>{t('settings.general.auto_check_update.title')}</SettingRowTitle>
               <Switch value={autoCheckUpdate} onChange={(v) => setAutoCheckUpdate(v)} />
             </SettingRow>
-            <SettingDivider />
+            {/* <SettingDivider />
             <SettingRow>
               <SettingRowTitle>{t('settings.general.early_access.title')}</SettingRowTitle>
               <Tooltip title={t('settings.general.early_access.tooltip')} trigger={['hover', 'focus']}>
                 <Switch value={earlyAccess} onChange={(v) => setEarlyAccess(v)} />
               </Tooltip>
-            </SettingRow>
+            </SettingRow> */}
           </>
         )}
       </SettingGroup>
@@ -191,22 +190,22 @@ const AboutSettings: FC = () => {
         </SettingGroup>
       )}
       <SettingGroup theme={theme}>
-        <SettingRow>
+        {/* <SettingRow>
           <SettingRowTitle>
             <Rss size={18} />
             {t('settings.about.releases.title')}
           </SettingRowTitle>
           <Button onClick={showReleases}>{t('settings.about.releases.button')}</Button>
-        </SettingRow>
-        <SettingDivider />
+        </SettingRow> */}
+        {/* <SettingDivider />
         <SettingRow>
           <SettingRowTitle>
             <Globe size={18} />
             {t('settings.about.website.title')}
           </SettingRowTitle>
           <Button onClick={() => onOpenWebsite('https://cherry-ai.com')}>{t('settings.about.website.button')}</Button>
-        </SettingRow>
-        <SettingDivider />
+        </SettingRow> */}
+        {/* <SettingDivider /> */}
         <SettingRow>
           <SettingRowTitle>
             <Github size={18} />
@@ -216,7 +215,7 @@ const AboutSettings: FC = () => {
             {t('settings.about.feedback.button')}
           </Button>
         </SettingRow>
-        <SettingDivider />
+        {/* <SettingDivider />
         <SettingRow>
           <SettingRowTitle>
             <FileCheck size={18} />
@@ -239,7 +238,7 @@ const AboutSettings: FC = () => {
             {t('settings.about.debug.title')}
           </SettingRowTitle>
           <Button onClick={debug}>{t('settings.about.debug.open')}</Button>
-        </SettingRow>
+        </SettingRow> */}
       </SettingGroup>
     </SettingContainer>
   )
@@ -279,7 +278,6 @@ const CheckUpdateButton = styled(Button)``
 
 const AvatarWrapper = styled.div`
   position: relative;
-  cursor: pointer;
   margin-right: 15px;
 `
 
