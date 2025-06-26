@@ -3,7 +3,6 @@ import { UserAddOutlined } from '@ant-design/icons'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import { useProviders } from '@renderer/hooks/useProvider'
 import { useUser } from '@renderer/hooks/useUser'
-import { useWebSearchProviders } from '@renderer/hooks/useWebSearchProviders'
 import { getAgents } from '@renderer/services/AdminService/Agent'
 import { changePassword, getConfig, getUserInfo, login, logout } from '@renderer/services/AdminService/login'
 import { useAppDispatch } from '@renderer/store'
@@ -52,7 +51,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   } = useUser()
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
   const { updateProviders } = useProviders()
-  const { updateWebSearchProviders } = useWebSearchProviders()
   const [registerModalVisible, setRegisterModalVisible] = useState(false)
 
   const [configItems, setConfigItems] = useState<ConfigItem[]>([
@@ -99,7 +97,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
 
       await getUserConfig(data.userId)
       const userInfo = await getUserInfo()
-      console.log('userInfo', userInfo)
 
       setUserInfo(userInfo)
 
@@ -130,7 +127,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       setTopicNamingModel(config.llm.topicNamingModel)
       setTranslateModel(config.llm.translateModel)
 
-      updateWebSearchProviders(config.webSearch.providers)
       dispatch(setDefaultProvider(config.webSearch.defaultProvider))
       updateConfigItem('model', { loading: false, success: true })
     } catch (error) {

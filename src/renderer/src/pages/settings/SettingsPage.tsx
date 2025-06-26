@@ -1,7 +1,7 @@
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import {
-  Cloud,
+  // Cloud,
   Command,
   Globe,
   HardDrive,
@@ -47,12 +47,12 @@ const SettingsPage: FC = () => {
       </Navbar>
       <ContentContainer id="content-container">
         <SettingMenus>
-          <MenuItemLink to="/settings/provider">
+          {/* <MenuItemLink to="/settings/provider">
             <MenuItem className={isRoute('/settings/provider')}>
               <Cloud size={18} />
               {t('settings.provider.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/model">
             <MenuItem className={isRoute('/settings/model')}>
               <Package size={18} />
