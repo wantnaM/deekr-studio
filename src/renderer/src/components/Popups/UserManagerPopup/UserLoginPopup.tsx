@@ -50,7 +50,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     classroom
   } = useUser()
   const { setDefaultModel, setTopicNamingModel, setTranslateModel } = useDefaultModel()
-  const { updateProviders } = useProviders()
+  const { updateProvider, updateProviders } = useProviders()
   const [registerModalVisible, setRegisterModalVisible] = useState(false)
 
   const [configItems, setConfigItems] = useState<ConfigItem[]>([
@@ -122,7 +122,10 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       }
       const config = JSON.parse(result.info)
       // LLM 配置
-      updateProviders(config.llm.providers)
+      for (let index = 0; index < config.llm.providers.length; index++) {
+        const p = config.llm.providers[index]
+        updateProvider(p)
+      }
       setDefaultModel(config.llm.defaultModel)
       setTopicNamingModel(config.llm.topicNamingModel)
       setTranslateModel(config.llm.translateModel)
