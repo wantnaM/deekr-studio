@@ -4,12 +4,13 @@ import { PaintingProvider } from '@renderer/types'
 import { FC, useEffect } from 'react'
 import { Route, Routes, useParams } from 'react-router-dom'
 
-import AihubmixPage from './AihubmixPage'
-import DmxapiPage from './DmxapiPage'
+// import TokenFluxPage from './TokenFluxPage'
+import DoubaoPage from './DoubaoPage'
+// import AihubmixPage from './AihubmixPage'
+// import DmxapiPage from './DmxapiPage'
 import SiliconPage from './SiliconPage'
-import TokenFluxPage from './TokenFluxPage'
 
-const Options = ['aihubmix', 'silicon', 'dmxapi', 'tokenflux']
+const Options = ['doubao', 'silicon']
 
 const PaintingsRoutePage: FC = () => {
   const params = useParams()
@@ -25,11 +26,12 @@ const PaintingsRoutePage: FC = () => {
 
   return (
     <Routes>
-      <Route path="*" element={<AihubmixPage Options={Options} />} />
-      <Route path="/aihubmix" element={<AihubmixPage Options={Options} />} />
+      <Route path="*" element={<DoubaoPage Options={Options} />} />
+      {/* <Route path="/aihubmix" element={<AihubmixPage Options={Options} />} /> */}
+      <Route path="/doubao" element={<DoubaoPage Options={Options} />} />
       <Route path="/silicon" element={<SiliconPage Options={Options} />} />
-      <Route path="/dmxapi" element={<DmxapiPage Options={Options} />} />
-      <Route path="/tokenflux" element={<TokenFluxPage Options={Options} />} />
+      {/* <Route path="/dmxapi" element={<DmxapiPage Options={Options} />} />
+      <Route path="/tokenflux" element={<TokenFluxPage Options={Options} />} /> */}
     </Routes>
   )
 }
