@@ -15,7 +15,7 @@ import { Github } from 'lucide-react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
-// import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { SettingContainer, SettingDivider, SettingGroup, SettingRow, SettingTitle } from '.'
@@ -29,6 +29,7 @@ const AboutSettings: FC = () => {
   const dispatch = useAppDispatch()
   const { update } = useRuntime()
   // const { openMinapp } = useMinappPopup()
+  const navigate = useNavigate()
 
   const onCheckUpdate = debounce(
     async () => {
@@ -55,9 +56,9 @@ const AboutSettings: FC = () => {
     { leading: true, trailing: false }
   )
 
-  const onOpenWebsite = (url: string) => {
-    window.api.openWebsite(url)
-  }
+  // const onOpenWebsite = (url: string) => {
+  //   window.api.openWebsite(url)
+  // }
 
   // const mailto = async () => {
   //   const email = 'support@cherry-ai.com'
@@ -134,10 +135,7 @@ const AboutSettings: FC = () => {
             <VersionWrapper>
               <Title>{APP_NAME}</Title>
               <Description>{t('settings.about.description')}</Description>
-              <Tag
-                onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/releases')}
-                color="cyan"
-                style={{ marginTop: 8, cursor: 'pointer' }}>
+              <Tag color="cyan" style={{ marginTop: 8 }}>
                 v{version}
               </Tag>
             </VersionWrapper>
@@ -211,9 +209,7 @@ const AboutSettings: FC = () => {
             <Github size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
-          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/issues/new/choose')}>
-            {t('settings.about.feedback.button')}
-          </Button>
+          <Button onClick={() => navigate('/settings/feedback')}>{t('settings.about.feedback.button')}</Button>
         </SettingRow>
         {/* <SettingDivider />
         <SettingRow>

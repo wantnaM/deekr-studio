@@ -1884,7 +1884,11 @@
         "service_tier.auto": "自动",
         "service_tier.default": "默认",
         "service_tier.flex": "灵活"
+      },
+      "students": {
+        "title": "我的学生"
       }
+
     },
     "translate": {
       "any.language": "任意语言",

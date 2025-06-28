@@ -1,4 +1,5 @@
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
+import { useUser } from '@renderer/hooks/useUser'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import {
   // Cloud,
@@ -12,6 +13,7 @@ import {
   Settings2,
   SquareTerminal,
   TextCursorInput,
+  Users,
   Zap
 } from 'lucide-react'
 // 导入useAppSelector
@@ -23,6 +25,7 @@ import styled from 'styled-components'
 import AboutSettings from './AboutSettings'
 import DataSettings from './DataSettings/DataSettings'
 import DisplaySettings from './DisplaySettings/DisplaySettings'
+import FeedbackSettings from './FeedbackSettings'
 import GeneralSettings from './GeneralSettings'
 import MCPSettings from './MCPSettings'
 import { McpSettingsNavbar } from './MCPSettings/McpSettingsNavbar'
@@ -31,11 +34,13 @@ import QuickAssistantSettings from './QuickAssistantSettings'
 import QuickPhraseSettings from './QuickPhraseSettings'
 import SelectionAssistantSettings from './SelectionAssistantSettings/SelectionAssistantSettings'
 import ShortcutSettings from './ShortcutSettings'
+import StudentsSettings from './StudentsSettings'
 import WebSearchSettings from './WebSearchSettings'
 
 const SettingsPage: FC = () => {
   const { pathname } = useLocation()
   const { t } = useTranslation()
+  const { isLoggedIn, type } = useUser()
 
   const isRoute = (path: string): string => (pathname.startsWith(path) ? 'active' : '')
 
@@ -113,6 +118,18 @@ const SettingsPage: FC = () => {
               {t('settings.data.title')}
             </MenuItem>
           </MenuItemLink>
+          {isLoggedIn && (
+            <>
+              {type === 3 && (
+                <MenuItemLink to="/settings/students">
+                  <MenuItem className={isRoute('/settings/students')}>
+                    <Users size={18} />
+                    {t('settings.students.title')}
+                  </MenuItem>
+                </MenuItemLink>
+              )}
+            </>
+          )}
           <MenuItemLink to="/settings/about">
             <MenuItem className={isRoute('/settings/about')}>
               <Info size={18} />
@@ -133,6 +150,8 @@ const SettingsPage: FC = () => {
             <Route path="selectionAssistant" element={<SelectionAssistantSettings />} />
             <Route path="data" element={<DataSettings />} />
             <Route path="about" element={<AboutSettings />} />
+            <Route path="feedback" element={<FeedbackSettings />} />
+            <Route path="students" element={<StudentsSettings />} />
             <Route path="quickPhrase" element={<QuickPhraseSettings />} />
           </Routes>
         </SettingContent>
