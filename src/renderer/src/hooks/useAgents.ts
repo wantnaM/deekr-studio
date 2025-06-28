@@ -1,3 +1,4 @@
+import { createAgent, deleteAgent, updateAgent as updateAgentServive } from '@renderer/services/AdminService/Agent'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import { addAgent, removeAgent, updateAgent, updateAgents, updateAgentSettings } from '@renderer/store/agents'
 import { Agent, AssistantSettings } from '@renderer/types'
@@ -8,9 +9,20 @@ export function useAgents() {
 
   return {
     agents,
-    updateAgents: (agents: Agent[]) => dispatch(updateAgents(agents)),
-    addAgent: (agent: Agent) => dispatch(addAgent(agent)),
-    removeAgent: (id: string) => dispatch(removeAgent({ id }))
+    updateAgents: async (agents: Agent[]) => {
+      for (let index = 0; index < agents.length; index++) {
+        await updateAgentServive(agents[index])
+      }
+      dispatch(updateAgents(agents))
+    },
+    addAgent: async (agent: Agent) => {
+      await createAgent(agent)
+      dispatch(addAgent(agent))
+    },
+    removeAgent: async (id: string) => {
+      await deleteAgent(id)
+      dispatch(removeAgent({ id }))
+    }
   }
 }
 
