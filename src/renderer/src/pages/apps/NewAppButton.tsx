@@ -2,7 +2,8 @@ import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
 import { loadCustomMiniApp, ORIGIN_DEFAULT_MIN_APPS, updateDefaultMinApps } from '@renderer/config/minapps'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { MinAppType } from '@renderer/types'
-import { Button, Form, Input, message, Modal, Radio, Upload } from 'antd'
+import { SubjectTypes } from '@renderer/types'
+import { Button, Form, Input, message, Modal, Radio, Select, Upload } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,7 +48,8 @@ const NewAppButton: FC<Props> = ({ size = 60 }) => {
         url: values.url,
         logo: form.getFieldValue('logo') || '',
         type: 'Custom',
-        addTime: new Date().toISOString()
+        addTime: new Date().toISOString(),
+        subject: values.subject
       }
       customApps.push(newApp)
       await window.api.file.writeWithId('custom-minapps.json', JSON.stringify(customApps, null, 2))
@@ -122,6 +124,18 @@ const NewAppButton: FC<Props> = ({ size = 60 }) => {
             label={t('settings.miniapps.custom.url')}
             rules={[{ required: true, message: t('settings.miniapps.custom.url_error') }]}>
             <Input placeholder={t('settings.miniapps.custom.url_placeholder')} />
+          </Form.Item>
+          <Form.Item
+            name="subject"
+            label={t('settings.miniapps.custom.subject')}
+            rules={[{ required: true, message: t('settings.miniapps.custom.subject_error') }]}>
+            <Select placeholder={t('settings.miniapps.custom.subject_placeholder')}>
+              {Object.values(SubjectTypes).map((subject) => (
+                <Select.Option key={subject} value={subject}>
+                  {subject}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item label={t('settings.miniapps.custom.logo')}>
             <Radio.Group value={logoType} onChange={handleLogoTypeChange}>

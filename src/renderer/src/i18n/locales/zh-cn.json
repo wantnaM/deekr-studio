@@ -738,7 +738,8 @@
           "title": "关闭所有"
         }
       },
-      "title": "小程序"
+      "title": "小程序",
+      "all": "全部"
     },
     "miniwindow": {
       "clipboard": {
@@ -1351,6 +1352,9 @@
           "url": "URL",
           "url_error": "URL 是必填项",
           "url_placeholder": "请输入 URL",
+          "subject": "学科",
+          "subject_error": "学科 是必填项",
+          "subject_placeholder": "请输入 学科",
           "logo": "Logo",
           "logo_url": "Logo URL",
           "logo_file": "上传 Logo 文件",

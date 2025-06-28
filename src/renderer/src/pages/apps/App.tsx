@@ -4,7 +4,7 @@ import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { MinAppType } from '@renderer/types'
 import type { MenuProps } from 'antd'
-import { Dropdown, message } from 'antd'
+import { Dropdown, message, Tooltip } from 'antd'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -83,10 +83,12 @@ const App: FC<Props> = ({ app, onClick, size = 60, isLast }) => {
 
   return (
     <Dropdown menu={{ items: menuItems }} trigger={['contextMenu']}>
-      <Container onClick={handleClick}>
-        <MinAppIcon size={size} app={app} />
-        <AppTitle>{isLast ? t('settings.miniapps.custom.title') : app.name}</AppTitle>
-      </Container>
+      <Tooltip title={app.desc} placement="top" mouseEnterDelay={0.3}>
+        <Container onClick={handleClick}>
+          <MinAppIcon size={size} app={app} />
+          <AppTitle>{isLast ? t('settings.miniapps.custom.title') : app.name}</AppTitle>
+        </Container>
+      </Tooltip>
     </Dropdown>
   )
 }

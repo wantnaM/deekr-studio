@@ -1,6 +1,9 @@
 import { Navbar, NavbarMain } from '@renderer/components/app/Navbar'
+import { Center } from '@renderer/components/Layout'
 import { useMinapps } from '@renderer/hooks/useMinapps'
-import { Button, Input } from 'antd'
+import { SubjectTypes } from '@renderer/types'
+import { Button, Empty, Input, Tag } from 'antd'
+import { isEmpty } from 'lodash'
 import { Search, SettingsIcon, X } from 'lucide-react'
 import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,12 +20,18 @@ const AppsPage: FC = () => {
   const { minapps } = useMinapps()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const location = useLocation()
+  const [selectedSubject, setSelectedSubject] = useState<SubjectTypes | null>(null)
+  const allSubjects = Object.values(SubjectTypes)
 
-  const filteredApps = search
-    ? minapps.filter(
-        (app) => app.name.toLowerCase().includes(search.toLowerCase()) || app.url.includes(search.toLowerCase())
-      )
-    : minapps
+  const filteredApps = minapps.filter((app) => {
+    const matchesSearch = search
+      ? app.name.toLowerCase().includes(search.toLowerCase()) || app.url.includes(search.toLowerCase())
+      : true
+
+    const matchesSubject = selectedSubject ? (app.subject ? app.subject.includes(selectedSubject) : false) : true
+
+    return matchesSearch && matchesSubject
+  })
 
   // Calculate the required number of lines
   const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
@@ -73,12 +82,53 @@ const AppsPage: FC = () => {
       <ContentContainer id="content-container">
         {isSettingsOpen && <MiniAppSettings />}
         {!isSettingsOpen && (
-          <AppsContainer style={{ height: containerHeight }}>
-            {filteredApps.map((app) => (
-              <App key={app.id} app={app} />
-            ))}
-            <NewAppButton />
-          </AppsContainer>
+          <>
+            <SubjectFilterContainer>
+              <SubjectRow>
+                <Tag
+                  color={!selectedSubject ? 'blue' : 'default'}
+                  onClick={() => setSelectedSubject(null)}
+                  style={{ cursor: 'pointer' }}>
+                  {t('minapp.all')}
+                </Tag>
+                {allSubjects.slice(0, 9).map((subject) => (
+                  <Tag
+                    key={subject}
+                    color={selectedSubject === subject ? 'blue' : 'default'}
+                    onClick={() => setSelectedSubject(subject)}
+                    style={{ cursor: 'pointer' }}>
+                    {subject}
+                  </Tag>
+                ))}
+              </SubjectRow>
+              {allSubjects.length > 9 && (
+                <SubjectRow>
+                  {allSubjects.slice(9).map((subject) => (
+                    <Tag
+                      key={subject}
+                      color={selectedSubject === subject ? 'blue' : 'default'}
+                      onClick={() => setSelectedSubject(subject)}
+                      style={{ cursor: 'pointer' }}>
+                      {subject}
+                    </Tag>
+                  ))}
+                </SubjectRow>
+              )}
+            </SubjectFilterContainer>
+
+            {isEmpty(filteredApps) ? (
+              <Center>
+                <Empty />
+              </Center>
+            ) : (
+              <AppsContainer style={{ height: containerHeight }}>
+                {filteredApps.map((app) => (
+                  <App key={app.id} app={app} />
+                ))}
+                <NewAppButton />
+              </AppsContainer>
+            )}
+          </>
         )}
       </ContentContainer>
     </Container>
@@ -95,11 +145,10 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: row;
-  justify-content: center;
-  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 50px;
   overflow-y: auto;
-  padding: 50px;
 `
 
 const AppsContainer = styled.div`
@@ -112,4 +161,21 @@ const AppsContainer = styled.div`
   justify-content: center;
 `
 
+const SubjectFilterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 930px;
+`
+
+const SubjectRow = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 8px;
+`
 export default AppsPage
