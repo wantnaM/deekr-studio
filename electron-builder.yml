@@ -1,5 +1,5 @@
-appId: com.kangfenmao.CherryStudio
-productName: Cherry Studio
+appId: com.deerk.DeekrStudio
+productName: 教师智能体
 electronLanguages:
   - zh-CN
   - zh-TW
@@ -53,7 +53,7 @@ asarUnpack:
   - resources/**
   - '**/*.{metal,exp,lib}'
 win:
-  executableName: Cherry Studio
+  executableName: 教师智能体
   artifactName: ${productName}-${version}-${arch}-setup.${ext}
   target:
     - target: nsis

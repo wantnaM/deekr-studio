@@ -163,7 +163,7 @@ export abstract class BaseApiClient<
   public defaultHeaders() {
     return {
       'HTTP-Referer': 'https://cherry-ai.com',
-      'X-Title': 'Cherry Studio',
+      'X-Title': 'Deekr Studio',
       'X-Api-Key': this.apiKey
     }
   }

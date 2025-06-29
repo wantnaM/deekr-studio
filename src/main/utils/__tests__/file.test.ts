@@ -212,7 +212,7 @@ describe('file', () => {
   describe('getTempDir', () => {
     it('should return correct temp directory path', () => {
       const tempDir = getTempDir()
-      expect(tempDir).toBe('/mock/temp/CherryStudio')
+      expect(tempDir).toBe('/mock/temp/DeeKrStudio')
     })
   })
 
@@ -226,19 +226,19 @@ describe('file', () => {
   describe('getConfigDir', () => {
     it('should return correct config directory path', () => {
       const configDir = getConfigDir()
-      expect(configDir).toBe('/mock/home/.cherrystudio/config')
+      expect(configDir).toBe('/mock/home/.deekrstudio/config')
     })
   })
 
   describe('getAppConfigDir', () => {
     it('should return correct app config directory path', () => {
       const appConfigDir = getAppConfigDir('test-app')
-      expect(appConfigDir).toBe('/mock/home/.cherrystudio/config/test-app')
+      expect(appConfigDir).toBe('/mock/home/.deekrstudio/config/test-app')
     })
 
     it('should handle empty app name', () => {
       const appConfigDir = getAppConfigDir('')
-      expect(appConfigDir).toBe('/mock/home/.cherrystudio/config/')
+      expect(appConfigDir).toBe('/mock/home/.deekrstudio/config/')
     })
   })
 })

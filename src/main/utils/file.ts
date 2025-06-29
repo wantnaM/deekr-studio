@@ -171,7 +171,7 @@ export function getFilesDir() {
 }
 
 export function getConfigDir() {
-  return path.join(os.homedir(), '.cherrystudio', 'config')
+  return path.join(os.homedir(), '.deekrstudio', 'config')
 }
 
 export function getCacheDir() {

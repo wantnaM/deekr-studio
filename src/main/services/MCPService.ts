@@ -131,7 +131,7 @@ class McpService {
     const initPromise = (async () => {
       try {
         // Create new client instance for each connection
-        const client = new Client({ name: 'Cherry Studio', version: app.getVersion() }, { capabilities: {} })
+        const client = new Client({ name: 'Deekr Studio', version: app.getVersion() }, { capabilities: {} })
 
         const args = [...(server.args || [])]
 
@@ -478,7 +478,7 @@ class McpService {
   }
 
   public async getInstallInfo() {
-    const dir = path.join(os.homedir(), '.cherrystudio', 'bin')
+    const dir = path.join(os.homedir(), '.deekrstudio', 'bin')
     const uvName = await getBinaryName('uv')
     const bunName = await getBinaryName('bun')
     const uvPath = path.join(dir, uvName)
@@ -647,7 +647,7 @@ class McpService {
     try {
       const loginEnv = await getLoginShellEnvironment()
       const pathSeparator = process.platform === 'win32' ? ';' : ':'
-      const cherryBinPath = path.join(os.homedir(), '.cherrystudio', 'bin')
+      const cherryBinPath = path.join(os.homedir(), '.deekrstudio', 'bin')
       loginEnv.PATH = `${loginEnv.PATH}${pathSeparator}${cherryBinPath}`
       Logger.info('[MCP] Successfully fetched login shell environment variables:')
       return loginEnv
