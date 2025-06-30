@@ -976,7 +976,8 @@
       "per_image": "每张图片",
       "per_images": "每张图片",
       "required_field": "必填项",
-      "uploaded_input": "已上传输入"
+      "uploaded_input": "已上传输入",
+      "recommended": "推荐"
     },
     "prompts": {
       "explanation": "帮我解释一下这个概念",
@@ -1888,7 +1889,6 @@
       "students": {
         "title": "我的学生"
       }
-
     },
     "translate": {
       "any.language": "任意语言",

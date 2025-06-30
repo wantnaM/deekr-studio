@@ -468,6 +468,7 @@ export type GenerateImageParams = {
   promptEnhancement?: boolean
   personGeneration?: PersonGeneration
   size?: string
+  watermark?: boolean
 }
 
 export type GenerateImageResponse = {

@@ -61,7 +61,8 @@ export abstract class OpenAIBaseClient<
     guidanceScale,
     signal,
     promptEnhancement,
-    size
+    size,
+    watermark
   }: GenerateImageParams): Promise<string[]> {
     const sdk = await this.getSdkInstance()
     const response = (await sdk.request({
@@ -78,7 +79,8 @@ export abstract class OpenAIBaseClient<
         num_inference_steps: numInferenceSteps,
         guidance_scale: guidanceScale,
         prompt_enhancement: promptEnhancement,
-        size
+        size,
+        watermark
       }
     })) as { data: Array<{ url: string }> }
 

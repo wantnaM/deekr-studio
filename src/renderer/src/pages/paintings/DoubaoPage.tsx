@@ -7,7 +7,7 @@ import ImageSize3_4 from '@renderer/assets/images/paintings/image-size-3-4.svg'
 import ImageSize9_16 from '@renderer/assets/images/paintings/image-size-9-16.svg'
 import ImageSize16_9 from '@renderer/assets/images/paintings/image-size-16-9.svg'
 import { Navbar, NavbarCenter, NavbarRight } from '@renderer/components/app/Navbar'
-import { VStack } from '@renderer/components/Layout'
+import { HStack, VStack } from '@renderer/components/Layout'
 import Scrollbar from '@renderer/components/Scrollbar'
 import TranslateButton from '@renderer/components/TranslateButton'
 import { isMac } from '@renderer/config/constant'
@@ -23,7 +23,7 @@ import { useAppDispatch } from '@renderer/store'
 import { setGenerating } from '@renderer/store/runtime'
 import type { FileType, Painting } from '@renderer/types'
 import { getErrorMessage, uuid } from '@renderer/utils'
-import { Button, Input, InputNumber, Radio, Select, Slider, Tooltip } from 'antd'
+import { Button, Input, InputNumber, Radio, Select, Slider, Switch, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { Info } from 'lucide-react'
 import type { FC } from 'react'
@@ -104,6 +104,8 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
   const { generating } = useRuntime()
   const navigate = useNavigate()
   const location = useLocation()
+
+  const [watermark, setWatermark] = useState(true)
 
   const getNewPainting = () => {
     return {
@@ -198,7 +200,8 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
         seed: painting.seed || undefined,
         numInferenceSteps: 25,
         guidanceScale: painting.guidanceScale || 4.5,
-        signal: controller.signal
+        signal: controller.signal,
+        watermark: watermark
       })
 
       if (urls.length > 0) {
@@ -442,6 +445,16 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
               </Tooltip>
             ))}
           </RecommendedPromptsContainer>
+
+          <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>
+            添加水印
+            <Tooltip title="是否在图片右下角添加“AI生成”字样的水印标识">
+              <InfoIcon />
+            </Tooltip>
+          </SettingTitle>
+          <HStack>
+            <Switch checked={watermark} onChange={(checked) => setWatermark(checked)} />
+          </HStack>
         </LeftContainer>
         <MainContainer>
           <Artboard
