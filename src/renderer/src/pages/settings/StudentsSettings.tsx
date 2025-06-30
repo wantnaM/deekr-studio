@@ -4,7 +4,8 @@ import { getAccessToken, useUser } from '@renderer/hooks/useUser'
 import { exportStudents, getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService/Students'
 import { config } from '@renderer/utils/axios/config'
 import type { UploadProps } from 'antd'
-import { Button, Input, message, Table, Upload } from 'antd'
+import { Button, Input, message, Row, Table, Tooltip, Upload } from 'antd'
+import { CircleHelp } from 'lucide-react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -28,6 +29,10 @@ const StudentsSettings: FC = () => {
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
   const [exportLoading, setExportLoading] = useState(false)
   const { userId } = useUser()
+
+  const [studentTip] = useState(
+    '教师账号可以创建账号给学生使用。请下载模板后填写表格内容后导入，用户名推荐使用姓名拼音+班级学号，例如：zhangsan001。如果需要修改学生昵称或其他信息可使用导入文件修改，用户名作为唯一标识。学生初始密码是123456'
+  )
 
   const columns = [
     {
@@ -159,7 +164,13 @@ const StudentsSettings: FC = () => {
     <SettingContainer theme={theme}>
       {contextHolder}
       <SettingGroup theme={theme}>
-        <SettingTitle>{t('settings.students.title')}</SettingTitle>
+        <Row align="middle">
+          <SettingTitle>{t('settings.students.title')}</SettingTitle>
+          <Tooltip placement="top" title={studentTip} arrow>
+            <QuestionIcon style={{ marginLeft: 5 }} size={14} />
+          </Tooltip>
+        </Row>
+
         <SettingDivider />
         <SettingTitle
           style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -224,6 +235,11 @@ const StudentsTable = styled(Table)`
 const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`
+
+const QuestionIcon = styled(CircleHelp)`
+  cursor: pointer;
+  color: var(--color-text-3);
 `
 
 export default StudentsSettings
