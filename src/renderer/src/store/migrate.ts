@@ -1603,6 +1603,15 @@ const migrateConfig = {
           state.settings.exportMenuOptions.plain_text = true
         }
       }
+      // @ts-ignore eslint-disable-next-line
+      if (state.settings && state.settings.user) {
+        // @ts-ignore eslint-disable-next-line
+        state.user = state.settings.user
+      }
+
+      // @ts-ignore eslint-disable-next-line
+      delete state.settings.user
+
       return state
     } catch (error) {
       return state
