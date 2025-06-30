@@ -130,7 +130,7 @@ const AboutSettings: FC = () => {
                   strokeColor="#67ad5b"
                 />
               )}
-              <Avatar src={AppLogo2} size={124} style={{ minHeight: 80 }} />
+              <Avatar src={AppLogo2} size={120} style={{ minHeight: 120 }} />
             </AvatarWrapper>
             <VersionWrapper>
               <Title>{APP_NAME}</Title>

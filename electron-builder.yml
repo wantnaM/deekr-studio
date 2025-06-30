@@ -99,7 +99,7 @@ linux:
     - x-scheme-handler/cherrystudio
 publish:
   provider: generic
-  url: https://releases.cherry-ai.com
+  url: http://8.134.23.119:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 afterPack: scripts/after-pack.js
@@ -107,9 +107,7 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    - 新功能：可选数据保存目录
-    - 快捷助手：支持单独选择助手，支持暂停、上下文、思考过程、流式
-    - 划词助手：系统托盘菜单开关
-    - 翻译：新增 Markdown 预览选项
-    - 新供应商：新增 Vertex AI 服务商
+    - 新功能：MCP服务器、划词助手
+    - 数据设置：支持WebDev云备份
+    - 网络搜索支持bing、google、baidu
     - 错误修复和界面优化
