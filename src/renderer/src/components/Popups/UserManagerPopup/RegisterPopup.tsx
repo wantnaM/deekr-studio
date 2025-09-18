@@ -1,7 +1,8 @@
+import { getDictData } from '@renderer/services/AdminService/Dict'
 import { register } from '@renderer/services/AdminService/login'
-import { SubjectTypes } from '@renderer/types'
+import { DictDataType, SubjectTypes } from '@renderer/types'
 import { Button, Col, Form, Input, message, Modal, Radio, Row, Select, Typography } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface RegisterModalProps {
@@ -16,6 +17,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
   const [loading, setLoading] = useState(false)
 
   const [selectedRole, setSelectedRole] = useState<'3' | '4'>('3') // '4'代表学生，'3'代表教师
+  const [schools, setSchools] = useState<DictDataType[]>([])
 
   const gradeOptions = [
     { value: '一年级', label: '一年级' },
@@ -95,6 +97,20 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
     }
   }
 
+  // 处理学校搜索
+  const handleSchoolSearch = (input: string, option: any) => {
+    return option?.value?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    const res = await getDictData('ds_school')
+    setSchools(res)
+  }
+
   return (
     <Modal
       title={t('login.register')}
@@ -139,7 +155,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
                   { required: true, message: '用户昵称不能为空' },
                   { max: 30, message: '用户昵称长度不能超过30个字符' }
                 ]}>
-                <Input placeholder="请输入昵称" />
+                <Input placeholder="请输入昵称或姓名" />
               </Form.Item>
             </Col>
           </Row>
@@ -156,8 +172,20 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="school" label={t('register.school')} rules={[{ required: true, message: '请填写学校' }]}>
-                <Input placeholder="请填写您的学校" />
+              <Form.Item name="school" label={t('register.school')} rules={[{ required: true, message: '请选择学校' }]}>
+                <Select
+                  showSearch
+                  placeholder="请选择或输入学校"
+                  optionFilterProp="children"
+                  filterOption={handleSchoolSearch}
+                  allowClear
+                  notFoundContent="未找到匹配的学校">
+                  {schools.map((school, index) => (
+                    <Select.Option key={index} value={school.value}>
+                      {school.label}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
           </Row>
@@ -166,12 +194,12 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
             <>
               <Form.Item
                 name="teacherMobile"
-                label="教师手机号"
+                label="所属教师"
                 rules={[
-                  { required: true, message: '请输入教师手机号' },
+                  { required: true, message: '请输入你的教师' },
                   { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确' }
                 ]}>
-                <Input placeholder="请输入教师的手机号" />
+                <Input placeholder="请输入所属教师" />
               </Form.Item>
 
               <Row gutter={16}>
