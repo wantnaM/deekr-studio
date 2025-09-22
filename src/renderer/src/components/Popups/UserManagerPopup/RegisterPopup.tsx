@@ -1,13 +1,21 @@
 import { getDictData } from '@renderer/services/AdminService/Dict'
-import { register } from '@renderer/services/AdminService/login'
+import { getTeachersBySchoolAndKeyword, register } from '@renderer/services/AdminService/login'
 import { DictDataType, SubjectTypes } from '@renderer/types'
 import { Button, Col, Form, Input, message, Modal, Radio, Row, Select, Typography } from 'antd'
+import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface RegisterModalProps {
   visible: boolean
   onCancel: () => void
+}
+
+// 教师数据类型定义
+interface TeacherDataType {
+  id: string
+  nickname: string
+  school: string
 }
 
 const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
@@ -18,6 +26,8 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
 
   const [selectedRole, setSelectedRole] = useState<'3' | '4'>('3') // '4'代表学生，'3'代表教师
   const [schools, setSchools] = useState<DictDataType[]>([])
+  const [teachers, setTeachers] = useState<TeacherDataType[]>([]) // 教师列表
+  const [fetchingTeachers, setFetchingTeachers] = useState(false) // 是否正在获取教师数据
 
   const gradeOptions = [
     { value: '一年级', label: '一年级' },
@@ -49,7 +59,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
           ? {
               grade: values.grade,
               classroom: values.classroom,
-              teacherMobile: values.teacherMobile
+              teacherMobile: values.teacherId
             }
           : {
               subject: values.subject,
@@ -92,7 +102,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
       // 教师
       form.setFieldsValue({
         classroom: undefined,
-        teacherMobile: undefined
+        teacherId: undefined
       })
     }
   }
@@ -100,6 +110,34 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
   // 处理学校搜索
   const handleSchoolSearch = (input: string, option: any) => {
     return option?.value?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+
+  // 处理学校选择变化
+  const handleSchoolChange = (schoolValue: string) => {
+    fetchTeachers('', schoolValue)
+  }
+
+  // 获取教师数据 - 根据学校ID和搜索关键词
+  const fetchTeachers = async (searchText: string = '', schoolValue: string = '') => {
+    try {
+      setFetchingTeachers(true)
+      const res = await getTeachersBySchoolAndKeyword(schoolValue, searchText)
+
+      setTeachers(res)
+    } catch (error) {
+      console.error('获取教师数据失败:', error)
+      message.error('获取教师数据失败')
+    } finally {
+      setFetchingTeachers(false)
+    }
+  }
+
+  // 防抖处理教师搜索
+  const debouncedFetchTeachers = debounce(fetchTeachers, 500)
+
+  // 处理教师搜索
+  const handleTeacherSearch = (value: string) => {
+    debouncedFetchTeachers(value)
   }
 
   useEffect(() => {
@@ -141,8 +179,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
                 label={t('login.username.label')}
                 rules={[
                   { required: true, message: '用户账号不能为空' },
-                  { pattern: /^[a-zA-Z0-9]{4,30}$/, message: '用户账号由数字、字母组成' },
-                  { min: 4, max: 30, message: '用户账号长度为4-30个字符' }
+                  { pattern: /^\d{8,30}$/, message: '用户账号必须为8-30位数字' }
                 ]}>
                 <Input placeholder={t('register.username.placeholder')} allowClear maxLength={30} />
               </Form.Item>
@@ -179,7 +216,8 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
                   optionFilterProp="children"
                   filterOption={handleSchoolSearch}
                   allowClear
-                  notFoundContent="未找到匹配的学校">
+                  notFoundContent="未找到匹配的学校"
+                  onChange={handleSchoolChange}>
                   {schools.map((school, index) => (
                     <Select.Option key={index} value={school.value}>
                       {school.label}
@@ -192,14 +230,22 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
 
           {selectedRole === '4' && (
             <>
-              <Form.Item
-                name="teacherMobile"
-                label="所属教师"
-                rules={[
-                  { required: true, message: '请输入你的教师' },
-                  { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确' }
-                ]}>
-                <Input placeholder="请输入所属教师" />
+              <Form.Item name="teacherId" label="所属教师" rules={[{ required: true, message: '请选择所属教师' }]}>
+                <Select
+                  showSearch
+                  placeholder="请选择所属教师"
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                  filterOption={false}
+                  onSearch={handleTeacherSearch}
+                  notFoundContent={fetchingTeachers ? '搜索中...' : '未找到匹配的教师'}
+                  loading={fetchingTeachers}>
+                  {teachers.map((teacher) => (
+                    <Select.Option key={teacher.id} value={teacher.id}>
+                      {teacher.nickname} - {teacher.school}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
               <Row gutter={16}>

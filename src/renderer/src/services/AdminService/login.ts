@@ -40,3 +40,13 @@ export const register = async (data: any) => {
 export const getUserInfo = async () => {
   return await request.get({ url: `/system/user/profile/get` })
 }
+
+export const getTeachersBySchoolAndKeyword = async (school, keyword) => {
+  return await request.get({
+    url: `/system/user/getTeachersBySchoolAndKeyword`,
+    params: {
+      school,
+      keyword
+    }
+  })
+}
