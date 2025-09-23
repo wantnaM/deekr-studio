@@ -107,7 +107,6 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    - 新功能：MCP服务器、划词助手
-    - 数据设置：支持WebDev云备份
-    - 网络搜索支持bing、google、baidu
-    - 错误修复和界面优化
+    - 优化注册流程，提升用户体验
+    - 小程序增加组卷网和科学网
+    - 界面优化
