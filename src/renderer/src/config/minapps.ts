@@ -21,6 +21,7 @@ import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
 // import OpenAiProviderLogo from '@renderer/assets/images/providers/openai.png?url'
 import PythonTutorLogo from '@renderer/assets/images/apps/python-tutor.png?url'
 import ZhipuProviderLogo from '@renderer/assets/images/apps/qingyan.png?url'
+import SciencenetLogo from '@renderer/assets/images/apps/sciencenet.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
 import WPSLingXiLogo from '@renderer/assets/images/apps/wpslingxi.webp?url'
 import XiaoYiAppLogo from '@renderer/assets/images/apps/xiaoyi.webp?url'
@@ -30,6 +31,7 @@ import LingoWhaleLogo from '@renderer/assets/images/apps/yujing.png?url'
 import ZenVideoLogo from '@renderer/assets/images/apps/zenvideo.png?url'
 import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
 import ZhiWenLogo from '@renderer/assets/images/apps/zhiwen.png?url'
+import ZujuanLogo from '@renderer/assets/images/apps/zujuan.webp?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
@@ -402,6 +404,26 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: false,
     group: 'PPT与视频',
     desc: '讯飞智文，由科大讯飞推出的一键生成ppt/word产品。 根据一句话、长文本、音视频等指令智能生成文档，同时支持在线编辑、美化、排版、导出、一键动效、自动生成演讲稿等功能',
+    subject: []
+  },
+  {
+    id: 'sciencenet',
+    name: '科学网',
+    logo: SciencenetLogo,
+    url: 'https://www.sciencenet.cn/',
+    bodered: false,
+    group: '实用网站',
+    desc: '由中国科学院、中国工程院和国家自然科学基金委员会主管，中国科学报社主办的综合性科学网站，主要为网民提供快捷权威的科学新闻报道、丰富实用的科学信息服务',
+    subject: []
+  },
+  {
+    id: 'zujuan',
+    name: '组卷网',
+    logo: ZujuanLogo,
+    url: 'https://zujuan.xkw.com/',
+    bodered: false,
+    group: '实用网站',
+    desc: '组卷网是一个提供初高中同步备课、阶段练习、高考备考、二模等多种教学服务的在线平台',
     subject: []
   }
 ]

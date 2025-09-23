@@ -1,7 +1,7 @@
 // import { GithubOutlined } from '@ant-design/icons'
 import IndicatorLight from '@renderer/components/IndicatorLight'
 // import { HStack } from '@renderer/components/Layout'
-import { APP_NAME, AppLogo2 } from '@renderer/config/env'
+import { APP_NAME, AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 // import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
 import { useRuntime } from '@renderer/hooks/useRuntime'
@@ -130,7 +130,7 @@ const AboutSettings: FC = () => {
                   strokeColor="#67ad5b"
                 />
               )}
-              <Avatar src={AppLogo2} size={120} style={{ minHeight: 120 }} />
+              <Avatar src={AppLogo} size={120} style={{ minHeight: 120 }} />
             </AvatarWrapper>
             <VersionWrapper>
               <Title>{APP_NAME}</Title>

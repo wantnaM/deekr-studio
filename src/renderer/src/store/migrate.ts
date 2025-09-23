@@ -1616,6 +1616,15 @@ const migrateConfig = {
     } catch (error) {
       return state
     }
+  },
+  '115': (state: RootState) => {
+    try {
+      addMiniApp(state, 'sciencenet')
+      addMiniApp(state, 'zujuan')
+      return state
+    } catch (error) {
+      return state
+    }
   }
 }
 

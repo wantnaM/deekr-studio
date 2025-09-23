@@ -59,7 +59,7 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
           ? {
               grade: values.grade,
               classroom: values.classroom,
-              teacherMobile: values.teacherId
+              teacherId: values.teacherId
             }
           : {
               subject: values.subject,
