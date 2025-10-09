@@ -4412,6 +4412,7 @@
     "later": "Plus tard",
     "message": "Nouvelle version {{version}} disponible, voulez-vous l'installer maintenant ?",
     "noReleaseNotes": "Aucune note de version",
+    "saveDataError": "Échec de la sauvegarde des données, veuillez réessayer",
     "title": "Mise à jour"
   },
   "warning": {

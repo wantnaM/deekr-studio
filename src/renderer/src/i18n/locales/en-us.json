@@ -4412,6 +4412,7 @@
     "later": "Later",
     "message": "New version {{version}} is ready, do you want to install it now?",
     "noReleaseNotes": "No release notes",
+    "saveDataError": "Failed to save data, please try again.",
     "title": "Update"
   },
   "warning": {
