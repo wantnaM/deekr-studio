@@ -125,21 +125,17 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    What's New in v1.6.3
+    What's New in v1.6.4
 
     Features:
-    - Notes: Add spell-check control, automatic table line wrapping, export functionality, and LLM-based renaming
-    - UI: Expand topic rename clickable area, add middle-click tab closing, remove redundant scrollbars, fix message menubar overflow
-    - Editor: Add read-only extension support, make TextFilePreview read-only but copyable
-    - Models: Update support for DeepSeek v3.2, Claude 4.5, GLM 4.6, Gemini regex, and vision models
-    - Code Tools: Add GitHub Copilot CLI integration
+    - Providers: add CherryIN provider
+    - Notes: Add right-click context menu to create notes and folders
+    - Mini App: Add search functionality in mini app page
+    - Update Dialog: Add updating dialog in renderer process
+    - Mini App: Remove some mini apps
 
     Bug Fixes:
-    - Fix migration for missing providers
-    - Fix forked topic retaining old name after rename
-    - Restore first token latency reporting in metrics
-    - Fix UI scrollbar and overflow issues
+    - Fix reasoning block insertion order - now inserts before content block
+    - Fix knowledge base deletion and web search RAG errors
+    - Fix Qwen model URL configuration
 
-    Technical Updates:
-    - Upgrade to Electron 37.6.0
-    - Update dependencies across packages
