@@ -22,8 +22,6 @@ import GithubCopilotLogo from '@renderer/assets/images/apps/github-copilot.webp?
 import GoogleAppLogo from '@renderer/assets/images/apps/google.svg?url'
 import GrokAppLogo from '@renderer/assets/images/apps/grok.png?url'
 import GrokXAppLogo from '@renderer/assets/images/apps/grok-x.png?url'
-import HikaLogo from '@renderer/assets/images/apps/hika.webp?url'
-import HuggingChatLogo from '@renderer/assets/images/apps/huggingchat.svg?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
 import LambdaChatLogo from '@renderer/assets/images/apps/lambdachat.webp?url'
 import LeChatLogo from '@renderer/assets/images/apps/lechat.png?url'
@@ -32,7 +30,6 @@ import MetasoAppLogo from '@renderer/assets/images/apps/metaso.webp?url'
 import MonicaLogo from '@renderer/assets/images/apps/monica.webp?url'
 import n8nLogo from '@renderer/assets/images/apps/n8n.svg?url'
 import NamiAiLogo from '@renderer/assets/images/apps/nm.png?url'
-import NamiAiSearchLogo from '@renderer/assets/images/apps/nm-search.webp?url'
 import NotebookLMAppLogo from '@renderer/assets/images/apps/notebooklm.svg?url'
 import PerplexityAppLogo from '@renderer/assets/images/apps/perplexity.webp?url'
 import PoeAppLogo from '@renderer/assets/images/apps/poe.webp?url'
@@ -264,13 +261,6 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: true
   },
   {
-    id: 'hugging-chat',
-    name: 'HuggingChat',
-    logo: HuggingChatLogo,
-    url: 'https://huggingface.co/chat/',
-    bodered: true
-  },
-  {
     id: 'Felo',
     name: 'Felo',
     logo: FeloAppLogo,
@@ -298,13 +288,6 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
     bodered: true
   },
   {
-    id: 'nm-search',
-    name: i18n.t('minapps.nami-ai-search'),
-    logo: NamiAiSearchLogo,
-    url: 'https://www.n.cn/',
-    bodered: true
-  },
-  {
     id: 'thinkany',
     name: 'ThinkAny',
     logo: ThinkAnyLogo,
@@ -313,13 +296,6 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
     style: {
       padding: 5
     }
-  },
-  {
-    id: 'hika',
-    name: 'Hika',
-    logo: HikaLogo,
-    url: 'https://hika.fyi/',
-    bodered: true
   },
   {
     id: 'github-copilot',
