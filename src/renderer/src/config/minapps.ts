@@ -39,6 +39,7 @@ import PoeAppLogo from '@renderer/assets/images/apps/poe.webp?url'
 import QwenlmAppLogo from '@renderer/assets/images/apps/qwenlm.webp?url'
 import SensetimeAppLogo from '@renderer/assets/images/apps/sensetime.png?url'
 import SparkDeskAppLogo from '@renderer/assets/images/apps/sparkdesk.webp?url'
+import StepfunAppLogo from '@renderer/assets/images/apps/stepfun.png?url'
 import ThinkAnyLogo from '@renderer/assets/images/apps/thinkany.webp?url'
 import TiangongAiLogo from '@renderer/assets/images/apps/tiangong.png?url'
 import WanZhiAppLogo from '@renderer/assets/images/apps/wanzhi.jpg?url'
@@ -46,7 +47,6 @@ import WPSLingXiLogo from '@renderer/assets/images/apps/wpslingxi.webp?url'
 import XiaoYiAppLogo from '@renderer/assets/images/apps/xiaoyi.webp?url'
 import YouLogo from '@renderer/assets/images/apps/you.jpg?url'
 import TencentYuanbaoAppLogo from '@renderer/assets/images/apps/yuanbao.webp?url'
-import YuewenAppLogo from '@renderer/assets/images/apps/yuewen.png?url'
 import ZaiAppLogo from '@renderer/assets/images/apps/zai.png?url'
 import ZhihuAppLogo from '@renderer/assets/images/apps/zhihu.png?url'
 import ClaudeAppLogo from '@renderer/assets/images/models/claude.png?url'
@@ -150,9 +150,9 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'stepfun',
-    name: i18n.t('minapps.yuewen'),
-    url: 'https://yuewen.cn/chats/new',
-    logo: YuewenAppLogo,
+    name: i18n.t('minapps.stepfun'),
+    url: 'https://stepfun.com',
+    logo: StepfunAppLogo,
     bodered: true
   },
   {
