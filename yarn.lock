@@ -167,6 +167,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ai-sdk/google@patch:@ai-sdk/google@npm%3A2.0.17#~/.yarn/patches/@ai-sdk-google-npm-2.0.17-fd88491de4.patch":
+  version: 2.0.17
+  resolution: "@ai-sdk/google@patch:@ai-sdk/google@npm%3A2.0.17#~/.yarn/patches/@ai-sdk-google-npm-2.0.17-fd88491de4.patch::version=2.0.17&hash=620163"
+  dependencies:
+    "@ai-sdk/provider": "npm:2.0.0"
+    "@ai-sdk/provider-utils": "npm:3.0.10"
+  peerDependencies:
+    zod: ^3.25.76 || ^4.1.8
+  checksum: 10c0/5a02f9becfc956607b54f269d5bfc71c76fee1aa201632cbd8266be53bb837454e4096f9b217e631957f5e1c85d7949029d25b8abfccdd2fe93fe205042b76a5
+  languageName: node
+  linkType: hard
+
 "@ai-sdk/mistral@npm:^2.0.17":
   version: 2.0.17
   resolution: "@ai-sdk/mistral@npm:2.0.17"
