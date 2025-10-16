@@ -370,6 +370,7 @@ export type ProviderType =
   | 'mistral'
   | 'aws-bedrock'
   | 'vertex-anthropic'
+  | 'new-api'
 
 export type ModelType = 'text' | 'vision' | 'embedding' | 'reasoning' | 'function_calling' | 'web_search' | 'rerank'
 
@@ -418,6 +419,8 @@ export type PaintingParams = {
   id: string
   urls: string[]
   files: FileMetadata[]
+  // provider that this painting belongs to (for new-api family separation)
+  providerId?: string
 }
 
 export type PaintingProvider = 'zhipu' | 'aihubmix' | 'silicon' | 'dmxapi' | 'new-api'
