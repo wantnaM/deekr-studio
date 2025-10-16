@@ -3844,7 +3844,7 @@
       "api_host": "API Host",
       "api_key": {
         "label": "API Key",
-        "tip": "Multiple keys separated by commas or spaces"
+        "tip": "Use commas to separate multiple keys"
       },
       "api_version": "API Version",
       "aws-bedrock": {
