@@ -47,6 +47,14 @@ export const NEW_PROVIDER_CONFIGS: ProviderConfig[] = [
     creatorFunctionName: 'createPerplexity',
     supportsImageGeneration: false,
     aliases: ['perplexity']
+  },
+  {
+    id: 'mistral',
+    name: 'Mistral',
+    import: () => import('@ai-sdk/mistral'),
+    creatorFunctionName: 'createMistral',
+    supportsImageGeneration: false,
+    aliases: ['mistral']
   }
 ] as const
 
