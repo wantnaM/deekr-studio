@@ -125,17 +125,39 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    What's New in v1.6.4
+    <!--LANG:en-->
+    What's New in v1.6.5
 
     Features:
-    - Providers: add CherryIN provider
-    - Notes: Add right-click context menu to create notes and folders
-    - Mini App: Add search functionality in mini app page
-    - Update Dialog: Add updating dialog in renderer process
-    - Mini App: Remove some mini apps
+    - Add Claude Haiku 4.5 model support
+    - Add Mistral provider configuration
+    - Add Intel OpenVINO (NPU) OCR provider
+    - Add notes full-text search with highlighting
+    - Add built-in DiDi MCP server (China only)
+    - Support NewAPI as generic provider
 
     Bug Fixes:
-    - Fix reasoning block insertion order - now inserts before content block
-    - Fix knowledge base deletion and web search RAG errors
-    - Fix Qwen model URL configuration
+    - Fix webview search (Cmd/Ctrl+F) functionality
+    - Fix API key rotation for each request
+    - Fix translate auto copy functionality
+    - Fix message layout and overflow display
+
+    <!--LANG:zh-CN-->
+    v1.6.5 版本更新
+
+    新增功能:
+    - 新增 Claude Haiku 4.5 模型支持
+    - 新增 Mistral 提供商配置
+    - 新增 Intel OpenVINO (NPU) OCR 提取功能
+    - 新增笔记全文搜索和高亮显示
+    - 新增内置滴滴 MCP 服务器(仅限中国)
+    - 支持 NewAPI 作为通用提供商
+
+    问题修复:
+    - 修复 webview 搜索(Cmd/Ctrl+F)功能
+    - 修复 API 密钥轮换机制
+    - 修复翻译自动复制功能
+    - 修复消息布局和溢出显示
+
+    <!--LANG:END-->
 
