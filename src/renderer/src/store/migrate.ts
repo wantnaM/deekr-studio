@@ -2614,6 +2614,7 @@ const migrateConfig = {
     try {
       addProvider(state, 'sophnet')
       state.llm.providers = moveProvider(state.llm.providers, 'sophnet', 17)
+      state.settings.defaultPaintingProvider = 'cherryin'
       return state
     } catch (error) {
       logger.error('migrate 164 error', error as Error)
