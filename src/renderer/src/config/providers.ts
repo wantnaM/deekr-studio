@@ -45,6 +45,7 @@ import Ph8ProviderLogo from '@renderer/assets/images/providers/ph8.png'
 import PPIOProviderLogo from '@renderer/assets/images/providers/ppio.png'
 import QiniuProviderLogo from '@renderer/assets/images/providers/qiniu.webp'
 import SiliconFlowProviderLogo from '@renderer/assets/images/providers/silicon.png'
+import SophnetProviderLogo from '@renderer/assets/images/providers/sophnet.svg'
 import StepProviderLogo from '@renderer/assets/images/providers/step.png'
 import TencentCloudProviderLogo from '@renderer/assets/images/providers/tencent-cloud-ti.png'
 import TogetherProviderLogo from '@renderer/assets/images/providers/together.png'
@@ -237,6 +238,16 @@ export const SYSTEM_PROVIDERS_CONFIG: Record<SystemProviderId, SystemProvider> =
     apiKey: '',
     apiHost: 'https://ph8.co',
     models: SYSTEM_MODELS.ph8,
+    isSystem: true,
+    enabled: false
+  },
+  sophnet: {
+    id: 'sophnet',
+    name: 'SophNet',
+    type: 'openai',
+    apiKey: '',
+    apiHost: 'https://www.sophnet.com/api/open-apis/v1',
+    models: [],
     isSystem: true,
     enabled: false
   },
@@ -708,7 +719,8 @@ export const PROVIDER_LOGO_MAP: AtLeast<SystemProviderId, string> = {
   'aws-bedrock': AwsProviderLogo,
   poe: 'poe', // use svg icon component
   aionly: AiOnlyProviderLogo,
-  longcat: LongCatProviderLogo
+  longcat: LongCatProviderLogo,
+  sophnet: SophnetProviderLogo
 } as const
 
 export function getProviderLogo(providerId: string) {
@@ -785,6 +797,17 @@ export const PROVIDER_URLS: Record<SystemProviderId, ProviderUrls> = {
       apiKey: 'https://ai.burncloud.com/token',
       docs: 'https://ai.burncloud.com/docs',
       models: 'https://ai.burncloud.com/pricing'
+    }
+  },
+  sophnet: {
+    api: {
+      url: 'https://www.sophnet.com/api/open-apis/v1'
+    },
+    websites: {
+      official: 'https://sophnet.com',
+      apiKey: 'https://sophnet.com/#/project/key',
+      docs: 'https://sophnet.com/docs/component/introduce.html',
+      models: 'https://sophnet.com/#/model/list'
     }
   },
   ppio: {

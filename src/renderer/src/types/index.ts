@@ -327,7 +327,8 @@ export const SystemProviderIds = {
   'aws-bedrock': 'aws-bedrock',
   poe: 'poe',
   aionly: 'aionly',
-  longcat: 'longcat'
+  longcat: 'longcat',
+  sophnet: 'sophnet'
 } as const
 
 export type SystemProviderId = keyof typeof SystemProviderIds
