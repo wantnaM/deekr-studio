@@ -28,6 +28,8 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
   const [schools, setSchools] = useState<DictDataType[]>([])
   const [teachers, setTeachers] = useState<TeacherDataType[]>([]) // 教师列表
   const [fetchingTeachers, setFetchingTeachers] = useState(false) // 是否正在获取教师数据
+  const [customSchoolInput, setCustomSchoolInput] = useState('') // 自定义学校输入
+  const [isAddingSchool, setIsAddingSchool] = useState(false) // 是否正在添加自定义学校
 
   const gradeOptions = [
     { value: '一年级', label: '一年级' },
@@ -115,6 +117,16 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
   // 处理学校选择变化
   const handleSchoolChange = (schoolValue: string) => {
     fetchTeachers('', schoolValue)
+  }
+
+  // 添加自定义学校
+  const handleAddCustomSchool = () => {
+    if (customSchoolInput.trim()) {
+      form.setFieldsValue({ school: customSchoolInput.trim() })
+      setCustomSchoolInput('')
+      setIsAddingSchool(false)
+      fetchTeachers('', customSchoolInput.trim())
+    }
   }
 
   // 获取教师数据 - 根据学校ID和搜索关键词
@@ -217,7 +229,36 @@ const RegisterModal = ({ visible, onCancel }: RegisterModalProps) => {
                   filterOption={handleSchoolSearch}
                   allowClear
                   notFoundContent="未找到匹配的学校"
-                  onChange={handleSchoolChange}>
+                  onChange={handleSchoolChange}
+                  dropdownRender={(menu) => (
+                    <div>
+                      {menu}
+                      {!isAddingSchool ? (
+                        <Button
+                          type="link"
+                          onClick={() => setIsAddingSchool(true)}
+                          style={{ width: '100%', textAlign: 'center' }}>
+                          添加新学校
+                        </Button>
+                      ) : (
+                        <div style={{ padding: '8px' }}>
+                          <Input
+                            placeholder="请输入学校名称"
+                            value={customSchoolInput}
+                            onChange={(e) => setCustomSchoolInput(e.target.value)}
+                            onPressEnter={handleAddCustomSchool}
+                            style={{ marginBottom: 8 }}
+                          />
+                          <Button type="primary" onClick={handleAddCustomSchool} size="small">
+                            添加
+                          </Button>
+                          <Button onClick={() => setIsAddingSchool(false)} size="small" style={{ marginLeft: 8 }}>
+                            取消
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )}>
                   {schools.map((school, index) => (
                     <Select.Option key={index} value={school.value}>
                       {school.label}
