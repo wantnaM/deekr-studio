@@ -246,7 +246,7 @@ export const SYSTEM_PROVIDERS_CONFIG: Record<SystemProviderId, SystemProvider> =
     name: 'SophNet',
     type: 'openai',
     apiKey: '',
-    apiHost: 'https://www.sophnet.com/api/open-apis/v1',
+    apiHost: 'https://www.sophnet.com/api/open-apis/v1/',
     models: [],
     isSystem: true,
     enabled: false
@@ -801,7 +801,7 @@ export const PROVIDER_URLS: Record<SystemProviderId, ProviderUrls> = {
   },
   sophnet: {
     api: {
-      url: 'https://www.sophnet.com/api/open-apis/v1'
+      url: 'https://www.sophnet.com/api/open-apis/v1/'
     },
     websites: {
       official: 'https://sophnet.com',
