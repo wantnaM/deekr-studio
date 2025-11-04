@@ -221,6 +221,9 @@ const AgentsPage: FC = () => {
               }
             </AgentsListTitle>
             <Flex gap={8}>
+              <Button type="text" icon={<ImportOutlined />}>
+                {t('agents.sync.to_student')}
+              </Button>
               <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
                 {t('agents.import.title')}
               </Button>
