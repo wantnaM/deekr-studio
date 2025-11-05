@@ -4,10 +4,12 @@ import CustomTag from '@renderer/components/CustomTag'
 import ListItem from '@renderer/components/ListItem'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { useAgents } from '@renderer/hooks/useAgents'
+import { syncAgentsToStudents } from '@renderer/services/AdminService/Agent'
+import { getStudentsList } from '@renderer/services/AdminService/Students'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
 import { Agent } from '@renderer/types'
 import { uuid } from '@renderer/utils'
-import { Button, Empty, Flex, Input } from 'antd'
+import { Button, Checkbox, Empty, Flex, Input, message, Modal, Table } from 'antd'
 import { omit } from 'lodash'
 import { Search } from 'lucide-react'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
@@ -29,6 +31,51 @@ const AgentsPage: FC = () => {
   const [agentGroups, setAgentGroups] = useState<Record<string, Agent[]>>({})
   const systemAgents = useSystemAgents()
   const { agents: userAgents } = useAgents()
+
+  // 在 AgentsPage 组件内添加状态
+  const [syncModalVisible, setSyncModalVisible] = useState(false)
+  const [selectedAgents, setSelectedAgents] = useState<string[]>([])
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([])
+
+  // 添加学生接口定义
+  interface Student {
+    id: string
+    username: string
+    nickname: string
+    grade: string
+    classroom: string
+  }
+
+  // 模拟学生数据
+  const [students, setStudents] = useState<Student[]>([])
+
+  const handleSyncToStudents = async () => {
+    const res = await getStudentsList()
+    setStudents(res)
+    setSyncModalVisible(true)
+    setSelectedAgents([])
+    setSelectedStudents([])
+  }
+
+  const handleSyncConfirm = async () => {
+    if (selectedAgents.length === 0 || selectedStudents.length === 0) {
+      message.warning('请选择要同步的智能体和学生')
+      return
+    }
+
+    try {
+      // 调用同步接口
+      await syncAgentsToStudents({
+        ids: selectedAgents,
+        studentIds: selectedStudents
+      })
+
+      message.success('同步成功')
+      setSyncModalVisible(false)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
     const systemAgentsGroupList = groupByCategories(systemAgents)
@@ -221,7 +268,7 @@ const AgentsPage: FC = () => {
               }
             </AgentsListTitle>
             <Flex gap={8}>
-              <Button type="text" icon={<ImportOutlined />}>
+              <Button type="text" icon={<ImportOutlined />} onClick={handleSyncToStudents}>
                 {t('agents.sync.to_student')}
               </Button>
               <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
@@ -252,6 +299,111 @@ const AgentsPage: FC = () => {
           )}
         </AgentsListContainer>
       </Main>
+
+      <Modal
+        title="同步智能体给学生"
+        open={syncModalVisible}
+        onOk={handleSyncConfirm}
+        onCancel={() => setSyncModalVisible(false)}
+        width={800}>
+        <div style={{ marginBottom: 24 }}>
+          <h4>选择智能体</h4>
+          <Checkbox
+            indeterminate={selectedAgents.length > 0 && selectedAgents.length < userAgents.length}
+            checked={selectedAgents.length === userAgents.length}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setSelectedAgents(userAgents.map((agent) => agent.id))
+              } else {
+                setSelectedAgents([])
+              }
+            }}>
+            全选
+          </Checkbox>
+          <div style={{ marginTop: 8, maxHeight: 200, overflow: 'auto' }}>
+            <Table
+              dataSource={userAgents}
+              rowKey="id"
+              pagination={false}
+              size="small"
+              rowSelection={{
+                selectedRowKeys: selectedAgents,
+                onChange: (selectedRowKeys) => setSelectedAgents(selectedRowKeys as string[])
+              }}
+              columns={[
+                {
+                  title: '名称',
+                  dataIndex: 'name',
+                  key: 'name'
+                }
+              ]}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h4>选择学生</h4>
+          <Checkbox
+            indeterminate={selectedStudents.length > 0 && selectedStudents.length < students.length}
+            checked={selectedStudents.length === students.length}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setSelectedStudents(students.map((student) => student.id))
+              } else {
+                setSelectedStudents([])
+              }
+            }}>
+            全选
+          </Checkbox>
+          <div style={{ marginTop: 8, maxHeight: 200, overflow: 'auto' }}>
+            <Table
+              dataSource={students}
+              rowKey="id"
+              pagination={false}
+              size="small"
+              rowSelection={{
+                selectedRowKeys: selectedStudents,
+                onChange: (selectedRowKeys) => setSelectedStudents(selectedRowKeys as string[])
+              }}
+              columns={[
+                {
+                  title: '姓名',
+                  dataIndex: 'username',
+                  key: 'username',
+                  filters: students.map((student) => ({
+                    text: student.nickname,
+                    value: student.nickname
+                  })),
+                  onFilter: (value, record) => record.nickname.includes(value as string),
+                  filterSearch: true
+                },
+                {
+                  title: '年级',
+                  dataIndex: 'grade',
+                  key: 'grade',
+                  filters: Array.from(new Set(students.map((student) => student.grade))).map((grade) => ({
+                    text: grade,
+                    value: grade
+                  })),
+                  onFilter: (value, record) => record.grade.includes(value as string),
+                  filterSearch: true
+                },
+                {
+                  title: '班级',
+                  dataIndex: 'classroom',
+                  key: 'classroom',
+                  filters: Array.from(new Set(students.map((student) => student.classroom))).map((classroom) => ({
+                    text: classroom,
+                    value: classroom
+                  })),
+                  onFilter: (value, record) => record.classroom.includes(value as string),
+                  filterSearch: true
+                }
+              ]}
+            />
+          </div>
+        </div>
+      </Modal>
     </Container>
   )
 }

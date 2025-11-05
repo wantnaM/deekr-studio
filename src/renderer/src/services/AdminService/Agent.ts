@@ -15,3 +15,7 @@ export const deleteAgent = async (id: string) => {
 export const getAgents = async (creator: string) => {
   return await request.get({ url: `/ds/agent/list?creator=${creator}` })
 }
+
+export const syncAgentsToStudents = async (data: any) => {
+  return await request.post({ url: `/ds/agent/sync-to-students`, data })
+}
