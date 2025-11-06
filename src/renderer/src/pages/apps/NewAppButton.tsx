@@ -3,7 +3,7 @@ import { loadCustomMiniApp, ORIGIN_DEFAULT_MIN_APPS, updateDefaultMinApps } from
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { MinAppType } from '@renderer/types'
 import { SubjectTypes } from '@renderer/types'
-import { Button, Form, Input, message, Modal, Radio, Select, Upload } from 'antd'
+import { Button, Col, Form, Input, message, Modal, Radio, Row, Select, Upload } from 'antd'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -49,7 +49,8 @@ const NewAppButton: FC<Props> = ({ size = 60 }) => {
         logo: form.getFieldValue('logo') || '',
         type: 'Custom',
         addTime: new Date().toISOString(),
-        subject: values.subject
+        subject: values.subject,
+        group: values.group // 添加 group 属性
       }
       customApps.push(newApp)
       await window.api.file.writeWithId('custom-minapps.json', JSON.stringify(customApps, null, 2))
@@ -125,18 +126,27 @@ const NewAppButton: FC<Props> = ({ size = 60 }) => {
             rules={[{ required: true, message: t('settings.miniapps.custom.url_error') }]}>
             <Input placeholder={t('settings.miniapps.custom.url_placeholder')} />
           </Form.Item>
-          <Form.Item
-            name="subject"
-            label={t('settings.miniapps.custom.subject')}
-            rules={[{ required: true, message: t('settings.miniapps.custom.subject_error') }]}>
-            <Select placeholder={t('settings.miniapps.custom.subject_placeholder')}>
-              {Object.values(SubjectTypes).map((subject) => (
-                <Select.Option key={subject} value={subject}>
-                  {subject}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="subject"
+                label={t('settings.miniapps.custom.subject')}
+                rules={[{ required: true, message: t('settings.miniapps.custom.subject_error') }]}>
+                <Select placeholder={t('settings.miniapps.custom.subject_placeholder')}>
+                  {Object.values(SubjectTypes).map((subject) => (
+                    <Select.Option key={subject} value={subject}>
+                      {subject}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="group" label={t('settings.miniapps.custom.group')}>
+                <Input placeholder={t('settings.miniapps.custom.group_placeholder')} />
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item label={t('settings.miniapps.custom.logo')}>
             <Radio.Group value={logoType} onChange={handleLogoTypeChange}>
               <Radio value="url">{t('settings.miniapps.custom.logo_url')}</Radio>

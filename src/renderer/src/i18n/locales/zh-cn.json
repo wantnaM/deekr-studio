@@ -425,7 +425,8 @@
         "pinyin.asc": "按拼音升序",
         "pinyin.desc": "按拼音降序"
       },
-      "no_results": "无结果"
+      "no_results": "无结果",
+      "other": "其他"
     },
     "docs": {
       "title": "帮助文档"
@@ -1339,7 +1340,7 @@
           "title": "在浏览器中打开新窗口链接"
         },
         "custom": {
-          "title": "自定义",
+          "title": "新增自定义小程序",
           "edit_title": "编辑自定义小程序",
           "save_success": "自定义小程序保存成功",
           "save_error": "自定义小程序保存失败",
@@ -1358,7 +1359,9 @@
           "url_placeholder": "请输入 URL",
           "subject": "学科",
           "subject_error": "学科 是必填项",
-          "subject_placeholder": "请输入 学科",
+          "subject_placeholder": "请选择 学科",
+          "group": "分组",
+          "group_placeholder": "如AI大模型、学术研究",
           "logo": "Logo",
           "logo_url": "Logo URL",
           "logo_file": "上传 Logo 文件",

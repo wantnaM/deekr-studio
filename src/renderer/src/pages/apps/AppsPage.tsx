@@ -3,7 +3,7 @@ import { Center } from '@renderer/components/Layout'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { SubjectTypes } from '@renderer/types'
 import { Button, Empty, Input, Tag } from 'antd'
-import { isEmpty } from 'lodash'
+import { groupBy, isEmpty } from 'lodash'
 import { Search, SettingsIcon, X } from 'lucide-react'
 import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,15 +34,23 @@ const AppsPage: FC = () => {
   })
 
   // Calculate the required number of lines
-  const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
-  const rowCount = Math.ceil((filteredApps.length + 1) / itemsPerRow) // +1 for the add button
+  // const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
+  // const rowCount = Math.ceil((filteredApps.length + 1) / itemsPerRow) // +1 for the add button
   // Each line height is 85px (60px icon + 5px margin + 12px text + spacing)
-  const containerHeight = rowCount * 85 + (rowCount - 1) * 25 // 25px is the line spacing.
+  // const containerHeight = rowCount * 85 + (rowCount - 1) * 25 // 25px is the line spacing.
 
   // Disable right-click menu in blank area
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault()
   }
+
+  // 按学科筛选
+  const subjectFilteredApps = selectedSubject
+    ? filteredApps.filter((app) => app.subject?.includes(selectedSubject))
+    : filteredApps
+
+  // 按分组分类，未分组的应用归类到'其他'
+  const groupedApps = groupBy(subjectFilteredApps, (app) => app.group || t('common.other'))
 
   useEffect(() => {
     setIsSettingsOpen(false)
@@ -121,12 +129,19 @@ const AppsPage: FC = () => {
                 <Empty />
               </Center>
             ) : (
-              <AppsContainer style={{ height: containerHeight }}>
-                {filteredApps.map((app) => (
-                  <App key={app.id} app={app} />
+              <div style={{ width: '100%', maxWidth: 930 }}>
+                {Object.entries(groupedApps).map(([groupName, apps]) => (
+                  <div key={groupName} style={{ marginBottom: 40 }}>
+                    <GroupTitle>{groupName}</GroupTitle>
+                    <AppsContainer>
+                      {apps.map((app) => (
+                        <App key={app.id} app={app} />
+                      ))}
+                    </AppsContainer>
+                  </div>
                 ))}
                 <NewAppButton />
-              </AppsContainer>
+              </div>
             )}
           </>
         )}
@@ -177,5 +192,14 @@ const SubjectRow = styled.div`
   gap: 8px;
   width: 100%;
   margin-bottom: 8px;
+`
+
+const GroupTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
 `
 export default AppsPage
