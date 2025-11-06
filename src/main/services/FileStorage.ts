@@ -226,13 +226,16 @@ class FileStorage {
       const originalCwd = process.cwd()
       try {
         chdir(this.tempDir)
-
         if (fileExtension === '.doc') {
-          const WordExtractor = require('word-extractor')
-          const extractor = new WordExtractor()
-          const extracted = await extractor.extract(filePath)
-          chdir(originalCwd)
-          return extracted.getBody()
+          try {
+            const WordExtractor = require('word-extractor')
+            const extractor = new WordExtractor()
+            const extracted = await extractor.extract(filePath)
+            chdir(originalCwd)
+            return extracted.getBody()
+          } catch (wordExtractorError) {
+            logger.warn('[FileStorage] word-extractor failed, falling back to officeParser:', wordExtractorError)
+          }
         }
 
         const data = await officeParser.parseOfficeAsync(filePath)
