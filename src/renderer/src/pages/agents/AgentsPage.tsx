@@ -4,6 +4,7 @@ import CustomTag from '@renderer/components/CustomTag'
 import ListItem from '@renderer/components/ListItem'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { useAgents } from '@renderer/hooks/useAgents'
+import { useUser } from '@renderer/hooks/useUser'
 import { syncAgentsToStudents } from '@renderer/services/AdminService/Agent'
 import { getStudentsList } from '@renderer/services/AdminService/Students'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
@@ -31,6 +32,8 @@ const AgentsPage: FC = () => {
   const [agentGroups, setAgentGroups] = useState<Record<string, Agent[]>>({})
   const systemAgents = useSystemAgents()
   const { agents: userAgents } = useAgents()
+  const { isLoggedIn, type } = useUser()
+  console.log('type', type)
 
   // 在 AgentsPage 组件内添加状态
   const [syncModalVisible, setSyncModalVisible] = useState(false)
@@ -268,6 +271,15 @@ const AgentsPage: FC = () => {
               }
             </AgentsListTitle>
             <Flex gap={8}>
+              {isLoggedIn && (
+                <>
+                  {type === 3 && (
+                    <Button type="text" icon={<CloudSyncOutlined />} onClick={handleSyncToStudents}>
+                      {t('agents.sync.to_student')}
+                    </Button>
+                  )}
+                </>
+              )}
               <Button type="text" icon={<CloudSyncOutlined />} onClick={handleSyncToStudents}>
                 {t('agents.sync.to_student')}
               </Button>
