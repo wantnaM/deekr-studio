@@ -1,4 +1,4 @@
-import { ImportOutlined, PlusOutlined } from '@ant-design/icons'
+import { CloudSyncOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons'
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import CustomTag from '@renderer/components/CustomTag'
 import ListItem from '@renderer/components/ListItem'
@@ -268,7 +268,7 @@ const AgentsPage: FC = () => {
               }
             </AgentsListTitle>
             <Flex gap={8}>
-              <Button type="text" icon={<ImportOutlined />} onClick={handleSyncToStudents}>
+              <Button type="text" icon={<CloudSyncOutlined />} onClick={handleSyncToStudents}>
                 {t('agents.sync.to_student')}
               </Button>
               <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
