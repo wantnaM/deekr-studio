@@ -1625,6 +1625,15 @@ const migrateConfig = {
     } catch (error) {
       return state
     }
+  },
+  '116': (state: RootState) => {
+    try {
+      addMiniApp(state, 'autoglm')
+      addMiniApp(state, 'khanacademy')
+      return state
+    } catch (error) {
+      return state
+    }
   }
 }
 

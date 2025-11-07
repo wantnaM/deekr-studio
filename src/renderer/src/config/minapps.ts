@@ -1,5 +1,6 @@
 import AiPPTLogo from '@renderer/assets/images/apps/aippt.png?url'
 import ApplicationLogo from '@renderer/assets/images/apps/application.png?url'
+import AutoGLMLogo from '@renderer/assets/images/apps/autoglm.svg?url'
 import BaiduAiAppLogo from '@renderer/assets/images/apps/baidu-ai.png?url'
 import BaiduAiSearchLogo from '@renderer/assets/images/apps/baidu-ai-search.webp?url'
 import BaicuanAppLogo from '@renderer/assets/images/apps/baixiaoying.webp?url'
@@ -12,6 +13,7 @@ import FittenCodeLogo from '@renderer/assets/images/apps/fitten-code.png?url'
 // import GeminiAppLogo from '@renderer/assets/images/apps/gemini.png?url'
 import IflyrecLogo from '@renderer/assets/images/apps/iflyrec.png?url'
 import ISlideLogo from '@renderer/assets/images/apps/iSlide.jpg?url'
+import KhanacademyLogo from '@renderer/assets/images/apps/khanacademy.png?url'
 import KimiAppLogo from '@renderer/assets/images/apps/kimi.webp?url'
 import LaiHuaLogo from '@renderer/assets/images/apps/laihua.png?url'
 import MathgptLogo from '@renderer/assets/images/apps/mathgpt.jpg?url'
@@ -421,9 +423,29 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
     name: '组卷网',
     logo: ZujuanLogo,
     url: 'https://zujuan.xkw.com/',
-    bodered: false,
+    bodered: true,
     group: '实用网站',
     desc: '组卷网是一个提供初高中同步备课、阶段练习、高考备考、二模等多种教学服务的在线平台',
+    subject: []
+  },
+  {
+    id: 'autoglm',
+    name: 'AutoGLM',
+    logo: AutoGLMLogo,
+    url: 'https://autoglm.zhipuai.cn/',
+    bodered: false,
+    group: 'AI大模型',
+    desc: 'AutoGLM基于国产GLM模型，具备推理、代码和多模态能力。AutoGLM实现了云端执行，不占用用户本地设备资源，用户通过语音指令让其完成各种操作，如点外卖、订机票、查房源等',
+    subject: []
+  },
+  {
+    id: 'khanacademy',
+    name: '可汗学院',
+    logo: KhanacademyLogo,
+    url: 'https://zh.khanacademy.org/',
+    bodered: true,
+    group: '实用网站',
+    desc: '可汗学院是于2009年创立的教育性非营利组织，通过在线图书馆提供数学、物理、化学等学科的免费教学资源，机构使命为加快各年龄学生的学习速度',
     subject: []
   }
 ]
