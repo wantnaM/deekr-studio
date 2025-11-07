@@ -107,6 +107,8 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    - 优化注册流程，提升用户体验
-    - 小程序增加组卷网和科学网
-    - 界面优化
+    - 优化:用户注册学校信息支持用户自定义
+    - 优化:小程序分类页改为“按组”排版
+    - 新增:教师可将智能体一键分发给学生
+    - 优化:修复特定情况下读取.doc文档失败
+    - 新增:小程序添加AutoGLM、可汗学院
