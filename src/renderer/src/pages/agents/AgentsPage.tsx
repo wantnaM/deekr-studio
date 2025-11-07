@@ -280,9 +280,6 @@ const AgentsPage: FC = () => {
                   )}
                 </>
               )}
-              <Button type="text" icon={<CloudSyncOutlined />} onClick={handleSyncToStudents}>
-                {t('agents.sync.to_student')}
-              </Button>
               <Button type="text" onClick={handleImportAgent} icon={<ImportOutlined />}>
                 {t('agents.import.title')}
               </Button>
