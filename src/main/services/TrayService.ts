@@ -1,6 +1,7 @@
 import { isLinux, isMac, isWin } from '@main/constant'
 import { locales } from '@main/utils/locales'
-import { app, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, Tray } from 'electron'
+import type { MenuItemConstructorOptions } from 'electron'
+import { app, Menu, nativeImage, nativeTheme, Tray } from 'electron'
 
 import icon from '../../../build/tray_icon.png?asset'
 import iconDark from '../../../build/tray_icon_dark.png?asset'
@@ -84,10 +85,8 @@ export class TrayService {
         label: trayLocale.show_mini_window,
         click: () => windowService.showMiniWindow()
       },
-      isWin && {
+      (isWin || isMac) && {
         label: selectionLocale.name + (selectionAssistantEnabled ? ' - On' : ' - Off'),
-        // type: 'checkbox',
-        // checked: selectionAssistantEnabled,
         click: () => {
           if (selectionService) {
             selectionService.toggleEnabled()

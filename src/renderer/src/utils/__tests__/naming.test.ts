@@ -1,13 +1,15 @@
+import type { Provider, SystemProvider } from '@renderer/types'
 import { describe, expect, it } from 'vitest'
 
 import {
   firstLetter,
-  generateColorFromChar,
   getBaseModelName,
   getBriefInfo,
   getDefaultGroupName,
+  getFancyProviderName,
   getFirstCharacter,
   getLeadingEmoji,
+  getLowerBaseModelName,
   isEmoji,
   removeLeadingEmoji,
   removeSpecialCharactersForTopicName
@@ -172,7 +174,6 @@ describe('naming', () => {
 
     it('should return original id if no delimiter found', () => {
       expect(getBaseModelName('deepseek-r1')).toBe('deepseek-r1')
-      expect(getBaseModelName('deepseek-r1:free')).toBe('deepseek-r1:free')
     })
 
     it('should handle edge cases', () => {
@@ -190,25 +191,36 @@ describe('naming', () => {
     })
   })
 
-  describe('generateColorFromChar', () => {
-    it('should generate a valid hex color code', () => {
-      // 验证生成有效的十六进制颜色代码
-      const result = generateColorFromChar('A')
-      expect(result).toMatch(/^#[0-9a-fA-F]{6}$/)
+  describe('getLowerBaseModelName', () => {
+    it('should convert base model name to lowercase', () => {
+      // 验证将基础模型名称转换为小写
+      expect(getLowerBaseModelName('DeepSeek/DeepSeek-R1')).toBe('deepseek-r1')
+      expect(getLowerBaseModelName('openai/GPT-4.1')).toBe('gpt-4.1')
+      expect(getLowerBaseModelName('Anthropic/Claude-3.5-Sonnet')).toBe('claude-3.5-sonnet')
     })
 
-    it('should generate consistent color for same input', () => {
-      // 验证相同输入生成一致的颜色
-      const result1 = generateColorFromChar('A')
-      const result2 = generateColorFromChar('A')
-      expect(result1).toBe(result2)
+    it('should handle multiple levels of paths', () => {
+      // 验证处理多层路径
+      expect(getLowerBaseModelName('Pro/DeepSeek-AI/DeepSeek-R1')).toBe('deepseek-r1')
+      expect(getLowerBaseModelName('Org/Team/Group/Model')).toBe('model')
     })
 
-    it('should generate different colors for different inputs', () => {
-      // 验证不同输入生成不同的颜色
-      const result1 = generateColorFromChar('A')
-      const result2 = generateColorFromChar('B')
-      expect(result1).not.toBe(result2)
+    it('should return lowercase original id if no delimiter found', () => {
+      // 验证没有分隔符时返回小写原始ID
+      expect(getLowerBaseModelName('DeepSeek-R1')).toBe('deepseek-r1')
+      expect(getLowerBaseModelName('GPT-4')).toBe('gpt-4')
+    })
+
+    it('should handle edge cases', () => {
+      // 验证边缘情况
+      expect(getLowerBaseModelName('')).toBe('')
+      expect(getLowerBaseModelName('Model/')).toBe('')
+      expect(getLowerBaseModelName('/Model')).toBe('model')
+      expect(getLowerBaseModelName('Model//Name')).toBe('name')
+    })
+
+    it('should remove trailing :free', () => {
+      expect(getLowerBaseModelName('gpt-4:free')).toBe('gpt-4')
     })
   })
 
@@ -253,6 +265,34 @@ describe('naming', () => {
       // 验证自定义最大长度
       const text = 'This is a long text'
       expect(getBriefInfo(text, 5)).toBe('This...')
+    })
+  })
+
+  describe('getFancyProviderName', () => {
+    it('should get i18n name for system provider', () => {
+      const mockSystemProvider: SystemProvider = {
+        id: 'dashscope',
+        type: 'openai',
+        name: 'whatever',
+        apiHost: 'whatever',
+        apiKey: 'whatever',
+        models: [],
+        isSystem: true
+      }
+      // 默认 i18n 环境是 en-us
+      expect(getFancyProviderName(mockSystemProvider)).toBe('Alibaba Cloud')
+    })
+
+    it('should get name for custom provider', () => {
+      const mockProvider: Provider = {
+        id: 'whatever',
+        type: 'openai',
+        name: '好名字',
+        apiHost: 'whatever',
+        apiKey: 'whatever',
+        models: []
+      }
+      expect(getFancyProviderName(mockProvider)).toBe('好名字')
     })
   })
 })

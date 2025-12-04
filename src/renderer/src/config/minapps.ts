@@ -37,7 +37,12 @@ import ZujuanLogo from '@renderer/assets/images/apps/zujuan.webp?url'
 import HailuoModelLogo from '@renderer/assets/images/models/hailuo.png?url'
 import QwenModelLogo from '@renderer/assets/images/models/qwen.png?url'
 import DeepSeekProviderLogo from '@renderer/assets/images/providers/deepseek.png?url'
-import { MinAppType, SubjectTypes } from '@renderer/types'
+import i18n from '@renderer/i18n'
+import type { MinAppType } from '@renderer/types'
+import { SubjectTypes } from '@renderer/types'
+import { loggerService } from '@logger'
+
+const logger = loggerService.withContext('Config:minapps')
 
 // 加载自定义小应用
 const loadCustomMiniApp = async (): Promise<MinAppType[]> => {
@@ -61,7 +66,7 @@ const loadCustomMiniApp = async (): Promise<MinAppType[]> => {
       addTime: app.addTime || now
     }))
   } catch (error) {
-    console.error('Failed to load custom mini apps:', error)
+    logger.error('Failed to load custom mini apps:', error as Error)
     return []
   }
 }
@@ -119,7 +124,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'zhipu',
-    name: '智谱清言',
+    name: i18n.t('minapps.chatglm'),
     url: 'https://chatglm.cn/main/alltoolsdetail',
     logo: ZhipuProviderLogo,
     group: 'AI大模型',
@@ -136,7 +141,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'baichuan',
-    name: '百小应',
+    name: i18n.t('minapps.baichuan'),
     url: 'https://ying.baichuan-ai.com/chat',
     logo: BaicuanAppLogo,
     group: 'AI大模型',
@@ -161,7 +166,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'doubao',
-    name: '豆包',
+    name: i18n.t('minapps.doubao'),
     url: 'https://www.doubao.com/chat/',
     logo: DoubaoAppLogo,
     group: 'AI大模型',
@@ -178,7 +183,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'baidu-ai-chat',
-    name: '文心一言',
+    name: i18n.t('minapps.wenxin'),
     logo: BaiduAiAppLogo,
     url: 'https://yiyan.baidu.com/',
     group: 'AI大模型',
@@ -187,7 +192,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'tencent-yuanbao',
-    name: '腾讯元宝',
+    name: i18n.t('minapps.tencent-yuanbao'),
     logo: TencentYuanbaoAppLogo,
     url: 'https://yuanbao.tencent.com/chat',
     bodered: true,
@@ -205,7 +210,7 @@ const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   },
   {
     id: 'nm',
-    name: '纳米AI',
+    name: i18n.t('minapps.nami-ai'),
     logo: NamiAiLogo,
     url: 'https://bot.n.cn/',
     bodered: true,

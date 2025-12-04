@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 interface Props {
   disabled: boolean
@@ -15,6 +15,7 @@ const SendMessageButton: FC<Props> = ({ disabled, sendMessage }) => {
         color: disabled ? 'var(--color-text-3)' : 'var(--color-primary)',
         fontSize: 22,
         transition: 'all 0.2s',
+        marginTop: 1,
         marginRight: 2
       }}
     />

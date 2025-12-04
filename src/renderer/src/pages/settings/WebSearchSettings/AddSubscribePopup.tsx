@@ -1,5 +1,6 @@
 import { TopView } from '@renderer/components/TopView'
-import { Button, Form, FormProps, Input, Modal } from 'antd'
+import type { FormProps } from 'antd'
+import { Button, Flex, Form, Input, Modal } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -38,7 +39,7 @@ const PopupContainer: React.FC<Props> = ({ title, resolve }) => {
     const name = values.name?.trim() || url
 
     if (!url) {
-      window.message.error(t('settings.websearch.url_required'))
+      window.toast.error(t('settings.tool.websearch.url_required'))
       return
     }
 
@@ -46,7 +47,7 @@ const PopupContainer: React.FC<Props> = ({ title, resolve }) => {
     try {
       new URL(url)
     } catch (e) {
-      window.message.error(t('settings.websearch.url_invalid'))
+      window.toast.error(t('settings.tool.websearch.url_invalid'))
       return
     }
 
@@ -66,12 +67,12 @@ const PopupContainer: React.FC<Props> = ({ title, resolve }) => {
       centered>
       <Form
         form={form}
-        labelCol={{ flex: '150px' }}
+        labelCol={{ flex: '110px' }}
         labelAlign="right"
         colon={false}
         style={{ marginTop: 25 }}
         onFinish={onFinish}>
-        <Form.Item name="url" label={t('settings.websearch.subscribe_url')} rules={[{ required: true }]}>
+        <Form.Item name="url" label={t('settings.tool.websearch.subscribe_url')} rules={[{ required: true }]}>
           <Input
             placeholder="https://git.io/ublacklist"
             spellCheck={false}
@@ -86,14 +87,14 @@ const PopupContainer: React.FC<Props> = ({ title, resolve }) => {
             }}
           />
         </Form.Item>
-        <Form.Item name="name" label={t('settings.websearch.subscribe_name')}>
-          <Input placeholder={t('settings.websearch.subscribe_name.placeholder')} spellCheck={false} />
+        <Form.Item name="name" label={t('settings.tool.websearch.subscribe_name.label')}>
+          <Input placeholder={t('settings.tool.websearch.subscribe_name.placeholder')} spellCheck={false} />
         </Form.Item>
-        <Form.Item label=" ">
+        <Flex justify="end" style={{ marginBottom: 8 }}>
           <Button type="primary" htmlType="submit">
-            {t('settings.websearch.subscribe_add')}
+            {t('settings.tool.websearch.subscribe_add')}
           </Button>
-        </Form.Item>
+        </Flex>
       </Form>
     </Modal>
   )

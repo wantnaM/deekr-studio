@@ -1,14 +1,15 @@
-import { SyncOutlined } from '@ant-design/icons'
 import CodeEditor from '@renderer/components/CodeEditor'
+import { ResetIcon } from '@renderer/components/Icons'
 import { HStack } from '@renderer/components/Layout'
+import TextBadge from '@renderer/components/TextBadge'
 import { isMac, THEME_COLOR_PRESETS } from '@renderer/config/constant'
+import { DEFAULT_SIDEBAR_ICONS } from '@renderer/config/sidebar'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { useSettings } from '@renderer/hooks/useSettings'
+import { useNavbarPosition, useSettings } from '@renderer/hooks/useSettings'
 import useUserTheme from '@renderer/hooks/useUserTheme'
 import { useAppDispatch } from '@renderer/store'
+import type { AssistantIconType } from '@renderer/store/settings'
 import {
-  AssistantIconType,
-  DEFAULT_SIDEBAR_ICONS,
   setAssistantIconType,
   setClickAssistantToShowTopic,
   setCustomCss,
@@ -17,9 +18,10 @@ import {
   setSidebarIcons
 } from '@renderer/store/settings'
 import { ThemeMode } from '@renderer/types'
-import { Button, ColorPicker, Segmented, Switch } from 'antd'
-import { Minus, Plus, RotateCcw } from 'lucide-react'
-import { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { Button, ColorPicker, Segmented, Select, Switch } from 'antd'
+import { Minus, Monitor, Moon, Plus, Sun } from 'lucide-react'
+import type { FC } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -68,6 +70,7 @@ const DisplaySettings: FC = () => {
     assistantIconType,
     userTheme
   } = useSettings()
+  const { navbarPosition, setNavbarPosition } = useNavbarPosition()
   const { theme, settedTheme } = useTheme()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -76,6 +79,7 @@ const DisplaySettings: FC = () => {
 
   const [visibleIcons, setVisibleIcons] = useState(sidebarIcons?.visible || DEFAULT_SIDEBAR_ICONS)
   const [disabledIcons, setDisabledIcons] = useState(sidebarIcons?.disabled || [])
+  const [fontList, setFontList] = useState<string[]>([])
 
   const handleWindowStyleChange = useCallback(
     (checked: boolean) => {
@@ -106,7 +110,7 @@ const DisplaySettings: FC = () => {
         value: ThemeMode.light,
         label: (
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <i className="iconfont icon-theme icon-theme-light" />
+            <Sun size={16} />
             <span>{t('settings.theme.light')}</span>
           </div>
         )
@@ -115,7 +119,7 @@ const DisplaySettings: FC = () => {
         value: ThemeMode.dark,
         label: (
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <i className="iconfont icon-theme icon-dark1" />
+            <Moon size={16} />
             <span>{t('settings.theme.dark')}</span>
           </div>
         )
@@ -124,7 +128,7 @@ const DisplaySettings: FC = () => {
         value: ThemeMode.system,
         label: (
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <SyncOutlined />
+            <Monitor size={16} />
             <span>{t('settings.theme.system')}</span>
           </div>
         )
@@ -134,6 +138,11 @@ const DisplaySettings: FC = () => {
   )
 
   useEffect(() => {
+    // 初始化获取所有系统字体
+    window.api.getSystemFonts().then((fonts: string[]) => {
+      setFontList(fonts)
+    })
+
     // 初始化获取当前缩放值
     window.api.handleZoomFactor(0).then((factor) => {
       setCurrentZoom(factor)
@@ -157,6 +166,26 @@ const DisplaySettings: FC = () => {
     const zoomFactor = await window.api.handleZoomFactor(delta, reset)
     setCurrentZoom(zoomFactor)
   }
+
+  const handleUserFontChange = useCallback(
+    (value: string) => {
+      setUserTheme({
+        ...userTheme,
+        userFontFamily: value
+      })
+    },
+    [setUserTheme, userTheme]
+  )
+
+  const handleUserCodeFontChange = useCallback(
+    (value: string) => {
+      setUserTheme({
+        ...userTheme,
+        userCodeFontFamily: value
+      })
+    },
+    [setUserTheme, userTheme]
+  )
 
   const assistantIconTypeOptions = useMemo(
     () => [
@@ -192,11 +221,12 @@ const DisplaySettings: FC = () => {
               ))}
             </HStack>
             <ColorPicker
+              style={{ fontFamily: 'inherit' }}
               className="color-picker"
               value={userTheme.colorPrimary}
               onChange={(color) => handleColorPrimaryChange(color.toHexString())}
               showText
-              style={{ width: '110px' }}
+              size="small"
               presets={[
                 {
                   label: 'Presets',
@@ -217,27 +247,116 @@ const DisplaySettings: FC = () => {
         )}
       </SettingGroup>
       <SettingGroup theme={theme}>
+        <SettingTitle style={{ justifyContent: 'flex-start', gap: 5 }}>
+          {t('settings.display.navbar.title')} <TextBadge text="New" />
+        </SettingTitle>
+        <SettingDivider />
+        <SettingRow>
+          <SettingRowTitle>{t('settings.display.navbar.position.label')}</SettingRowTitle>
+          <Segmented
+            value={navbarPosition}
+            shape="round"
+            onChange={setNavbarPosition}
+            options={[
+              { label: t('settings.display.navbar.position.left'), value: 'left' },
+              { label: t('settings.display.navbar.position.top'), value: 'top' }
+            ]}
+          />
+        </SettingRow>
+      </SettingGroup>
+      <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.display.zoom.title')}</SettingTitle>
         <SettingDivider />
         <SettingRow>
           <SettingRowTitle>{t('settings.zoom.title')}</SettingRowTitle>
           <ZoomButtonGroup>
-            <Button onClick={() => handleZoomFactor(-0.1)} icon={<Minus size="14" />} />
+            <Button onClick={() => handleZoomFactor(-0.1)} icon={<Minus size="14" />} color="default" variant="text" />
             <ZoomValue>{Math.round(currentZoom * 100)}%</ZoomValue>
-            <Button onClick={() => handleZoomFactor(0.1)} icon={<Plus size="14" />} />
+            <Button onClick={() => handleZoomFactor(0.1)} icon={<Plus size="14" />} color="default" variant="text" />
             <Button
               onClick={() => handleZoomFactor(0, true)}
               style={{ marginLeft: 8 }}
-              icon={<RotateCcw size="14" />}
+              icon={<ResetIcon size="14" />}
+              color="default"
+              variant="text"
             />
           </ZoomButtonGroup>
+        </SettingRow>
+      </SettingGroup>
+      <SettingGroup theme={theme}>
+        <SettingTitle style={{ justifyContent: 'flex-start', gap: 5 }}>
+          {t('settings.display.font.title')} <TextBadge text="New" />
+        </SettingTitle>
+        <SettingDivider />
+        <SettingRow>
+          <SettingRowTitle>{t('settings.display.font.global')}</SettingRowTitle>
+          <SelectRow>
+            <Select
+              style={{ width: 200 }}
+              placeholder={t('settings.display.font.select')}
+              options={[
+                {
+                  label: (
+                    <span style={{ fontFamily: 'Ubuntu, -apple-system, system-ui, Arial, sans-serif' }}>
+                      {t('settings.display.font.default')}
+                    </span>
+                  ),
+                  value: ''
+                },
+                ...fontList.map((font) => ({ label: <span style={{ fontFamily: font }}>{font}</span>, value: font }))
+              ]}
+              value={userTheme.userFontFamily || ''}
+              onChange={(font) => handleUserFontChange(font)}
+              showSearch
+              getPopupContainer={(triggerNode) => triggerNode.parentElement || document.body}
+            />
+            <Button
+              onClick={() => handleUserFontChange('')}
+              style={{ marginLeft: 8 }}
+              icon={<ResetIcon size="14" />}
+              color="default"
+              variant="text"
+            />
+          </SelectRow>
+        </SettingRow>
+        <SettingDivider />
+        <SettingRow>
+          <SettingRowTitle>{t('settings.display.font.code')}</SettingRowTitle>
+          <SelectRow>
+            <Select
+              style={{ width: 200 }}
+              placeholder={t('settings.display.font.select')}
+              options={[
+                {
+                  label: (
+                    <span style={{ fontFamily: 'Ubuntu, -apple-system, system-ui, Arial, sans-serif' }}>
+                      {t('settings.display.font.default')}
+                    </span>
+                  ),
+                  value: ''
+                },
+                ...fontList.map((font) => ({ label: <span style={{ fontFamily: font }}>{font}</span>, value: font }))
+              ]}
+              value={userTheme.userCodeFontFamily || ''}
+              onChange={(font) => handleUserCodeFontChange(font)}
+              showSearch
+              getPopupContainer={(triggerNode) => triggerNode.parentElement || document.body}
+            />
+            <Button
+              onClick={() => handleUserCodeFontChange('')}
+              style={{ marginLeft: 8 }}
+              icon={<ResetIcon size="14" />}
+              color="default"
+              variant="text"
+            />
+          </SelectRow>
         </SettingRow>
       </SettingGroup>
       <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.display.topic.title')}</SettingTitle>
         <SettingDivider />
         <SettingRow>
-          <SettingRowTitle>{t('settings.topic.position')}</SettingRowTitle>
+          <SettingRowTitle>{t('settings.topic.position.label')}</SettingRowTitle>
           <Segmented
             value={topicPosition || 'right'}
             shape="round"
@@ -275,7 +394,7 @@ const DisplaySettings: FC = () => {
         <SettingTitle>{t('settings.display.assistant.title')}</SettingTitle>
         <SettingDivider />
         <SettingRow>
-          <SettingRowTitle>{t('settings.assistant.icon.type')}</SettingRowTitle>
+          <SettingRowTitle>{t('settings.assistant.icon.type.label')}</SettingRowTitle>
           <Segmented
             value={assistantIconType}
             shape="round"
@@ -284,25 +403,27 @@ const DisplaySettings: FC = () => {
           />
         </SettingRow>
       </SettingGroup>
-      <SettingGroup theme={theme}>
-        <SettingTitle
-          style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>{t('settings.display.sidebar.title')}</span>
-          <ResetButtonWrapper>
-            <Button onClick={handleReset}>{t('common.reset')}</Button>
-          </ResetButtonWrapper>
-        </SettingTitle>
-        <SettingDivider />
-        <SidebarIconsManager
-          visibleIcons={visibleIcons}
-          disabledIcons={disabledIcons}
-          setVisibleIcons={setVisibleIcons}
-          setDisabledIcons={setDisabledIcons}
-        />
-      </SettingGroup>
+      {navbarPosition === 'left' && (
+        <SettingGroup theme={theme}>
+          <SettingTitle
+            style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>{t('settings.display.sidebar.title')}</span>
+            <ResetButtonWrapper>
+              <Button onClick={handleReset}>{t('common.reset')}</Button>
+            </ResetButtonWrapper>
+          </SettingTitle>
+          <SettingDivider />
+          <SidebarIconsManager
+            visibleIcons={visibleIcons}
+            disabledIcons={disabledIcons}
+            setVisibleIcons={setVisibleIcons}
+            setDisabledIcons={setDisabledIcons}
+          />
+        </SettingGroup>
+      )}
       <SettingGroup theme={theme}>
         <SettingTitle>
-          {t('settings.display.custom.css')}
+          {t('settings.display.custom.css.label')}
           <TitleExtra onClick={() => window.api.openWebsite('https://cherrycss.com/')}>
             {t('settings.display.custom.css.cherrycss')}
           </TitleExtra>
@@ -313,10 +434,10 @@ const DisplaySettings: FC = () => {
           language="css"
           placeholder={t('settings.display.custom.css.placeholder')}
           onChange={(value) => dispatch(setCustomCss(value))}
-          height="350px"
+          height="60vh"
+          expanded={false}
+          wrapped
           options={{
-            collapsible: true,
-            wrappable: true,
             autocompletion: true,
             lineNumbers: true,
             foldGutter: true,
@@ -353,6 +474,13 @@ const ZoomValue = styled.span`
   width: 40px;
   text-align: center;
   margin: 0 5px;
+`
+
+const SelectRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 300px;
 `
 
 export default DisplaySettings

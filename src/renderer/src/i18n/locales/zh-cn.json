@@ -1,16 +1,10 @@
 {
-  "translation": {
-    "agents": {
-      "add.button": "添加到助手",
-      "add.knowledge_base": "知识库",
-      "add.knowledge_base.placeholder": "选择知识库",
-      "add.name": "名称",
-      "add.name.placeholder": "输入名称",
-      "add.prompt": "提示词",
-      "add.prompt.placeholder": "输入提示词",
-      "add.prompt.variables.tip": {
-        "title": "可用的变量",
-        "content": "{{date}}:\t日期\n{{time}}:\t时间\n{{datetime}}:\t日期和时间\n{{system}}:\t操作系统\n{{arch}}:\tCPU架构\n{{language}}:\t语言\n{{model_name}}:\t模型名称\n{{username}}:\t用户名"
+  "agent": {
+    "add": {
+      "description": "调用各种工具处理复杂任务",
+      "error": {
+        "failed": "添加 Agent 失败",
+        "invalid_agent": "无效的 Agent"
       },
       "add.title": "创建智能体",
       "import": {
@@ -28,9 +22,6 @@
           "fetch_failed": "从 URL 获取数据失败",
           "invalid_format": "无效的代理格式：缺少必填字段"
         }
-      },
-      "sync": {
-        "to_student": "同步给学生"
       },
       "export": {
         "agent": "导出智能体"
@@ -91,164 +82,373 @@
       "settings.regular_phrases": {
         "title": "常用短语",
         "add": "添加短语",
-        "edit": "编辑短语",
+        "contentLabel": "内容",
+        "contentPlaceholder": "请输入短语内容，支持使用变量，然后按 Tab 键可以快速定位到变量进行修改。比如：\n帮我规划从 ${from} 到 ${to} 的路线，然后发送到 ${email}",
         "delete": "删除短语",
         "deleteConfirm": "确定要删除这个短语吗？",
+        "edit": "编辑短语",
+        "title": "常用短语",
         "titleLabel": "标题",
-        "titlePlaceholder": "输入标题",
-        "contentLabel": "内容",
-        "contentPlaceholder": "请输入短语内容，支持使用变量，然后按Tab键可以快速定位到变量进行修改。比如：\n帮我规划从${from}到${to}的路线，然后发送到${email}"
+        "titlePlaceholder": "输入标题"
       },
-      "list": {
-        "showByList": "列表展示",
-        "showByTags": "标签展示"
+      "title": "助手设置",
+      "tool_use_mode": {
+        "function": "函数",
+        "label": "工具调用方式",
+        "prompt": "提示词"
+      }
+    },
+    "tags": {
+      "add": "添加标签",
+      "delete": "删除标签",
+      "deleteConfirm": "确定要删除这个标签吗？",
+      "manage": "标签管理",
+      "modify": "修改标签",
+      "none": "暂无标签",
+      "settings": {
+        "title": "标签设置"
       },
-      "tags": {
-        "none": "暂无标签",
-        "manage": "标签管理",
-        "add": "添加标签",
-        "untagged": "未分组",
-        "modify": "修改标签",
-        "delete": "删除标签",
-        "deleteConfirm": "确定要删除这个标签吗？",
-        "settings": {
-          "title": "标签设置"
+      "untagged": "未分组"
+    },
+    "title": "助手"
+  },
+  "auth": {
+    "error": "自动获取密钥失败，请手动获取",
+    "get_key": "获取",
+    "get_key_success": "自动获取密钥成功",
+    "login": "登录",
+    "oauth_button": "使用 {{provider}} 登录"
+  },
+  "backup": {
+    "confirm": {
+      "button": "选择备份位置",
+      "label": "确定要备份数据吗？"
+    },
+    "content": "备份全部数据，包括聊天记录、设置、知识库等所有数据。请注意，备份过程可能需要一些时间，感谢您的耐心等待",
+    "progress": {
+      "completed": "备份完成",
+      "compressing": "压缩文件...",
+      "copying_files": "复制文件... {{progress}}%",
+      "preparing": "准备备份...",
+      "preparing_compression": "准备压缩...",
+      "title": "备份进度",
+      "writing_data": "写入数据..."
+    },
+    "title": "数据备份"
+  },
+  "button": {
+    "add": "添加",
+    "added": "已添加",
+    "case_sensitive": "区分大小写",
+    "collapse": "收起",
+    "download": "下载",
+    "includes_user_questions": "包含用户提问",
+    "manage": "管理",
+    "select_model": "选择模型",
+    "show": {
+      "all": "显示全部"
+    },
+    "update_available": "有可用更新",
+    "whole_word": "全字匹配"
+  },
+  "chat": {
+    "add": {
+      "assistant": {
+        "description": "日常对话和快速问答",
+        "title": "添加助手"
+      },
+      "option": {
+        "title": "选择添加类型"
+      },
+      "topic": {
+        "title": "新建话题"
+      }
+    },
+    "artifacts": {
+      "button": {
+        "download": "下载",
+        "openExternal": "外部浏览器打开",
+        "preview": "预览"
+      },
+      "preview": {
+        "openExternal": {
+          "error": {
+            "content": "外部浏览器打开出错"
+          }
         }
       }
     },
-    "auth": {
-      "error": "自动获取密钥失败，请手动获取",
-      "get_key": "获取",
-      "get_key_success": "自动获取密钥成功",
-      "login": "登录",
-      "oauth_button": "使用{{provider}}登录"
+    "assistant": {
+      "search": {
+        "placeholder": "搜索"
+      }
     },
-    "backup": {
-      "confirm": "确定要备份数据吗？",
-      "confirm.button": "选择备份位置",
-      "content": "备份全部数据，包括聊天记录、设置、知识库等所有数据。请注意，备份过程可能需要一些时间，感谢您的耐心等待",
-      "progress": {
-        "completed": "备份完成",
-        "compressing": "压缩文件...",
-        "copying_files": "复制文件... {{progress}}%",
-        "preparing": "准备备份...",
-        "title": "备份进度",
-        "writing_data": "写入数据..."
+    "deeply_thought": "已深度思考（用时 {{seconds}} 秒）",
+    "default": {
+      "description": "你好，我是默认助手。你可以立刻开始跟我聊天",
+      "name": "默认助手",
+      "topic": {
+        "name": "默认话题"
+      }
+    },
+    "history": {
+      "assistant_node": "助手",
+      "click_to_navigate": "点击跳转到对应消息",
+      "coming_soon": "聊天工作流图表即将上线",
+      "no_messages": "没有找到消息",
+      "start_conversation": "开始对话以查看聊天流程图",
+      "title": "聊天历史",
+      "user_node": "用户",
+      "view_full_content": "查看完整内容"
+    },
+    "input": {
+      "activity_directory": {
+        "description": "从活动目录中选择文件",
+        "loading": "正在加载文件...",
+        "no_file_found": {
+          "description": "可访问目录中没有可用文件",
+          "label": "未找到文件"
+        },
+        "title": "活动目录"
       },
-      "title": "数据备份"
-    },
-    "button": {
-      "add": "添加",
-      "added": "已添加",
+      "auto_resize": "自动调整高度",
+      "clear": {
+        "content": "确定要清除当前会话所有消息吗？",
+        "label": "清空消息 {{Command}}",
+        "title": "清空消息"
+      },
       "collapse": "收起",
-      "manage": "管理",
-      "select_model": "选择模型",
-      "show.all": "显示全部",
-      "update_available": "有可用更新",
-      "includes_user_questions": "包含用户提问",
-      "case_sensitive": "区分大小写",
-      "whole_word": "全字匹配"
+      "context_count": {
+        "tip": "上下文数 / 最大上下文数"
+      },
+      "estimated_tokens": {
+        "tip": "预估 Token 数"
+      },
+      "expand": "展开",
+      "file_error": "文件处理出错",
+      "file_not_supported": "模型不支持此文件类型",
+      "file_not_supported_count": "{{count}} 个文件不被支持",
+      "generate_image": "生成图片",
+      "generate_image_not_supported": "模型不支持生成图片",
+      "knowledge_base": "知识库",
+      "new": {
+        "context": "清除上下文 {{Command}}"
+      },
+      "new_session": "新会话 {{Command}}",
+      "new_topic": "新话题 {{Command}}",
+      "paste_text_file_confirm": "粘贴到输入框？",
+      "pause": "暂停",
+      "placeholder": "在这里输入消息，按 {{key}} 发送 - @ 选择模型， / 选择工具",
+      "placeholder_without_triggers": "在这里输入消息，按 {{key}} 发送",
+      "send": "发送",
+      "settings": "设置",
+      "slash_commands": {
+        "description": "代理会话斜杠命令",
+        "title": "斜杠命令"
+      },
+      "thinking": {
+        "budget_exceeds_max": "思考预算超过最大 Token 数",
+        "label": "思考",
+        "mode": {
+          "custom": {
+            "label": "自定义",
+            "tip": "模型最多可以思考的 Token 数。需要考虑模型的上下文限制，否则会报错"
+          },
+          "default": {
+            "label": "默认",
+            "tip": "模型会自动确定思考的 Token 数"
+          },
+          "tokens": {
+            "tip": "设置思考的 Token 数"
+          }
+        }
+      },
+      "tools": {
+        "collapse": "折叠",
+        "collapse_in": "加入折叠",
+        "collapse_out": "移出折叠",
+        "expand": "展开"
+      },
+      "topics": "话题",
+      "translate": "翻译成 {{target_language}}",
+      "translating": "翻译中...",
+      "upload": {
+        "attachment": "上传附件",
+        "document": "上传文档（模型不支持图片）",
+        "image_or_document": "上传图片或文档",
+        "upload_from_local": "上传本地文件..."
+      },
+      "url_context": "网页上下文",
+      "web_search": {
+        "builtin": {
+          "disabled_content": "当前模型不支持网络搜索功能",
+          "enabled_content": "使用模型内置的网络搜索功能",
+          "label": "模型内置"
+        },
+        "button": {
+          "ok": "去设置"
+        },
+        "enable": "开启网络搜索",
+        "enable_content": "需要先在设置中检查网络搜索连通性",
+        "label": "网络搜索",
+        "no_web_search": {
+          "description": "不启用网络搜索功能",
+          "label": "不使用网络"
+        },
+        "settings": "网络搜索设置"
+      }
     },
-    "chat": {
-      "add.assistant.title": "添加助手",
-      "artifacts.button.download": "下载",
-      "artifacts.button.openExternal": "外部浏览器打开",
-      "artifacts.button.preview": "预览",
-      "artifacts.preview.openExternal.error.content": "外部浏览器打开出错",
-      "assistant.search.placeholder": "搜索",
-      "deeply_thought": "已深度思考（用时 {{seconds}} 秒）",
-      "default.description": "你好，我是默认助手。你可以立刻开始跟我聊天",
-      "default.name": "默认助手",
-      "default.topic.name": "默认话题",
-      "history": {
-        "assistant_node": "助手",
-        "click_to_navigate": "点击跳转到对应消息",
-        "coming_soon": "聊天工作流图表即将上线",
-        "no_messages": "没有找到消息",
-        "start_conversation": "开始对话以查看聊天流程图",
-        "title": "聊天历史",
-        "user_node": "用户",
-        "view_full_content": "查看完整内容"
+    "mcp": {
+      "error": {
+        "parse_tool_call": "无法转换为有效的工具调用格式：{{toolCall}}"
       },
-      "input.auto_resize": "自动调整高度",
-      "input.clear": "清空消息 {{Command}}",
-      "input.clear.content": "确定要清除当前会话所有消息吗?",
-      "input.clear.title": "清空消息",
-      "input.collapse": "收起",
-      "input.context_count.tip": "上下文数 / 最大上下文数",
-      "input.estimated_tokens.tip": "预估 token 数",
-      "input.expand": "展开",
-      "input.file_not_supported": "模型不支持此文件类型",
-      "input.file_error": "文件处理出错",
-      "input.generate_image": "生成图片",
-      "input.generate_image_not_supported": "模型不支持生成图片",
-      "input.knowledge_base": "知识库",
-      "input.new.context": "清除上下文 {{Command}}",
-      "input.new_topic": "新话题 {{Command}}",
-      "input.pause": "暂停",
-      "input.placeholder": "在这里输入消息，按 {{key}} 发送...",
-      "input.translating": "翻译中...",
-      "input.send": "发送",
-      "input.settings": "设置",
-      "input.thinking": "思考",
-      "input.thinking.mode.default": "默认",
-      "input.thinking.mode.default.tip": "模型会自动确定思考的 token 数",
-      "input.thinking.mode.custom": "自定义",
-      "input.thinking.mode.custom.tip": "模型最多可以思考的 token 数。需要考虑模型的上下文限制，否则会报错",
-      "input.thinking.mode.tokens.tip": "设置思考的 token 数",
-      "input.thinking.budget_exceeds_max": "思考预算超过最大 token 数",
-      "input.topics": " 话题 ",
-      "input.translate": "翻译成{{target_language}}",
-      "input.upload": "上传图片或文档",
-      "input.upload.upload_from_local": "上传本地文件...",
-      "input.upload.document": "上传文档（模型不支持图片）",
-      "input.web_search": "网络搜索",
-      "input.web_search.settings": "网络搜索设置",
-      "input.web_search.button.ok": "去设置",
-      "input.web_search.enable": "开启网络搜索",
-      "input.web_search.enable_content": "需要先在设置中检查网络搜索连通性",
-      "input.web_search.builtin": "模型内置",
-      "input.web_search.builtin.enabled_content": "使用模型内置的网络搜索功能",
-      "input.web_search.builtin.disabled_content": "当前模型不支持网络搜索功能",
-      "input.web_search.no_web_search": "不使用网络",
-      "input.web_search.no_web_search.description": "不启用网络搜索功能",
-      "input.tools.collapse": "折叠",
-      "input.tools.expand": "展开",
-      "input.tools.collapse_in": "加入折叠",
-      "input.tools.collapse_out": "移出折叠",
-      "message.new.branch": "分支",
-      "message.new.branch.created": "新分支已创建",
-      "message.new.context": "清除上下文",
-      "message.quote": "引用",
-      "message.regenerate.model": "切换模型",
-      "message.useful": "有用",
-      "multiple.select": "多选",
-      "multiple.select.empty": "未选中任何消息",
-      "navigation": {
-        "first": "已经是第一条消息",
-        "history": "聊天历史",
-        "last": "已经是最后一条消息",
-        "next": "下一条消息",
-        "prev": "上一条消息",
-        "top": "回到顶部",
-        "bottom": "回到底部",
-        "close": "关闭"
+      "warning": {
+        "gemini_web_search": "Gemini 不支持同时使用原生网络搜索工具与函数调用",
+        "multiple_tools": "存在多个匹配的MCP工具，已选择 {{tool}}",
+        "no_tool": "未匹配到所需的MCP工具 {{tool}}",
+        "url_context": "Gemini 不支持同时使用网页上下文与函数调用"
+      }
+    },
+    "message": {
+      "new": {
+        "branch": {
+          "created": "新分支已创建",
+          "label": "分支"
+        },
+        "context": "清除上下文"
       },
-      "resend": "重新发送",
-      "save": "保存",
-      "settings.code.title": "代码块设置",
-      "settings.code_editor": {
-        "title": "代码编辑器",
-        "highlight_active_line": "高亮当前行",
-        "fold_gutter": "折叠控件",
+      "quote": "引用",
+      "regenerate": {
+        "model": "切换模型"
+      },
+      "useful": {
+        "label": "设置为上下文",
+        "tip": "在这组消息中，该消息将被选择加入上下文"
+      }
+    },
+    "multiple": {
+      "select": {
+        "empty": "未选中任何消息",
+        "label": "多选"
+      }
+    },
+    "navigation": {
+      "bottom": "回到底部",
+      "close": "关闭",
+      "first": "已经是第一条消息",
+      "history": "聊天历史",
+      "last": "已经是最后一条消息",
+      "next": "下一条消息",
+      "prev": "上一条消息",
+      "top": "回到顶部"
+    },
+    "resend": "重新发送",
+    "save": {
+      "file": {
+        "title": "保存到本地文件"
+      },
+      "knowledge": {
+        "content": {
+          "citation": {
+            "description": "包括网络搜索和知识库引用信息",
+            "title": "引用"
+          },
+          "code": {
+            "description": "包括独立的代码块",
+            "title": "代码块"
+          },
+          "error": {
+            "description": "包括执行过程中的错误信息",
+            "title": "错误"
+          },
+          "file": {
+            "description": "包括作为附件的文件",
+            "title": "文件"
+          },
+          "maintext": {
+            "description": "包括主要的文本内容",
+            "title": "主文本"
+          },
+          "thinking": {
+            "description": "包括模型思考内容",
+            "title": "思考"
+          },
+          "tool_use": {
+            "description": "包括工具调用参数和执行结果",
+            "title": "工具调用"
+          },
+          "translation": {
+            "description": "包括翻译内容",
+            "title": "翻译"
+          }
+        },
+        "empty": {
+          "no_content": "此消息没有可保存的内容",
+          "no_knowledge_base": "暂无可用知识库，请先创建知识库"
+        },
+        "error": {
+          "invalid_base": "所选知识库未正确配置",
+          "no_content_selected": "请至少选择一种内容",
+          "save_failed": "保存失败，请检查知识库配置"
+        },
+        "select": {
+          "base": {
+            "placeholder": "请选择知识库",
+            "title": "选择知识库"
+          },
+          "content": {
+            "tip": "已选择 {{count}} 项内容，文本类型将合并保存为一个笔记",
+            "title": "选择要保存的内容类型"
+          }
+        },
+        "title": "保存到知识库"
+      },
+      "label": "保存",
+      "topic": {
+        "knowledge": {
+          "content": {
+            "maintext": {
+              "description": "包括话题标题和所有消息的主要文本内容"
+            }
+          },
+          "empty": {
+            "no_content": "此话题没有可保存的内容"
+          },
+          "error": {
+            "save_failed": "保存话题失败，请检查知识库配置"
+          },
+          "loading": "正在分析话题内容...",
+          "select": {
+            "content": {
+              "label": "选择要保存的内容类型",
+              "selected_tip": "已选择 {{count}} 项内容，来自 {{messages}} 条消息",
+              "tip": "话题将以包含完整对话上下文的形式保存到知识库"
+            }
+          },
+          "success": "话题已成功保存到知识库（{{count}} 项内容）",
+          "title": "保存话题到知识库"
+        }
+      }
+    },
+    "settings": {
+      "code": {
+        "title": "代码块设置"
+      },
+      "code_collapsible": "代码块可折叠",
+      "code_editor": {
         "autocompletion": "自动补全",
-        "keymap": "快捷键"
+        "fold_gutter": "折叠控件",
+        "highlight_active_line": "高亮当前行",
+        "keymap": "快捷键",
+        "title": "代码编辑器"
       },
-      "settings.code_execution": {
-        "title": "代码执行",
+      "code_execution": {
+        "timeout_minutes": {
+          "label": "超时时间",
+          "tip": "代码执行超时时间（分钟）"
+        },
         "tip": "可执行的代码块工具栏中会显示运行按钮，注意不要执行危险代码！",
-        "timeout_minutes": "超时时间",
-        "timeout_minutes.tip": "代码执行超时时间（分钟）"
+        "title": "代码执行"
       },
       "settings.code_collapsible": "代码块可折叠",
       "settings.code_wrappable": "代码块可换行",
@@ -425,8 +625,7 @@
         "pinyin.asc": "按拼音升序",
         "pinyin.desc": "按拼音降序"
       },
-      "no_results": "无结果",
-      "other": "其他"
+      "no_results": "无结果"
     },
     "docs": {
       "title": "帮助文档"
@@ -742,8 +941,7 @@
           "title": "关闭所有"
         }
       },
-      "title": "小程序",
-      "all": "全部"
+      "title": "小程序"
     },
     "miniwindow": {
       "clipboard": {
@@ -980,8 +1178,7 @@
       "per_image": "每张图片",
       "per_images": "每张图片",
       "required_field": "必填项",
-      "uploaded_input": "已上传输入",
-      "recommended": "推荐"
+      "uploaded_input": "已上传输入"
     },
     "prompts": {
       "explanation": "帮我解释一下这个概念",
@@ -1065,7 +1262,7 @@
       "about.contact.title": "邮件联系",
       "about.debug.title": "调试面板",
       "about.debug.open": "打开",
-      "about.description": "一款基于AI大模型的教师智能体平台",
+      "about.description": "一款为创造者而生的 AI 助手",
       "about.downloading": "正在下载更新...",
       "about.feedback.button": "反馈",
       "about.feedback.title": "意见反馈",
@@ -1179,9 +1376,57 @@
         "message_title.use_topic_naming.help": "开启后，使用话题命名模型为导出的消息创建标题。该项也会影响所有通过Markdown导出的方式",
         "minute_interval_one": "{{count}} 分钟",
         "minute_interval_other": "{{count}} 分钟",
-        "notion.api_key": "Notion 密钥",
-        "notion.api_key_placeholder": "请输入Notion 密钥",
-        "notion.check": {
+        "noSync": "等待下次备份",
+        "restore": {
+          "button": "备份文件管理",
+          "confirm": {
+            "content": "从本地备份恢复将会覆盖当前数据，是否继续？",
+            "title": "确认恢复"
+          }
+        },
+        "syncError": "备份错误",
+        "syncStatus": "备份状态",
+        "title": "本地备份"
+      },
+      "markdown_export": {
+        "exclude_citations": {
+          "help": "导出 Markdown 时排除引用和参考文献，仅保留主要内容",
+          "title": "不导出引用内容"
+        },
+        "force_dollar_math": {
+          "help": "开启后，导出 Markdown 时会将强制使用 $$ 来标记 LaTeX 公式。注意：该项也会影响所有通过 Markdown 导出的方式，如 Notion、语雀等",
+          "title": "强制使用 $$ 来标记 LaTeX 公式"
+        },
+        "help": "若填入，则每次导出时将自动保存到该路径；否则，将弹出保存对话框",
+        "path": "默认导出路径",
+        "path_placeholder": "导出路径",
+        "select": "选择",
+        "show_model_name": {
+          "help": "开启后，导出 Markdown 时会显示模型名称。注意：该项也会影响所有通过 Markdown 导出的方式，如 Notion、语雀等。",
+          "title": "导出时使用模型名称"
+        },
+        "show_model_provider": {
+          "help": "在导出 Markdown 时显示模型供应商，如 OpenAI、Gemini 等",
+          "title": "显示模型供应商"
+        },
+        "standardize_citations": {
+          "help": "开启后，导出 Markdown 时会将引用标记转换为标准 Markdown 脚注格式 [^1]，并格式化引用列表",
+          "title": "标准化引用格式"
+        },
+        "title": "Markdown 导出"
+      },
+      "message_title": {
+        "use_topic_naming": {
+          "help": "开启后，使用快速模型为导出的消息命名标题。该项也会影响所有通过 Markdown 导出的方式",
+          "title": "使用快速模型为导出的消息命名标题"
+        }
+      },
+      "minute_interval_one": "{{count}} 分钟",
+      "minute_interval_other": "{{count}} 分钟",
+      "notion": {
+        "api_key": "Notion 密钥",
+        "api_key_placeholder": "请输入 Notion 密钥",
+        "check": {
           "button": "检测",
           "empty_api_key": "未配置 API key",
           "empty_database_id": "未配置 Database ID",
@@ -1340,7 +1585,7 @@
           "title": "在浏览器中打开新窗口链接"
         },
         "custom": {
-          "title": "新增自定义小程序",
+          "title": "自定义",
           "edit_title": "编辑自定义小程序",
           "save_success": "自定义小程序保存成功",
           "save_error": "自定义小程序保存失败",
@@ -1357,11 +1602,6 @@
           "url": "URL",
           "url_error": "URL 是必填项",
           "url_placeholder": "请输入 URL",
-          "subject": "学科",
-          "subject_error": "学科 是必填项",
-          "subject_placeholder": "请选择 学科",
-          "group": "分组",
-          "group_placeholder": "如AI大模型、学术研究",
           "logo": "Logo",
           "logo_url": "Logo URL",
           "logo_file": "上传 Logo 文件",
@@ -1811,32 +2051,76 @@
       "tray.show": "显示托盘图标",
       "tray.title": "托盘",
       "websearch": {
+        "apikey": "API 密钥",
         "blacklist": "黑名单",
         "blacklist_description": "在搜索结果中不会出现以下网站的结果",
         "blacklist_tooltip": "请使用以下格式(换行分隔)\n匹配模式: *://*.example.com/*\n正则表达式: /example\\.(net|org)/",
         "check": "检测",
         "check_failed": "验证失败",
         "check_success": "验证成功",
+        "compression": {
+          "cutoff": {
+            "limit": {
+              "label": "截断长度",
+              "placeholder": "输入长度",
+              "tooltip": "限制搜索结果的内容长度, 超过限制的内容将被截断（例如 2000 字符）"
+            },
+            "unit": {
+              "char": "字符",
+              "token": "Token"
+            }
+          },
+          "error": {
+            "rag_failed": "RAG 失败"
+          },
+          "info": {
+            "dimensions_auto_success": "维度自动获取成功，维度为 {{dimensions}}"
+          },
+          "method": {
+            "cutoff": "截断",
+            "label": "压缩方法",
+            "none": "不压缩",
+            "rag": "RAG"
+          },
+          "rag": {
+            "document_count": {
+              "label": "文档片段数量",
+              "tooltip": "预期从单个搜索结果中提取的文档片段数量，实际提取的总数量是这个值乘以搜索结果数量。"
+            }
+          },
+          "title": "搜索结果压缩"
+        },
+        "content_limit": "内容长度限制",
+        "content_limit_tooltip": "限制搜索结果的内容长度, 超过限制的内容将被截断",
+        "free": "免费",
+        "no_provider_selected": "请选择搜索服务商后再检测",
         "overwrite": "覆盖服务商搜索",
         "overwrite_tooltip": "强制使用搜索服务商而不是大语言模型进行搜索",
-        "get_api_key": "点击这里获取密钥",
-        "no_provider_selected": "请选择搜索服务商后再检测",
-        "search_max_result": "搜索结果个数",
+        "search_max_result": {
+          "label": "搜索结果个数",
+          "tooltip": "未开启搜索结果压缩的情况下，数量过大可能会消耗过多 tokens"
+        },
         "search_provider": "搜索服务商",
         "search_provider_placeholder": "选择一个搜索服务商",
+        "search_with_time": "搜索包含日期",
         "subscribe": "黑名单订阅",
-        "subscribe_update": "立即更新",
         "subscribe_add": "添加订阅",
-        "subscribe_url": "订阅源地址",
-        "subscribe_name": "替代名字",
-        "subscribe_name.placeholder": "当下载的订阅源没有名称时所使用的替代名称",
+        "subscribe_add_failed": "订阅源添加失败",
         "subscribe_add_success": "订阅源添加成功!",
         "subscribe_delete": "删除订阅源",
-        "search_result_default": "默认",
-        "search_with_time": "搜索包含日期",
+        "subscribe_name": {
+          "label": "替代名字",
+          "placeholder": "当下载的订阅源没有名称时所使用的替代名称"
+        },
+        "subscribe_update": "立即更新",
+        "subscribe_update_failed": "订阅源更新失败",
+        "subscribe_update_success": "订阅源更新成功",
+        "subscribe_url": "订阅源地址",
         "tavily": {
-          "api_key": "Tavily API 密钥",
-          "api_key.placeholder": "请输入 Tavily API 密钥",
+          "api_key": {
+            "label": "Tavily API 密钥",
+            "placeholder": "请输入 Tavily API 密钥"
+          },
           "description": "Tavily 是一个为 AI 代理量身定制的搜索引擎，提供实时、准确的结果、智能查询建议和深入的研究能力",
           "title": "Tavily"
         },
@@ -1891,9 +2175,6 @@
         "service_tier.auto": "自动",
         "service_tier.default": "默认",
         "service_tier.flex": "灵活"
-      },
-      "students": {
-        "title": "我的学生"
       }
     },
     "translate": {
@@ -1936,80 +2217,79 @@
         "scroll_sync": "滚动同步设置",
         "preview": "Markdown 预览"
       },
-      "title": "翻译",
-      "tooltip.newline": "换行",
-      "detected.language": "自动检测"
+      "prompt": "翻译提示词",
+      "title": "翻译设置"
     },
     "tray": {
-      "quit": "退出",
-      "show_mini_window": "快捷助手",
-      "show_window": "显示窗口"
+      "onclose": "关闭时最小化到托盘",
+      "show": "显示托盘图标",
+      "title": "托盘"
     },
-    "words": {
-      "knowledgeGraph": "知识图谱",
-      "quit": "退出",
-      "show_window": "显示窗口",
-      "visualization": "可视化"
+    "zoom": {
+      "reset": "重置",
+      "title": "缩放"
+    }
+  },
+  "title": {
+    "apps": "小程序",
+    "code": "Code",
+    "files": "文件",
+    "home": "首页",
+    "knowledge": "知识库",
+    "launchpad": "启动台",
+    "mcp-servers": "MCP 服务器",
+    "memories": "记忆",
+    "notes": "笔记",
+    "paintings": "绘画",
+    "settings": "设置",
+    "store": "助手库",
+    "translate": "翻译"
+  },
+  "trace": {
+    "backList": "返回列表",
+    "edasSupport": "Powered by Alibaba Cloud EDAS",
+    "endTime": "结束时间",
+    "inputs": "输入",
+    "label": "调用链",
+    "name": "节点名称",
+    "noTraceList": "没有找到Trace信息",
+    "outputs": "输出",
+    "parentId": "上级Id",
+    "spanDetail": "Span详情",
+    "spendTime": "消耗时间",
+    "startTime": "开始时间",
+    "tag": "标签",
+    "tokenUsage": "Token使用量",
+    "traceWindow": "调用链窗口"
+  },
+  "translate": {
+    "alter_language": "备用语言",
+    "any": {
+      "language": "任意语言"
     },
-    "update": {
-      "title": "更新提示",
-      "message": "发现新版本 {{version}}，是否立即安装？",
-      "later": "稍后",
-      "install": "立即安装",
-      "noReleaseNotes": "暂无更新日志"
+    "button": {
+      "translate": "翻译"
     },
-    "selection": {
-      "name": "划词助手",
-      "action": {
-        "builtin": {
-          "translate": "翻译",
-          "explain": "解释",
-          "summary": "总结",
-          "search": "搜索",
-          "refine": "优化",
-          "copy": "复制",
-          "quote": "引用"
+    "close": "关闭",
+    "closed": "翻译已关闭",
+    "complete": "翻译完成",
+    "confirm": {
+      "content": "翻译后将覆盖原文，是否继续？",
+      "title": "翻译确认"
+    },
+    "copied": "翻译内容已复制",
+    "custom": {
+      "label": "自定义语言"
+    },
+    "detect": {
+      "method": {
+        "algo": {
+          "label": "算法",
+          "tip": "使用franc进行语言检测"
         },
-        "window": {
-          "pin": "置顶",
-          "pinned": "已置顶",
-          "opacity": "窗口透明度",
-          "original_show": "显示原文",
-          "original_hide": "隐藏原文",
-          "original_copy": "复制原文",
-          "esc_close": "Esc 关闭",
-          "esc_stop": "Esc 停止",
-          "c_copy": "C 复制",
-          "r_regenerate": "R 重新生成"
-        },
-        "translate": {
-          "smart_translate_tips": "智能翻译：内容将优先翻译为目标语言；内容已是目标语言的，将翻译为备选语言"
-        }
-      },
-      "settings": {
-        "experimental": "实验性功能",
-        "enable": {
-          "title": "启用",
-          "description": "当前仅支持 Windows 系统"
-        },
-        "toolbar": {
-          "title": "工具栏",
-          "trigger_mode": {
-            "title": "取词方式",
-            "description": "划词后，触发取词并显示工具栏的方式",
-            "description_note": "少数应用不支持通过 Ctrl 键划词。若使用了AHK等工具对 Ctrl 键进行了重映射，可能导致部分应用无法划词。",
-            "selected": "划词",
-            "selected_note": "划词后立即显示工具栏",
-            "ctrlkey": "Ctrl 键",
-            "ctrlkey_note": "划词后，再 长按 Ctrl键，才显示工具栏",
-            "shortcut": "快捷键",
-            "shortcut_note": "划词后，使用快捷键显示工具栏。请在快捷键设置页面中设置取词快捷键并启用。",
-            "shortcut_link": "前往快捷键设置"
-          },
-          "compact_mode": {
-            "title": "紧凑模式",
-            "description": "紧凑模式下，只显示图标，不显示文字"
-          }
+        "auto": {
+          "label": "自动",
+          "tip": "自动选择合适的检测方法"
         },
         "window": {
           "title": "功能窗口",
@@ -2125,69 +2405,6 @@
           "user_tips": "请输入应用的执行文件名，每行一个，不区分大小写，可以模糊匹配。例如：chrome.exe、weixin.exe、Cherry Studio.exe等"
         }
       }
-    },
-    "login": {
-      "title": "登录",
-      "submit": "登录",
-      "success": "登录成功",
-      "username": {
-        "label": "用户名",
-        "placeholder": "请输入用户名",
-        "required": "用户名不能为空"
-      },
-      "password": {
-        "label": "密码",
-        "placeholder": "请输入密码",
-        "required": "密码不能为空"
-      },
-      "forgot_password": "忘记密码",
-      "register": "注册账号"
-    },
-    "logout": {
-      "success": "退出登录成功"
-    },
-    "register": {
-      "title": "注册账号",
-      "role": "角色",
-      "submit": "注册",
-      "school": "学校",
-      "subject": "学科",
-      "educationLevel": "学段",
-      "mobile": "手机号",
-      "nickname": "昵称",
-      "mobileInvalid": "请输入有效的手机号",
-      "hasAccount": "已有账号？立即登录",
-      "success": "注册成功",
-      "username.placeholder": "纯数字，推荐使用手机号"
-    },
-    "user": {
-      "profile": "用户资料",
-      "logout": "退出登录",
-      "current_username": "当前账号",
-      "changePassword": "修改密码",
-      "oldPassword": "旧密码",
-      "newPassword": "新密码",
-      "confirmPassword": "确认密码",
-      "passwordNotMatch": "两次输入密码不一致",
-      "changePasswordSuccess": "密码修改成功",
-      "newPasswordRequired": "请输入新密码",
-      "confirmPasswordRequired": "请确认新密码",
-      "passwordMinLength": "密码至少需要6个字符",
-      "configLoading": "加载中...",
-      "configSuccess": "加载成功",
-      "configFailed": "加载失败",
-      "configNotLoaded": "未加载",
-      "configModel": "模型",
-      "configAgent": "智能体",
-      "configTopic": "话题",
-      "configMiniApp": "小程序",
-      "configStatus": "配置状态",
-      "nickname": "昵称",
-      "school": "学校",
-      "subject": "学科",
-      "grade": "年级",
-      "grade2": "学段",
-      "classroom": "班级"
     }
   }
 }

@@ -1,18 +1,20 @@
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { Client } from '@notionhq/client'
 import { HStack } from '@renderer/components/Layout'
+import { AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
-import { RootState, useAppDispatch } from '@renderer/store'
+import type { RootState } from '@renderer/store'
+import { useAppDispatch } from '@renderer/store'
 import {
   setNotionApiKey,
   setNotionDatabaseID,
   setNotionExportReasoning,
   setNotionPageNameKey
 } from '@renderer/store/settings'
-import { Button, Switch, Tooltip } from 'antd'
-import Input from 'antd/es/input/Input'
-import { FC } from 'react'
+import { Button, Space, Switch, Tooltip } from 'antd'
+import { Input } from 'antd'
+import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
@@ -21,7 +23,7 @@ const NotionSettings: FC = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
-  const { openMinapp } = useMinappPopup()
+  const { openSmartMinapp } = useMinappPopup()
 
   const notionApiKey = useSelector((state: RootState) => state.settings.notionApiKey)
   const notionDatabaseID = useSelector((state: RootState) => state.settings.notionDatabaseID)
@@ -42,11 +44,11 @@ const NotionSettings: FC = () => {
 
   const handleNotionConnectionCheck = () => {
     if (notionApiKey === null) {
-      window.message.error(t('settings.data.notion.check.empty_api_key'))
+      window.toast.error(t('settings.data.notion.check.empty_api_key'))
       return
     }
     if (notionDatabaseID === null) {
-      window.message.error(t('settings.data.notion.check.empty_database_id'))
+      window.toast.error(t('settings.data.notion.check.empty_database_id'))
       return
     }
     const notion = new Client({ auth: notionApiKey })
@@ -56,21 +58,22 @@ const NotionSettings: FC = () => {
       })
       .then((result) => {
         if (result) {
-          window.message.success(t('settings.data.notion.check.success'))
+          window.toast.success(t('settings.data.notion.check.success'))
         } else {
-          window.message.error(t('settings.data.notion.check.fail'))
+          window.toast.error(t('settings.data.notion.check.fail'))
         }
       })
       .catch(() => {
-        window.message.error(t('settings.data.notion.check.error'))
+        window.toast.error(t('settings.data.notion.check.error'))
       })
   }
 
   const handleNotionTitleClick = () => {
-    openMinapp({
+    openSmartMinapp({
       id: 'notion-help',
       name: 'Notion Help',
-      url: 'https://docs.cherry-ai.com/advanced-basic/notion'
+      url: 'https://docs.cherry-ai.com/advanced-basic/notion',
+      logo: AppLogo
     })
   }
 
@@ -121,15 +124,16 @@ const NotionSettings: FC = () => {
       <SettingRow>
         <SettingRowTitle>{t('settings.data.notion.api_key')}</SettingRowTitle>
         <HStack alignItems="center" gap="5px" style={{ width: 315 }}>
-          <Input
-            type="password"
-            value={notionApiKey || ''}
-            onChange={handleNotionTokenChange}
-            onBlur={handleNotionTokenChange}
-            style={{ width: 250 }}
-            placeholder={t('settings.data.notion.api_key_placeholder')}
-          />
-          <Button onClick={handleNotionConnectionCheck}>{t('settings.data.notion.check.button')}</Button>
+          <Space.Compact style={{ width: '100%' }}>
+            <Input.Password
+              value={notionApiKey || ''}
+              onChange={handleNotionTokenChange}
+              onBlur={handleNotionTokenChange}
+              placeholder={t('settings.data.notion.api_key_placeholder')}
+              style={{ width: '100%' }}
+            />
+            <Button onClick={handleNotionConnectionCheck}>{t('settings.data.notion.check.button')}</Button>
+          </Space.Compact>
         </HStack>
       </SettingRow>
       <SettingDivider />
