@@ -434,6 +434,9 @@ export type MinAppType = {
   style?: CSSProperties
   addTime?: string
   type?: 'Custom' | 'Default' // Added the 'type' property
+  subject?: string[]
+  group?: string
+  desc?: string,
 }
 
 export enum ThemeMode {
