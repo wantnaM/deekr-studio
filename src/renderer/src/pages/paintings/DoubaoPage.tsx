@@ -338,6 +338,7 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
   const handleProviderChange = (providerId: string) => {
     const routeName = location.pathname.split('/').pop()
     if (providerId !== routeName) {
+      updatePaintingState({ model: '' })
       navigate('../' + providerId, { replace: true })
     }
   }
