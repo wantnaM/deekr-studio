@@ -5,9 +5,20 @@ import { useProviders } from '@renderer/hooks/useProvider'
 import { useUser } from '@renderer/hooks/useUser'
 import { getAgents } from '@renderer/services/AdminService/Agent'
 import { changePassword, getConfig, getUserInfo, login, logout } from '@renderer/services/AdminService/login'
+import { getWebDavUser } from '@renderer/services/AdminService/WebDAV'
+import { startAutoSync, stopAutoSync } from '@renderer/services/BackupService'
 import { useAppDispatch } from '@renderer/store'
 import { updateAgents } from '@renderer/store/agents'
 import { initialState } from '@renderer/store/llm'
+import {
+  setWebdavAutoSync,
+  setWebdavHost as _setWebdavHost,
+  setWebdavMaxBackups as _setWebdavMaxBackups,
+  setWebdavPass as _setWebdavPass,
+  setWebdavPath as _setWebdavPath,
+  setWebdavSyncInterval as _setWebdavSyncInterval,
+  setWebdavUser as _setWebdavUser
+} from '@renderer/store/settings'
 import { setDefaultProvider } from '@renderer/store/websearch'
 import { Button, Descriptions, Form, Input, List, message, Modal, Space, Typography } from 'antd'
 import { useState } from 'react'
@@ -151,12 +162,30 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     }
   }
 
+  const loadWebDAV = async () => {
+    try {
+      const info = await getWebDavUser()
+      dispatch(_setWebdavHost(info.webDAVHost))
+      dispatch(_setWebdavMaxBackups(10))
+      dispatch(_setWebdavPass(info.password))
+      dispatch(_setWebdavPath(info.webDAVPath))
+      dispatch(_setWebdavUser(info.username))
+      dispatch(_setWebdavSyncInterval(30))
+      dispatch(setWebdavAutoSync(true))
+      startAutoSync()
+    } catch (error) {
+      const msg = (error as Error).message
+      if (msg) message.error(msg)
+    }
+  }
+
   const getUserConfig = (userId) => {
     // 重置所有配置项为加载状态
     setConfigItems((prev) => prev.map((item) => ({ ...item, loading: true, success: false })))
 
     loadModelConfig(userId)
     loadAgentsConfig(userId)
+    loadWebDAV()
   }
 
   const handleRefreshConfig = async () => {
@@ -195,6 +224,15 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     })
     updateProviders(initialState.providers)
     dispatch(updateAgents([]))
+    // 清空webdav
+    dispatch(_setWebdavHost(''))
+    dispatch(_setWebdavPass(''))
+    dispatch(_setWebdavPath(''))
+    dispatch(_setWebdavUser(''))
+    dispatch(_setWebdavSyncInterval(0))
+    dispatch(setWebdavAutoSync(false))
+    stopAutoSync()
+
     setOpen(false)
     resolve({})
     message.success(t('logout.success'))

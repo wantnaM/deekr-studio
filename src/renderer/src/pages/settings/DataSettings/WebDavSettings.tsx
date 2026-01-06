@@ -8,15 +8,11 @@ import { startAutoSync, stopAutoSync } from '@renderer/services/BackupService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import {
   setWebdavAutoSync,
-  setWebdavHost as _setWebdavHost,
   setWebdavMaxBackups as _setWebdavMaxBackups,
-  setWebdavPass as _setWebdavPass,
-  setWebdavPath as _setWebdavPath,
   setWebdavSkipBackupFile as _setWebdavSkipBackupFile,
-  setWebdavSyncInterval as _setWebdavSyncInterval,
-  setWebdavUser as _setWebdavUser
+  setWebdavSyncInterval as _setWebdavSyncInterval
 } from '@renderer/store/settings'
-import { Button, Input, Select, Switch, Tooltip } from 'antd'
+import { Button, Select, Switch, Tooltip } from 'antd'
 import dayjs from 'dayjs'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,10 +30,10 @@ const WebDavSettings: FC = () => {
     webdavSkipBackupFile: webdDAVSkipBackupFile
   } = useSettings()
 
-  const [webdavHost, setWebdavHost] = useState<string | undefined>(webDAVHost)
-  const [webdavUser, setWebdavUser] = useState<string | undefined>(webDAVUser)
-  const [webdavPass, setWebdavPass] = useState<string | undefined>(webDAVPass)
-  const [webdavPath, setWebdavPath] = useState<string | undefined>(webDAVPath)
+  const [webdavHost] = useState<string | undefined>(webDAVHost)
+  const [webdavUser] = useState<string | undefined>(webDAVUser)
+  const [webdavPass] = useState<string | undefined>(webDAVPass)
+  const [webdavPath] = useState<string | undefined>(webDAVPath)
   const [webdavSkipBackupFile, setWebdavSkipBackupFile] = useState<boolean>(webdDAVSkipBackupFile)
   const [backupManagerVisible, setBackupManagerVisible] = useState(false)
 
@@ -114,7 +110,7 @@ const WebDavSettings: FC = () => {
     <SettingGroup theme={theme}>
       <SettingTitle>{t('settings.data.webdav.title')}</SettingTitle>
       <SettingDivider />
-      <SettingRow>
+      {/* <SettingRow>
         <SettingRowTitle>{t('settings.data.webdav.host')}</SettingRowTitle>
         <Input
           placeholder={t('settings.data.webdav.host.placeholder')}
@@ -158,7 +154,7 @@ const WebDavSettings: FC = () => {
           onBlur={() => dispatch(_setWebdavPath(webdavPath || ''))}
         />
       </SettingRow>
-      <SettingDivider />
+      <SettingDivider /> */}
       <SettingRow>
         <SettingRowTitle>{t('settings.general.backup.title')}</SettingRowTitle>
         <HStack gap="5px" justifyContent="space-between">
