@@ -161,6 +161,7 @@ export type Provider = {
   isNotSupportArrayContent?: boolean
   isVertex?: boolean
   notes?: string
+  sort?: number
 }
 
 export type ProviderType =

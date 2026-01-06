@@ -153,9 +153,14 @@ const PopupContainer: React.FC<Props> = ({ model, resolve }) => {
   const listItems = useMemo(() => {
     const items: FlatListItem[] = []
 
+    // 对providers 进行sort属性排序
+    const sortedProviders = sortBy(providers, (p) => p.sort)
+    console.log('sortedProviders', sortedProviders)
+    console.log('providers', providers)
+
     // 添加置顶模型分组（仅在无搜索文本时）
     if (searchText.length === 0 && pinnedModels.length > 0) {
-      const pinnedItems = providers.flatMap((p) =>
+      const pinnedItems = sortedProviders.flatMap((p) =>
         p.models.filter((m) => pinnedModels.includes(getModelUniqId(m))).map((m) => createModelItem(m, p, true))
       )
 
@@ -173,7 +178,7 @@ const PopupContainer: React.FC<Props> = ({ model, resolve }) => {
     }
 
     // 添加常规模型分组
-    providers.forEach((p) => {
+    sortedProviders.forEach((p) => {
       const filteredModels = getFilteredModels(p).filter(
         (m) => searchText.length > 0 || !pinnedModels.includes(getModelUniqId(m))
       )
