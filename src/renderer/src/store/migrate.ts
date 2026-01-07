@@ -1634,6 +1634,24 @@ const migrateConfig = {
     } catch (error) {
       return state
     }
+  },
+  '117': (state: RootState) => {
+    try {
+      addMiniApp(state, 'jimeng')
+      addMiniApp(state, 'youyan3d')
+      addMiniApp(state, 'motion')
+      addMiniApp(state, 'treemind')
+      addMiniApp(state, 'chatexcel')
+      addMiniApp(state, 'xiaohuanxiong')
+      addMiniApp(state, 'chatpdf')
+      addMiniApp(state, 'tianyin')
+      removeMiniAppFromState(state, 'baichuan')
+      removeMiniAppFromState(state, 'stepfun')
+      removeMiniAppFromState(state, 'xiaoyi')
+      return state
+    } catch (error) {
+      return state
+    }
   }
 }
 

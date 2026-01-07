@@ -99,7 +99,7 @@ linux:
     - x-scheme-handler/cherrystudio
 publish:
   provider: generic
-  url: http://8.134.23.119:8090
+  url: http://106.52.88.110:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 afterPack: scripts/after-pack.js
@@ -107,8 +107,6 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    - 优化:用户注册学校信息支持用户自定义
-    - 优化:小程序分类页改为“按组”排版
-    - 新增:教师可将智能体一键分发给学生
-    - 优化:修复特定情况下读取.doc文档失败
-    - 新增:小程序添加AutoGLM、可汗学院
+    - 新增:数据云端同步
+    - 优化:更新最新的模型
+    - 优化:小程序调整
