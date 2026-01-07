@@ -1,5 +1,5 @@
 import { SyncOutlined } from '@ant-design/icons'
-import CodeEditor from '@renderer/components/CodeEditor'
+// import CodeEditor from '@renderer/components/CodeEditor'
 import { HStack } from '@renderer/components/Layout'
 import { isMac, THEME_COLOR_PRESETS } from '@renderer/config/constant'
 import { useTheme } from '@renderer/context/ThemeProvider'
@@ -11,7 +11,6 @@ import {
   DEFAULT_SIDEBAR_ICONS,
   setAssistantIconType,
   setClickAssistantToShowTopic,
-  setCustomCss,
   setPinTopicsToTop,
   setShowTopicTime,
   setSidebarIcons
@@ -62,7 +61,6 @@ const DisplaySettings: FC = () => {
     clickAssistantToShowTopic,
     showTopicTime,
     pinTopicsToTop,
-    customCss,
     sidebarIcons,
     setTheme,
     assistantIconType,
@@ -300,7 +298,7 @@ const DisplaySettings: FC = () => {
           setDisabledIcons={setDisabledIcons}
         />
       </SettingGroup>
-      <SettingGroup theme={theme}>
+      {/* <SettingGroup theme={theme}>
         <SettingTitle>
           {t('settings.display.custom.css')}
           <TitleExtra onClick={() => window.api.openWebsite('https://cherrycss.com/')}>
@@ -327,17 +325,17 @@ const DisplaySettings: FC = () => {
             borderRadius: '5px'
           }}
         />
-      </SettingGroup>
+      </SettingGroup> */}
     </SettingContainer>
   )
 }
 
-const TitleExtra = styled.div`
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: underline;
-  opacity: 0.7;
-`
+// const TitleExtra = styled.div`
+//   font-size: 12px;
+//   cursor: pointer;
+//   text-decoration: underline;
+//   opacity: 0.7;
+// `
 const ResetButtonWrapper = styled.div`
   display: flex;
   align-items: center;

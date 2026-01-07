@@ -11,7 +11,7 @@ import { setUpdateState } from '@renderer/store/runtime'
 import { compareVersions, runAsyncFunction } from '@renderer/utils'
 import { Avatar, Button, Progress, Row, Switch, Tag } from 'antd'
 import { debounce } from 'lodash'
-import { Github } from 'lucide-react'
+import { Globe } from 'lucide-react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
@@ -206,7 +206,7 @@ const AboutSettings: FC = () => {
         {/* <SettingDivider /> */}
         <SettingRow>
           <SettingRowTitle>
-            <Github size={18} />
+            <Globe size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
           <Button onClick={() => navigate('/settings/feedback')}>{t('settings.about.feedback.button')}</Button>
