@@ -1648,6 +1648,7 @@ const migrateConfig = {
       removeMiniAppFromState(state, 'baichuan')
       removeMiniAppFromState(state, 'stepfun')
       removeMiniAppFromState(state, 'xiaoyi')
+      removeMiniAppFromState(state, 'baidu-ai-search')
       return state
     } catch (error) {
       return state

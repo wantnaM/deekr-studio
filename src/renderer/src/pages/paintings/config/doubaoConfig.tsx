@@ -9,9 +9,9 @@ import Image_8 from '@renderer/assets/images/paintings/recommended-8.png'
 
 export const TEXT_TO_IMAGES_MODELS = [
   {
-    id: 'doubao-seedream-4-5-251128',
+    id: 'doubao-seedream-3-0-t2i-250415',
     provider: 'doubao',
-    name: 'Doubao-Seedream-4.5',
+    name: '豆包-Doubao-Seedream-3.0-t2i',
     group: 'Doubao'
   }
 ]

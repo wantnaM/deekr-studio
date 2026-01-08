@@ -99,7 +99,7 @@ linux:
     - x-scheme-handler/cherrystudio
 publish:
   provider: generic
-  url: http://106.52.88.110:8090
+  url: http://8.134.23.119:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 afterPack: scripts/after-pack.js

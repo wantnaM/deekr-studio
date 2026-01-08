@@ -165,17 +165,19 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const loadWebDAV = async () => {
     try {
       const info = await getWebDavUser()
-      dispatch(_setWebdavHost(info.webDAVHost))
-      dispatch(_setWebdavMaxBackups(10))
-      dispatch(_setWebdavPass(info.password))
-      dispatch(_setWebdavPath(info.webDAVPath))
-      dispatch(_setWebdavUser(info.username))
-      dispatch(_setWebdavSyncInterval(30))
-      dispatch(setWebdavAutoSync(true))
-      startAutoSync()
+      if (info) {
+        dispatch(_setWebdavHost(info.webDAVHost))
+        dispatch(_setWebdavMaxBackups(10))
+        dispatch(_setWebdavPass(info.password))
+        dispatch(_setWebdavPath(info.webDAVPath))
+        dispatch(_setWebdavUser(info.username))
+        dispatch(_setWebdavSyncInterval(30))
+        dispatch(setWebdavAutoSync(true))
+        startAutoSync()
+      }
     } catch (error) {
       const msg = (error as Error).message
-      if (msg) message.error(msg)
+      console.log(msg)
     }
   }
 
