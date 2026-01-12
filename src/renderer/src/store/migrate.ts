@@ -1649,6 +1649,30 @@ const migrateConfig = {
       removeMiniAppFromState(state, 'stepfun')
       removeMiniAppFromState(state, 'xiaoyi')
       removeMiniAppFromState(state, 'baidu-ai-search')
+
+      // 根据DEFAULT_MIN_APPS的顺序对state.minapps.enabled进行排序
+      if (state.minapps && state.minapps.enabled) {
+        state.minapps.enabled = state.minapps.enabled.sort((a, b) => {
+          const aIndex = DEFAULT_MIN_APPS.findIndex((app) => app.id === a.id)
+          const bIndex = DEFAULT_MIN_APPS.findIndex((app) => app.id === b.id)
+
+          // 如果两个元素都在DEFAULT_MIN_APPS中，按照DEFAULT_MIN_APPS的顺序排序
+          if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex
+          }
+          // 如果只有a在DEFAULT_MIN_APPS中，a排在前面
+          if (aIndex !== -1) {
+            return -1
+          }
+          // 如果只有b在DEFAULT_MIN_APPS中，b排在前面
+          if (bIndex !== -1) {
+            return 1
+          }
+          // 如果都不在DEFAULT_MIN_APPS中，保持原有顺序
+          return 0
+        })
+      }
+
       return state
     } catch (error) {
       return state
