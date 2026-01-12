@@ -4,7 +4,7 @@ import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import {
   // Cloud,
   Command,
-  Globe,
+  // Globe,
   HardDrive,
   Info,
   MonitorCog,
@@ -64,12 +64,12 @@ const SettingsPage: FC = () => {
               {t('settings.model')}
             </MenuItem>
           </MenuItemLink>
-          <MenuItemLink to="/settings/web-search">
+          {/* <MenuItemLink to="/settings/web-search">
             <MenuItem className={isRoute('/settings/web-search')}>
               <Globe size={18} />
               {t('settings.websearch.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/mcp">
             <MenuItem className={isRoute('/settings/mcp')}>
               <SquareTerminal size={18} />

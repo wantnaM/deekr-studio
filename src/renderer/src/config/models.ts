@@ -298,6 +298,7 @@ export function getModelLogo(modelId: string) {
     'gpt-image': ChatGPTImageModelLogo,
     'gpt-3': isLight ? ChatGPT35ModelLogo : ChatGPT35ModelLogoDark,
     'gpt-4': isLight ? ChatGPT4ModelLogo : ChatGPT4ModelLogoDark,
+    'gpt-5': isLight ? ChatGPT4ModelLogo : ChatGPT4ModelLogoDark,
     gpts: isLight ? ChatGPT4ModelLogo : ChatGPT4ModelLogoDark,
     'text-moderation': isLight ? ChatGptModelLogo : ChatGptModelLogoDakr,
     'babbage-': isLight ? ChatGptModelLogo : ChatGptModelLogoDakr,
