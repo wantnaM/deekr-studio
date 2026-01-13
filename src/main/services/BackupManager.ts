@@ -14,8 +14,8 @@ import WebDav from './WebDav'
 import { windowService } from './WindowService'
 
 class BackupManager {
-  private tempDir = path.join(app.getPath('temp'), 'cherry-studio', 'backup', 'temp')
-  private backupDir = path.join(app.getPath('temp'), 'cherry-studio', 'backup')
+  private tempDir = path.join(app.getPath('temp'), 'deekr-studio', 'backup', 'temp')
+  private backupDir = path.join(app.getPath('temp'), 'deekr-studio', 'backup')
 
   constructor() {
     this.checkConnection = this.checkConnection.bind(this)
@@ -294,7 +294,7 @@ class BackupManager {
   }
 
   async backupToWebdav(_: Electron.IpcMainInvokeEvent, data: string, webdavConfig: WebDavConfig) {
-    const filename = webdavConfig.fileName || 'cherry-studio.backup.zip'
+    const filename = webdavConfig.fileName || 'deekr-studio.backup.zip'
     const backupedFilePath = await this.backup(_, filename, data, undefined, webdavConfig.skipBackupFile)
     const contentLength = (await fs.stat(backupedFilePath)).size
     const webdavClient = new WebDav(webdavConfig)
@@ -314,7 +314,7 @@ class BackupManager {
   }
 
   async restoreFromWebdav(_: Electron.IpcMainInvokeEvent, webdavConfig: WebDavConfig) {
-    const filename = webdavConfig.fileName || 'cherry-studio.backup.zip'
+    const filename = webdavConfig.fileName || 'deekr-studio.backup.zip'
     const webdavClient = new WebDav(webdavConfig)
     try {
       const retrievedFile = await webdavClient.getFileContents(filename)

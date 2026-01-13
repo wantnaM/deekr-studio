@@ -10,7 +10,7 @@ import dayjs from 'dayjs'
 import { NotificationService } from './NotificationService'
 
 export async function backup(skipBackupFile: boolean) {
-  const filename = `cherry-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
+  const filename = `deekr-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
   const fileContnet = await getBackupData()
   const selectFolder = await window.api.file.selectFolder()
   if (selectFolder) {
@@ -108,7 +108,7 @@ export async function backupToWebdav({
     Logger.error('[Backup] Failed to get device type or hostname:', error)
   }
   const timestamp = dayjs().format('YYYYMMDDHHmmss')
-  const backupFileName = customFileName || `cherry-studio.${timestamp}.${hostname}.${deviceType}.zip`
+  const backupFileName = customFileName || `deekr-studio.${timestamp}.${hostname}.${deviceType}.zip`
   const finalFileName = backupFileName.endsWith('.zip') ? backupFileName : `${backupFileName}.zip`
   const backupData = await getBackupData()
 
