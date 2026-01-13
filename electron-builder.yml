@@ -94,9 +94,9 @@ linux:
   category: Utility
   desktop:
     entry:
-      StartupWMClass: CherryStudio
+      StartupWMClass: DeekrStudio
   mimeTypes:
-    - x-scheme-handler/cherrystudio
+    - x-scheme-handler/deekrstudio
 publish:
   provider: generic
   url: http://8.134.23.119:8090

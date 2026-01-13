@@ -163,7 +163,7 @@ export function getAllFiles(dirPath: string, arrayOfFiles: FileType[] = []): Fil
 }
 
 export function getTempDir() {
-  return path.join(app.getPath('temp'), 'CherryStudio')
+  return path.join(app.getPath('temp'), 'DeekrStudio')
 }
 
 export function getFilesDir() {
