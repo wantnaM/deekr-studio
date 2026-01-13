@@ -167,7 +167,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       const info = await getWebDavUser()
       if (info) {
         dispatch(_setWebdavHost(info.webDAVHost))
-        dispatch(_setWebdavMaxBackups(50))
+        dispatch(_setWebdavMaxBackups(1))
         dispatch(_setWebdavPass(info.password))
         dispatch(_setWebdavPath(info.webDAVPath))
         dispatch(_setWebdavUser(info.username))
