@@ -107,6 +107,11 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    - 新增:数据云端同步
-    - 优化:更新最新的模型
-    - 优化:小程序调整
+    - 1. 支持云端数据备份与恢复
+      新增数据自动备份至云服务器功能，支持从云端进行手动恢复与数据更新。
+    - 2. 大模型能力升级
+      大模型升级至新版本，同步引入视觉理解模型，支持图片上传与图像内容理解，增强多模态交互能力。
+    - 3. AI 对话体验优化
+      新增 AI 聊天话题自动命名功能，提升对话管理效率。
+    - 4. 小程序管理优化
+      完善小程序分类体系，并新增多项小程序功能模块。
