@@ -1143,4 +1143,24 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
   ipcMain.handle(IpcChannel.APP_CrashRenderProcess, () => {
     mainWindow.webContents.forcefullyCrashRenderer()
   })
+
+
+  // Auth handlers
+  const passwordHashes = new Map<string, string>()
+
+  ipcMain.handle(IpcChannel.Auth_SavePasswordHash, (_, username: string, passwordHash: string) => {
+    passwordHashes.set(username, passwordHash)
+    logger.info(`Password hash saved for user: ${username}`)
+  })
+
+  ipcMain.handle(IpcChannel.Auth_GetPasswordHash, (_, username: string) => {
+    const hash = passwordHashes.get(username) || null
+    logger.info(`Password hash retrieved for user: ${username}`)
+    return hash
+  })
+
+  ipcMain.handle(IpcChannel.Auth_DeletePasswordHash, (_, username: string) => {
+    passwordHashes.delete(username)
+    logger.info(`Password hash deleted for user: ${username}`)
+  })
 }

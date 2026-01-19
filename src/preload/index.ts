@@ -629,6 +629,14 @@ const api = {
     sendFile: (filePath: string): Promise<LanFileCompleteMessage> =>
       ipcRenderer.invoke(IpcChannel.LocalTransfer_SendFile, { filePath }),
     cancelTransfer: (): Promise<void> => ipcRenderer.invoke(IpcChannel.LocalTransfer_CancelTransfer)
+  },
+  auth: {
+    savePasswordHash: (username: string, passwordHash: string): Promise<void> =>
+      ipcRenderer.invoke(IpcChannel.Auth_SavePasswordHash, username, passwordHash),
+    getPasswordHash: (username: string): Promise<string | null> =>
+      ipcRenderer.invoke(IpcChannel.Auth_GetPasswordHash, username),
+    deletePasswordHash: (username: string): Promise<void> =>
+      ipcRenderer.invoke(IpcChannel.Auth_DeletePasswordHash, username)
   }
 }
 

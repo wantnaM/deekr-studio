@@ -394,5 +394,10 @@ export enum IpcChannel {
   LocalTransfer_Disconnect = 'local-transfer:disconnect',
   LocalTransfer_ClientEvent = 'local-transfer:client-event',
   LocalTransfer_SendFile = 'local-transfer:send-file',
-  LocalTransfer_CancelTransfer = 'local-transfer:cancel-transfer'
+  LocalTransfer_CancelTransfer = 'local-transfer:cancel-transfer',
+
+  // Auth
+  Auth_SavePasswordHash = 'auth:save-password-hash',
+  Auth_GetPasswordHash = 'auth:get-password-hash',
+  Auth_DeletePasswordHash = 'auth:delete-password-hash'
 }
