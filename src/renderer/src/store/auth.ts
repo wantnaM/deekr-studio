@@ -5,32 +5,34 @@ import { createSlice } from '@reduxjs/toolkit'
 const logger = loggerService.withContext('AuthStore')
 
 export interface User {
-  id: string
+  id: number
   username: string
-  email?: string
-  displayName?: string
-  avatar?: string
-  createdAt?: string
-  lastLoginAt?: string
+  nickname: string | null
+  mobile: string | null
+  school: string | null
+  subject: string | null
+  grade: string | null
+  classroom: string | null
+  type: number | null
 }
 
 export interface AuthState {
   isAuthenticated: boolean
-  user: User | null
-  token: string | null
-  rememberMe: boolean
-  autoLogin: boolean
   isLoading: boolean
+  user: User | null
+  accessToken: string | null
+  refreshToken: string | null
+  expiresTime: number | null
   error: string | null
 }
 
 export const initialState: AuthState = {
   isAuthenticated: false,
-  user: null,
-  token: null,
-  rememberMe: false,
-  autoLogin: false,
   isLoading: false,
+  user: null,
+  accessToken: null,
+  refreshToken: null,
+  expiresTime: null,
   error: null
 }
 
@@ -44,20 +46,19 @@ const authSlice = createSlice({
     setAuthError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload
     },
-    setRememberMe: (state, action: PayloadAction<boolean>) => {
-      state.rememberMe = action.payload
-    },
-    setAutoLogin: (state, action: PayloadAction<boolean>) => {
-      state.autoLogin = action.payload
-    },
     loginStart: (state) => {
       state.isLoading = true
       state.error = null
     },
-    loginSuccess: (state, action: PayloadAction<{ user: User; token: string }>) => {
+    loginSuccess: (
+      state,
+      action: PayloadAction<{ user: User; accessToken: string; refreshToken: string; expiresTime: number }>
+    ) => {
       state.isAuthenticated = true
       state.user = action.payload.user
-      state.token = action.payload.token
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
+      state.expiresTime = action.payload.expiresTime
       state.isLoading = false
       state.error = null
       logger.info(`User logged in successfully: ${action.payload.user.username}`)
@@ -65,7 +66,9 @@ const authSlice = createSlice({
     loginFailure: (state, action: PayloadAction<string>) => {
       state.isAuthenticated = false
       state.user = null
-      state.token = null
+      state.accessToken = null
+      state.refreshToken = null
+      state.expiresTime = null
       state.isLoading = false
       state.error = action.payload
       logger.error(`Login failed: ${action.payload}`)
@@ -74,7 +77,9 @@ const authSlice = createSlice({
       const username = state.user?.username
       state.isAuthenticated = false
       state.user = null
-      state.token = null
+      state.accessToken = null
+      state.refreshToken = null
+      state.expiresTime = null
       state.isLoading = false
       state.error = null
       logger.info(`User logged out: ${username}`)
@@ -84,8 +89,11 @@ const authSlice = createSlice({
         state.user = { ...state.user, ...action.payload }
       }
     },
-    setToken: (state, action: PayloadAction<string | null>) => {
-      state.token = action.payload
+    setAccessToken: (state, action: PayloadAction<string | null>) => {
+      state.accessToken = action.payload
+    },
+    setRefreshToken: (state, action: PayloadAction<string | null>) => {
+      state.accessToken = action.payload
     }
   }
 })
@@ -93,14 +101,13 @@ const authSlice = createSlice({
 export const {
   setAuthLoading,
   setAuthError,
-  setRememberMe,
-  setAutoLogin,
   loginStart,
   loginSuccess,
   loginFailure,
   logout,
   updateUser,
-  setToken
+  setAccessToken,
+  setRefreshToken
 } = authSlice.actions
 
 export default authSlice.reducer

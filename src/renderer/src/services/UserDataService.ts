@@ -1,18 +1,24 @@
 import { loggerService } from '@logger'
-import type { User } from '@renderer/store/auth'
-
+import type { Assistant, MinAppType, Model, Provider, Topic } from '@renderer/types'
+import request from '@renderer/utils/axios'
 const logger = loggerService.withContext('UserDataService')
 
 export interface UserDataConfig {
-  userId: string
-  userName: string
+  userId: number
+  assistants: Assistant[]
+  providers: Provider[]
+  topics?: Topic[]
+  miniApps?: MinAppType[]
+  defaultModel: Model
+  quickModel: Model
+  translateModel: Model
 }
 
 class UserDataService {
   private static instance: UserDataService
 
-  private currentUser: UserDataConfig | null = null
-  private currentUserId: string | null = null
+  private currentConfig: UserDataConfig | null = null
+  private currentUserId: number | null = null
 
   private constructor() {}
 
@@ -23,89 +29,71 @@ class UserDataService {
     return UserDataService.instance
   }
 
-  setCurrentUser(user: User): void {
-    this.currentUser = {
-      userId: user.id,
-      userName: user.username
+  async getDataConfigWithApi(userId: number): Promise<void> {
+    const response = await request.get({
+      url: `/ds/config/get-by-user?id=${userId}`
+    })
+    const configData = JSON.parse(response.info)
+
+    this.currentConfig = {
+      userId,
+      assistants: [],
+      providers: configData.llm?.providers || [],
+      topics: [],
+      miniApps: [],
+      defaultModel: configData.llm?.defaultModel || null,
+      quickModel: configData.llm?.topicNamingModel || null,
+      translateModel: configData.llm?.translateModel || null
     }
-    this.currentUserId = user.id
-    this.saveUserSettings(user)
-    logger.info(`Current user set: ${user.username}, ${user.id}`)
+
+    console.log(this.currentConfig)
+
+    this.currentUserId = userId
   }
 
-  getCurrentUserId(): string | null {
+  getCurrentUserId(): number | null {
     return this.currentUserId
   }
 
   getCurrentUser(): UserDataConfig | null {
-    return this.currentUser
-  }
-
-  getUserDataPrefix(): string {
-    const userId = this.getCurrentUserId()
-    return userId ? `user_${userId}_` : ''
+    return this.currentConfig
   }
 
   clearCurrentUser(): void {
-    this.currentUser = null
+    this.currentConfig = null
     this.currentUserId = null
-    this.clearUserSettings()
     logger.info('Current user cleared')
   }
 
-  private saveUserSettings(user: User): void {
-    try {
-      localStorage.setItem(
-        'currentUser',
-        JSON.stringify({
-          id: user.id,
-          username: user.username,
-          displayName: user.displayName,
-          email: user.email,
-          avatar: user.avatar,
-          createdAt: user.createdAt,
-          lastLoginAt: new Date().toISOString()
-        })
-      )
-    } catch (error) {
-      logger.error('Failed to save user settings:', error as Error)
-    }
+  async getAssistants(userId: number): Promise<Assistant[]> {
+    const response = await request.get({
+      url: `/ds/agent/list?creator=${userId}`
+    })
+    return response || []
   }
 
-  private clearUserSettings(): void {
-    try {
-      localStorage.removeItem('currentUser')
-    } catch (error) {
-      logger.error('Failed to clear user settings:', error as Error)
-    }
+  async createAssistant(assistant: Assistant): Promise<Assistant> {
+    const response = await request.post({
+      url: `/ds/agent/create`,
+      data: assistant
+    })
+    return response
   }
 
-  loadUserSettings(): UserDataConfig | null {
-    try {
-      const saved = localStorage.getItem('currentUser')
-      if (saved) {
-        const user = JSON.parse(saved)
-        this.currentUser = {
-          userId: user.id,
-          userName: user.username
-        }
-        this.currentUserId = user.id
-        return this.currentUser
-      }
-    } catch (error) {
-      logger.error('Failed to load user settings:', error as Error)
-    }
-    return null
+  async updateAssistant(assistant: Assistant): Promise<Assistant> {
+    const response = await request.put({
+      url: `/ds/agent/update-by-id`,
+      data: assistant
+    })
+    return response
   }
 
-  getUserSpecificKey(baseKey: string): string {
-    const prefix = this.getUserDataPrefix()
-    return prefix + baseKey
+  async deleteAssistant(id: string): Promise<void> {
+    await request.delete({ url: `/ds/agent/delete-by-id?id=${id}` })
   }
 
-  getUserSpecificStateKey(sliceName: string): string {
-    const prefix = this.getUserDataPrefix()
-    return prefix + sliceName
+  async syncAssistantsToStudents(data: any): Promise<void> {
+    await request.post({ url: `/ds/agent/sync-to-students`, data })
   }
 }
 

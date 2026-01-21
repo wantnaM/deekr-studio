@@ -2,7 +2,7 @@ import '@renderer/databases'
 
 import type { FC } from 'react'
 import { useMemo } from 'react'
-import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 
 import Sidebar from './components/app/Sidebar'
 import AuthGuard from './components/auth/AuthGuard'
@@ -27,46 +27,36 @@ import TranslatePage from './pages/translate/TranslatePage'
 const Router: FC = () => {
   const { navbarPosition } = useNavbarPosition()
 
-  const appRoutes = useMemo(() => {
-    return (
-      <Route element={<Outlet />}>
-        <Route element={<AuthGuard />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/store" element={<AssistantPresetsPage />} />
-          <Route path="/paintings/*" element={<PaintingsRoutePage />} />
-          <Route path="/translate" element={<TranslatePage />} />
-          <Route path="/files" element={<FilesPage />} />
-          <Route path="/notes" element={<NotesPage />} />
-          <Route path="/knowledge" element={<KnowledgePage />} />
-          <Route path="/apps/:appId" element={<MinAppPage />} />
-          <Route path="/apps" element={<MinAppsPage />} />
-          <Route path="/code" element={<CodeToolsPage />} />
-          <Route path="/settings/*" element={<SettingsPage />} />
-          <Route path="/launchpad" element={<LaunchpadPage />} />
-        </Route>
-      </Route>
-    )
-  }, [])
-
   const routes = useMemo(() => {
     return (
       <ErrorBoundary>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          {appRoutes}
+          <Route element={<AuthGuard />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/store" element={<AssistantPresetsPage />} />
+            <Route path="/paintings/*" element={<PaintingsRoutePage />} />
+            <Route path="/translate" element={<TranslatePage />} />
+            <Route path="/files" element={<FilesPage />} />
+            <Route path="/notes" element={<NotesPage />} />
+            <Route path="/knowledge" element={<KnowledgePage />} />
+            <Route path="/apps/:appId" element={<MinAppPage />} />
+            <Route path="/apps" element={<MinAppsPage />} />
+            <Route path="/code" element={<CodeToolsPage />} />
+            <Route path="/settings/*" element={<SettingsPage />} />
+            <Route path="/launchpad" element={<LaunchpadPage />} />
+          </Route>
         </Routes>
       </ErrorBoundary>
     )
-  }, [appRoutes])
+  }, [])
 
   if (navbarPosition === 'left') {
     return (
       <HashRouter>
+        <Sidebar />
+        {routes}
         <NavigationHandler />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route element={<Sidebar />}>{appRoutes}</Route>
-        </Routes>
       </HashRouter>
     )
   }
