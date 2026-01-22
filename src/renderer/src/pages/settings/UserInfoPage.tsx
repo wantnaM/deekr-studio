@@ -1,11 +1,11 @@
-import { EditOutlined, KeyOutlined, LogoutOutlined, ReloadOutlined } from '@ant-design/icons'
+import { CloudOutlined,EditOutlined, KeyOutlined, LogoutOutlined, ReloadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { SettingContainer, SettingDivider, SettingGroup, SettingRowTitle, SettingTitle } from '@renderer/pages/settings'
+import { SettingContainer, SettingDivider, SettingGroup, SettingRow, SettingRowTitle, SettingTitle } from '@renderer/pages/settings'
 import authService from '@renderer/services/AuthService'
 import userDataService from '@renderer/services/UserDataService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import { logout, updateUser } from '@renderer/store/auth'
-import { Button, Form, Input, message, Modal, Space, Typography } from 'antd'
+import {Button, Form, Input, message, Modal, Space, Typography } from 'antd'
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -26,8 +26,8 @@ const UserInfoPage: FC = () => {
 
   const handleLogout = async () => {
     Modal.confirm({
-      title: t('settings.user.logout.confirm', '确认退出登录？'),
-      content: t('settings.user.logout.message', '退出登录后将无法使用相关功能'),
+      title: t('settings.user.logout.confirm'),
+      content: t('settings.user.logout.message'),
       okText: t('common.confirm', '确认'),
       cancelText: t('common.cancel', '取消'),
       onOk: async () => {
@@ -98,12 +98,17 @@ const UserInfoPage: FC = () => {
     }
   }
 
+  const formatMobile = (mobile: string | null): string => {
+    if (!mobile || mobile.length < 11) return mobile || '-'
+    return `${mobile.slice(0, 3)}****${mobile.slice(-4)}`
+  }
+
   const getUserTypeLabel = (type: number | null): string => {
     if (type === null) return t('settings.user.type.unknown', '未知')
     switch (type) {
-      case 1:
+      case 4:
         return t('settings.user.type.student', '学生')
-      case 2:
+      case 3:
         return t('settings.user.type.teacher', '教师')
       default:
         return t('settings.user.type.other', '其他')
@@ -113,7 +118,7 @@ const UserInfoPage: FC = () => {
   const getUserInfoItems = () => [
     { label: t('settings.user.username', '用户名'), value: user?.username || '-' },
     { label: t('settings.user.nickname', '昵称'), value: user?.nickname || '-' },
-    { label: t('settings.user.mobile', '手机号'), value: user?.mobile || '-' },
+    { label: t('settings.user.mobile', '手机号'), value: formatMobile(user?.mobile || null)},
     { label: t('settings.user.type', '用户类型'), value: getUserTypeLabel(user?.type || null) },
     { label: t('settings.user.school', '学校'), value: user?.school || '-' },
     { label: t('settings.user.subject', '学科'), value: user?.subject || '-' },
@@ -126,48 +131,57 @@ const UserInfoPage: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.user.title', '用户信息')}</SettingTitle>
         <SettingDivider />
-        <UserInfoGrid>
-          {getUserInfoItems().map((item, index) => (
-            <InfoRow key={index}>
-              <SettingRowTitle>{item.label}</SettingRowTitle>
-              <InfoValue>{item.value}</InfoValue>
-            </InfoRow>
-          ))}
-        </UserInfoGrid>
+        <UserInfoContent>
+          <InfoColumn>
+            <InfoGrid>
+              {getUserInfoItems().map((item, index) => (
+                <InfoItem key={index}>
+                  <InfoLabel>{item.label}：</InfoLabel>
+                  <InfoValue>{item.value}</InfoValue>
+                </InfoItem>
+              ))}
+            </InfoGrid>
+          </InfoColumn>
+        </UserInfoContent>
       </SettingGroup>
 
       <SettingGroup theme={theme}>
-        <SettingTitle>{t('settings.user.actions.title', '用户操作')}</SettingTitle>
+        <SettingTitle>{t('settings.user.actions.title')}</SettingTitle>
         <SettingDivider />
-        <ActionRow>
-          <ActionButton
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={handleEditInfo}
-          >
-            {t('settings.user.edit', '修改信息')}
-          </ActionButton>
-          <ActionButton
-            icon={<KeyOutlined />}
-            onClick={handleChangePassword}
-          >
-            {t('settings.user.changePassword', '修改密码')}
-          </ActionButton>
-          <ActionButton
-            icon={<ReloadOutlined />}
-            onClick={handleRefreshProfile}
-            loading={loading}
-          >
-            {t('settings.user.refresh', '重载配置')}
-          </ActionButton>
-          <ActionButton
-            danger
-            icon={<LogoutOutlined />}
-            onClick={handleLogout}
-          >
-            {t('settings.user.logout.button', '退出登录')}
-          </ActionButton>
-        </ActionRow>
+          <SettingRow>
+          <SettingRowTitle>{t('settings.user.backup.title', '云备份')}</SettingRowTitle>
+            <ActionButtons>
+              <BackupInfo>
+                {t('settings.user.backup.last', '上一次备份时间')}：
+                <Text type="secondary">{t('settings.user.backup.never', '从未备份')}</Text>
+              </BackupInfo>
+              <Button icon={<CloudOutlined />}>
+                {t('settings.user.backup.go', '去设置')}
+              </Button>
+            </ActionButtons>
+          </SettingRow>
+          <SettingDivider />
+          <SettingRow>
+            <SettingRowTitle>{t('settings.user.config.title', '配置')}</SettingRowTitle>
+            <Button icon={<ReloadOutlined />} onClick={handleRefreshProfile} loading={loading}>
+                {t('settings.user.config.refresh')}
+              </Button>
+          </SettingRow>
+          <SettingDivider />
+          <SettingRow>
+            <SettingRowTitle>{t('settings.user.actions.account')}</SettingRowTitle>
+            <ActionButtons>
+              <Button variant="solid" icon={<EditOutlined />} onClick={handleEditInfo}>
+                {t('settings.user.actions.editButton', '修改信息')}
+              </Button>
+              <Button color="primary" variant="solid" icon={<KeyOutlined />} onClick={handleChangePassword}>
+                {t('settings.user.actions.changePasswordButton', '修改密码')}
+              </Button>
+              <Button danger icon={<LogoutOutlined />} onClick={handleLogout}>
+                {t('settings.user.logout.button', '退出登录')}
+              </Button>
+            </ActionButtons>
+          </SettingRow>
       </SettingGroup>
 
       <EditInfoModal
@@ -298,7 +312,66 @@ const UserInfoPage: FC = () => {
   )
 }
 
-const UserInfoGrid = styled.div`
+const UserInfoContent = styled.div`
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+
+const AvatarColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+`
+
+const AvatarUploadWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+
+  &:hover .avatar-edit {
+    opacity: 1;
+  }
+`
+
+const AvatarWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`
+
+const AvatarEditIcon = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+`
+
+const AvatarText = styled(Text)`
+  font-size: 12px;
+  color: var(--color-text-3);
+`
+
+const InfoColumn = styled.div`
+  flex: 1;
+  min-width: 0;
+`
+
+const InfoGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
@@ -308,30 +381,67 @@ const UserInfoGrid = styled.div`
   }
 `
 
-const InfoRow = styled.div`
+const InfoItem = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
   min-height: 32px;
+  overflow: hidden;
+`
+
+const InfoLabel = styled(Text)`
+  font-size: 14px;
+  color: var(--color-text-2);
+  flex-shrink: 0;
 `
 
 const InfoValue = styled(Text)`
   font-size: 14px;
   color: var(--color-text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+
+const ActionContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `
 
 const ActionRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 `
 
-const ActionButton = styled(Button)`
-  min-width: 120px;
+const ActionLabel = styled.div`
+  flex-shrink: 0;
+`
+
+const ActionButtons = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+`
+
+const BackupInfo = styled.div`
+  font-size: 14px;
+  color: var(--color-text-2);
+  margin-right: 12px;
 `
 
 const EditInfoModal = styled(Modal)`

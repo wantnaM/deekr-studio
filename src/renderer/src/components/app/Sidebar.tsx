@@ -33,7 +33,6 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import UserPopup from '../Popups/UserPopup'
 import { SidebarOpenedMinappTabs, SidebarPinnedApps } from './PinnedMinapps'
 
 const Sidebar: FC = () => {
@@ -49,7 +48,7 @@ const Sidebar: FC = () => {
   const avatar = useAvatar()
   const { t } = useTranslation()
 
-  const onEditUser = () => UserPopup.show()
+  const onEditUser = () => navigate('/settings/user')
 
   const backgroundColor = useNavBackgroundColor()
 
