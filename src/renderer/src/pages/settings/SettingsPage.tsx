@@ -17,6 +17,7 @@ import {
   Server,
   Settings2,
   TextCursorInput,
+  User,
   Zap
 } from 'lucide-react'
 import type { FC } from 'react'
@@ -37,6 +38,7 @@ import QuickPhraseSettings from './QuickPhraseSettings'
 import SelectionAssistantSettings from './SelectionAssistantSettings/SelectionAssistantSettings'
 import ShortcutSettings from './ShortcutSettings'
 import { ApiServerSettings } from './ToolSettings/ApiServerSettings'
+import UserInfoPage from './UserInfoPage'
 import WebSearchSettings from './WebSearchSettings'
 
 const SettingsPage: FC = () => {
@@ -52,6 +54,13 @@ const SettingsPage: FC = () => {
       </Navbar>
       <ContentContainer id="content-container">
         <SettingMenus>
+          <MenuItemLink to="/settings/user">
+            <MenuItem className={isRoute('/settings/user')}>
+              <User size={18} />
+              {t('settings.user.title')}
+            </MenuItem>
+          </MenuItemLink>
+          <Divider />
           <MenuItemLink to="/settings/provider">
             <MenuItem className={isRoute('/settings/provider')}>
               <Cloud size={18} />
@@ -149,6 +158,7 @@ const SettingsPage: FC = () => {
         </SettingMenus>
         <SettingContent>
           <Routes>
+            <Route path="user" element={<UserInfoPage />} />
             <Route path="provider" element={<ProviderList />} />
             <Route path="model" element={<ModelSettings />} />
             <Route path="websearch/*" element={<WebSearchSettings />} />
