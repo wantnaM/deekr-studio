@@ -65,7 +65,14 @@ export const AssistantPresetGroupIcon: FC<Props> = ({ groupName, size = 20, stro
     金融: 'banknote',
     旅游: 'plane',
     管理: 'users',
-    搜索: 'search'
+    搜索: 'search',
+    教学设计: 'book-open',
+    作业设计: 'edit-3',
+    作业批改: 'check-square',
+    考试分析: 'bar-chart-2',
+    学科助手: 'help-circle',
+    课题研究: 'search',
+    行政管理: 'clipboard-list'
   } as const
 
   return <DynamicIcon name={iconMap[originalKey] || 'bot-message-square'} size={size} strokeWidth={strokeWidth} />

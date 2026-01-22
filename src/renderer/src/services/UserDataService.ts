@@ -67,6 +67,9 @@ class UserDataService {
     const response = await request.get({
       url: `/ds/agent/list?creator=${userId}`
     })
+    if (this.currentConfig) {
+      this.currentConfig.assistants = response
+    }
     return response || []
   }
 
