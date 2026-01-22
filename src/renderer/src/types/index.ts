@@ -1154,3 +1154,9 @@ export type FetchChatCompletionParams = MessagesParams | PromptParams
 // More specific than NonNullable
 export type NotUndefined<T> = Exclude<T, undefined>
 export type NotNull<T> = Exclude<T, null>
+
+export interface DictDataType {
+  dictType: string
+  label: string
+  value: string | number | boolean
+}

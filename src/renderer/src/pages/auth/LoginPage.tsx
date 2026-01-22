@@ -1,4 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import logoBackground from '@renderer/assets/images/logo-background.jpg'
 import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import { useProviders } from '@renderer/hooks/useProvider'
 import type { LoginCredentials } from '@renderer/services/AuthService'
@@ -9,29 +10,29 @@ import { loginFailure, loginStart, loginSuccess, updateUser } from '@renderer/st
 import { Button, Form, Input } from 'antd'
 import type { FC } from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
+import RegisterForm from './RegisterForm'
+
 const LoginPage: FC = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { updateProvider, updateProviders } = useProviders()
+  const { updateProvider } = useProviders()
   const { setDefaultModel, setQuickModel, setTranslateModel } = useDefaultModel()
   const { isLoading } = useAppSelector((state) => state.auth)
   const [form] = Form.useForm()
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
 
-  const handleLogin = async () => {
-    if (!username.trim() || !password.trim()) {
-      dispatch(loginFailure('请输入用户名和密码'))
-      return
-    }
+  // 注册
+  const [isRegisterMode, setIsRegisterMode] = useState(false)
 
+  const handleLogin = async (values: { username: string; password: string }) => {
     dispatch(loginStart())
 
     try {
       const credentials: LoginCredentials = {
-        username: username.trim(),
-        password: password.trim()
+        username: values.username.trim(),
+        password: values.password.trim()
       }
 
       const loginResult = await authService.login(credentials)
@@ -41,7 +42,7 @@ const LoginPage: FC = () => {
           user: {
             id: loginResult.userId,
             type: loginResult.type,
-            username: username.trim(),
+            username: values.username.trim(),
             nickname: null,
             mobile: null,
             school: null,
@@ -63,32 +64,14 @@ const LoginPage: FC = () => {
 
       await loadUserDataConfig()
 
-      // window.navigate('/', { replace: true })
+      navigate('/', { replace: true })
     } catch (err) {
       dispatch(loginFailure(err instanceof Error ? err.message : '登录失败，请检查用户名和密码'))
     }
   }
 
-  const handleRegister = async () => {
-    if (!username.trim() || !password.trim()) {
-      dispatch(loginFailure('请输入用户名和密码'))
-      return
-    }
-
-    // dispatch(loginStart())
-
-    // try {
-    //   const result = await authService.register(username.trim(), password.trim())
-    //   dispatch(loginSuccess(result))
-    //   navigate('/', { replace: true })
-    // } catch (err) {
-    //   dispatch(loginFailure(err instanceof Error ? err.message : '注册失败，请重试'))
-    // }
-  }
-
   const loadUserDataConfig = async () => {
     const userDataConfig = userDataService.getCurrentUser()
-    console.log(userDataConfig)
     if (!userDataConfig) {
       return
     }
@@ -96,7 +79,6 @@ const LoginPage: FC = () => {
     // LLM 配置
     for (let index = 0; index < userDataConfig.providers.length; index++) {
       const p = userDataConfig.providers[index]
-      console.log(p)
       updateProvider(p)
     }
 
@@ -108,46 +90,33 @@ const LoginPage: FC = () => {
   return (
     <Container>
       <LoginCard>
-        <Form form={form} layout="vertical" size="large">
-          <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="请输入用户名"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Item>
+        {!isRegisterMode ? (
+          <Form form={form} layout="vertical" size="large" onFinish={handleLogin}>
+            <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>
+              <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
+            </Form.Item>
 
-          <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="请输入密码"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onPressEnter={handleLogin}
-            />
-          </Form.Item>
+            <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码' }]}>
+              <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" onPressEnter={() => form.submit()} />
+            </Form.Item>
 
-          <Form.Item style={{ marginBottom: 20 }}>
-            <ButtonContainer>
-              <StyledButton
-                type="primary"
-                block
-                size="large"
-                loading={isLoading}
-                onClick={handleLogin}
-                variant="primary">
-                {isLoading ? '登录中...' : '登录'}
+            <Form.Item style={{ marginBottom: 20 }}>
+              <ButtonContainer>
+                <StyledButton type="primary" htmlType="submit" block size="large" loading={isLoading} variant="primary">
+                  {isLoading ? '登录中...' : '登录'}
+                </StyledButton>
+              </ButtonContainer>
+            </Form.Item>
+
+            <Form.Item style={{ marginBottom: 0 }}>
+              <StyledButton block size="large" onClick={() => setIsRegisterMode(true)} variant="secondary">
+                注册新账号
               </StyledButton>
-            </ButtonContainer>
-          </Form.Item>
-
-          <Form.Item style={{ marginBottom: 0 }}>
-            <StyledButton block size="large" onClick={handleRegister} variant="secondary">
-              注册新账号
-            </StyledButton>
-          </Form.Item>
-        </Form>
+            </Form.Item>
+          </Form>
+        ) : (
+          <RegisterForm onCancel={() => setIsRegisterMode(false)} />
+        )}
       </LoginCard>
     </Container>
   )
@@ -159,7 +128,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('https://sfile.chatglm.cn/testpath/d1100df1bab84130ab20c91a405b29f2_0.jpg?image_process=format,webp');
+  background-image: url(${logoBackground});
   background-size: cover;
   background-position: center;
   position: relative;
@@ -171,7 +140,7 @@ const Container = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.3);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -183,7 +152,7 @@ const Container = styled.div`
 
 const LoginCard = styled.div`
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   border-radius: 16px;

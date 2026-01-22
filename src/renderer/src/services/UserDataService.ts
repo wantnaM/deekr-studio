@@ -46,8 +46,6 @@ class UserDataService {
       translateModel: configData.llm?.translateModel || null
     }
 
-    console.log(this.currentConfig)
-
     this.currentUserId = userId
   }
 

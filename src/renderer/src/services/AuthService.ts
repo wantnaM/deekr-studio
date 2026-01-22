@@ -11,13 +11,15 @@ export interface LoginCredentials {
 
 export interface RegisterCredentials {
   username: string
+  password: string
   nickname: string
-  mobile: string
+  mobile?: string
   school: string
-  subject: string
-  grade: string
-  classroom: string
+  subject?: string
+  grade?: string
+  classroom?: string
   type: number
+  teacherId?: number
 }
 
 export interface LoginResponse {
