@@ -4940,76 +4940,7 @@
       "show": "显示托盘图标",
       "title": "托盘"
     },
-    "user": {
-      "title": "用户信息",
-      "username": "用户名",
-      "nickname": "昵称",
-      "mobile": "手机号",
-      "type": "角色",
-      "school": "学校",
-      "subject": "学科",
-      "grade": "年级",
-      "classroom": "班级",
-      "actions": {
-        "title": "用户操作",
-        "backup": "云备份",
-        "account": "账户",
-        "editButton": "修改信息",
-        "changePasswordButton": "修改密码"
-      },
-      "config": {
-        "title": "配置",
-        "success": "配置成功",
-        "error": "配置失败",
-        "refresh": "刷新"
-      },
-      "backup": {
-        "title": "云备份",
-        "last": "上一次备份时间",
-        "never": "从未备份",
-        "go": "去设置"
-      },
-      "logout": {
-        "confirm": "确认退出登录？",
-        "message": "退出登录后将无法使用相关功能",
-        "success": "退出登录成功",
-        "button": "退出登录"
-      },
-      "edit": {
-        "title": "修改信息",
-        "success": "修改信息成功",
-        "error": "修改信息失败"
-      },
-      "refresh": {
-        "success": "刷新用户信息成功",
-        "error": "刷新用户信息失败"
-      },
-      "changePassword": {
-        "title": "修改密码",
-        "old": "旧密码",
-        "new": "新密码",
-        "confirm": "确认新密码",
-        "oldPassword": {
-          "required": "请输入旧密码",
-          "placeholder": "请输入旧密码"
-        },
-        "newPassword": {
-          "required": "请输入新密码",
-          "placeholder": "请输入新密码"
-        },
-        "confirmPassword": {
-          "required": "请确认新密码",
-          "placeholder": "请再次输入新密码",
-          "mismatch": "两次输入的密码不一致"
-        },
-        "submit": "修改密码",
-        "success": "密码修改成功",
-        "error": "密码修改失败"
-      },
-      "avatar": {
-        "upload": "点击修改头像"
-      }
-    },
+    "user.title": "用户信息",
     "zoom": {
       "reset": "重置",
       "title": "缩放"

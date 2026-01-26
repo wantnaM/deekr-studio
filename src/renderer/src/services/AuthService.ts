@@ -77,6 +77,20 @@ class AuthService {
 
     return response
   }
+
+  async changePassword(data: any): Promise<any> {
+    return await request.put({
+      url: `/system/user/profile/update-password`,
+      data
+    })
+  }
+
+  async updateProfile(data: any): Promise<any> {
+    return await request.put({
+      url: `/system/user/profile/update`,
+      data
+    })
+  }
 }
 
 export default AuthService.getInstance()

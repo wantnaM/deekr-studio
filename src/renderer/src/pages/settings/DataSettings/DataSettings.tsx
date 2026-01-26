@@ -21,6 +21,7 @@ import { FileText, FolderCog, FolderInput, FolderOpen, FolderOutput, SaveIcon } 
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import {
@@ -46,6 +47,7 @@ import YuqueSettings from './YuqueSettings'
 
 const DataSettings: FC = () => {
   const { t } = useTranslation()
+  const location = useLocation()
   const [appInfo, setAppInfo] = useState<AppInfo>()
   const [cacheSize, setCacheSize] = useState<string>('')
   const { size, removeAllFiles } = useKnowledgeFiles()
@@ -135,6 +137,14 @@ const DataSettings: FC = () => {
     window.api.getAppInfo().then(setAppInfo)
     window.api.getCacheSize().then(setCacheSize)
   }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const tab = params.get('tab')
+    if (tab && menuItems.some(item => item.key === tab)) {
+      setMenu(tab)
+    }
+  }, [location.search])
 
   const handleOpenPath = (path?: string) => {
     if (!path) return
