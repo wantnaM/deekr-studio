@@ -50,12 +50,13 @@ const UserInfoPage: FC = () => {
     })
   }
 
-  const handleRefreshProfile = async () => {
+  const handleRefreshConfig = async () => {
     setLoading(true)
     try {
-      const profile = await authService.getUserProfile()
-      dispatch(updateUser(profile))
-      message.success('刷新用户信息成功')
+      if (user) {
+        await userDataService.getDataConfigWithApi(user.id)
+        message.success('刷新配置成功')
+      }
     } finally {
       setLoading(false)
     }
@@ -178,7 +179,7 @@ const UserInfoPage: FC = () => {
         <SettingDivider />
         <SettingRow>
           <SettingRowTitle>配置</SettingRowTitle>
-          <Button icon={<ReloadOutlined />} onClick={handleRefreshProfile} loading={loading}>
+          <Button icon={<ReloadOutlined />} onClick={handleRefreshConfig} loading={loading}>
             刷新
           </Button>
         </SettingRow>
