@@ -448,7 +448,7 @@
         },
         "prompt": {
           "label": "提示词",
-          "placeholder": "输入提示词",
+          "placeholder": "输入提示词或用自然语言描述助手然后点击自动优化",
           "variables": {
             "tip": {
               "content": "{{date}}:\t日期\n{{time}}:\t时间\n{{datetime}}:\t日期和时间\n{{system}}:\t操作系统\n{{arch}}:\tCPU 架构\n{{language}}:\t语言\n{{model_name}}:\t模型名称\n{{username}}:\t用户名",

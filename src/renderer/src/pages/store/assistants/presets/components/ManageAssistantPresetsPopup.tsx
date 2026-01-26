@@ -15,7 +15,7 @@ type Mode = 'sort' | 'manage'
 const PopupContainer: React.FC = () => {
   const [open, setOpen] = useState(true)
   const { t } = useTranslation()
-  const { presets, setAssistantPresets } = useAssistantPresets()
+  const { presets, setAssistantPresets, removeAssistantPreset } = useAssistantPresets()
   const [mode, setMode] = useState<Mode>('manage')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
 
@@ -81,8 +81,7 @@ const PopupContainer: React.FC = () => {
       centered: true,
       content: t('assistants.presets.manage.batch_delete.confirm', { count: selectedIds.size }),
       onOk: () => {
-        const remainingPresets = presets.filter((p) => !selectedIds.has(p.id))
-        setAssistantPresets(remainingPresets)
+        selectedIds.forEach((id) => removeAssistantPreset(id))
         setSelectedIds(new Set())
       }
     })

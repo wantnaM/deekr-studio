@@ -8,8 +8,7 @@ import { useAppDispatch } from '@renderer/store'
 import { setAgentssubscribeUrl } from '@renderer/store/settings'
 import type { AssistantPreset } from '@renderer/types'
 import { uuid } from '@renderer/utils'
-import { Button, Divider, Flex, Form, Input, Modal, Radio, Typography } from 'antd'
-import { HelpCircle } from 'lucide-react'
+import { Button, Flex, Form, Input, Modal, Typography } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -22,7 +21,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const [form] = Form.useForm()
   const { t } = useTranslation()
   const { addAssistantPreset } = useAssistantPresets()
-  const [importType, setImportType] = useState<'url' | 'file'>('url')
+  const [importType, setImportType] = useState<'url' | 'file'>('file')
   const [loading, setLoading] = useState(false)
   const [subscribeLoading, setSubscribeLoading] = useState(false)
   const { setTimeoutTimer } = useTimer()
@@ -161,10 +160,10 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item style={{ marginBottom: 0 }}>
           <Flex align="center" gap={12} style={{ width: '100%' }}>
-            <Radio.Group value={importType} onChange={(e) => setImportType(e.target.value)}>
-              <Radio.Button value="url">{t('assistants.presets.import.type.url')}</Radio.Button>
+            {/* <Radio.Group value={importType} onChange={(e) => setImportType(e.target.value)}>
+              <Radio.Button value="url" disabled>{t('assistants.presets.import.type.url')}</Radio.Button>
               <Radio.Button value="file">{t('assistants.presets.import.type.file')}</Radio.Button>
-            </Radio.Group>
+            </Radio.Group> */}
 
             {importType === 'url' && (
               <Form.Item
@@ -198,7 +197,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         </Form.Item>
       </Form>
 
-      <Divider style={{ margin: '16px 0' }} />
+      {/* <Divider style={{ margin: '16px 0' }} />
 
       <Flex align="center" gap={4}>
         <Typography.Text strong style={{ flexShrink: 0, fontSize: 16 }}>
@@ -225,7 +224,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
         <Button type="primary" onClick={handleSubscribe} loading={subscribeLoading} disabled={!subscribeUrl.trim()}>
           {isSubscribed ? t('common.unsubscribe') : t('common.subscribe')}
         </Button>
-      </Flex>
+      </Flex> */}
     </Modal>
   )
 }

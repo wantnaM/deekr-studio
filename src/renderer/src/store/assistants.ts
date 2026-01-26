@@ -20,6 +20,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_CONTEXTCOUNT, DEFAULT_TEMPERATURE } from '@renderer/config/constant'
 import { TopicManager } from '@renderer/hooks/useTopic'
 import { DEFAULT_ASSISTANT_SETTINGS, getDefaultAssistant, getDefaultTopic } from '@renderer/services/AssistantService'
+import UserDataService from '@renderer/services/UserDataService'
 import type { Assistant, AssistantPreset, AssistantSettings, Model, Topic } from '@renderer/types'
 import { isEmpty, uniqBy } from 'lodash'
 
@@ -214,9 +215,11 @@ const assistantsSlice = createSlice({
     },
     addAssistantPreset: (state, action: PayloadAction<AssistantPreset>) => {
       state.presets.push(action.payload)
+      UserDataService.createAssistant(action.payload)
     },
     removeAssistantPreset: (state, action: PayloadAction<{ id: string }>) => {
       state.presets = state.presets.filter((c) => c.id !== action.payload.id)
+      UserDataService.deleteAssistant(action.payload.id)
     },
     updateAssistantPreset: (state, action: PayloadAction<AssistantPreset>) => {
       const preset = action.payload
@@ -224,6 +227,7 @@ const assistantsSlice = createSlice({
       if (index !== -1) {
         state.presets[index] = preset
       }
+      UserDataService.updateAssistant(preset)
     },
     updateAssistantPresetSettings: (
       state,

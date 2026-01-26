@@ -224,13 +224,17 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             onClick={handleGenerateButtonClick}
             style={{ position: 'absolute', top: 8, right: 8 }}
             disabled={loading}
-          />
+          >
+            自动优化
+          </Button>
           {showUndoButton && (
             <Button
               icon={<RollbackOutlined />}
               onClick={handleUndoButtonClick}
-              style={{ position: 'absolute', top: 8, right: 48 }}
-            />
+              style={{ position: 'absolute', top: 8, right: 118 }}
+            >
+              撤回
+          </Button>
           )}
         </div>
         {showKnowledgeIcon && (
