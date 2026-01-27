@@ -59,6 +59,7 @@ const AppsPage: FC = () => {
             icon={<SettingsIcon size={18} color="var(--color-text-2)" />}
             onClick={MinappSettingsPopup.show}
           />
+          <NoticeText>小程序为第三方应用，需要用户自行登录</NoticeText>
         </NavbarMain>
       </Navbar>
       <ContentContainer id="content-container">
@@ -196,4 +197,13 @@ const GroupTitle = styled.div`
   padding-bottom: 8px;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: 15px;
+`
+
+const NoticeText = styled.div`
+  font-size: 12px;
+  color: var(--color-text-2);
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 100;
 `
