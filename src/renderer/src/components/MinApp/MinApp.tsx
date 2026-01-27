@@ -9,7 +9,7 @@ import { useNavbarPosition } from '@renderer/hooks/useSettings'
 import { setOpenedKeepAliveMinapps } from '@renderer/store/runtime'
 import type { MinAppType } from '@renderer/types'
 import type { MenuProps } from 'antd'
-import { Dropdown } from 'antd'
+import { Dropdown, Tooltip } from 'antd'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -113,17 +113,19 @@ const MinApp: FC<Props> = ({ app, onClick, size = 60, isLast }) => {
 
   return (
     <Dropdown menu={{ items: menuItems }} trigger={['contextMenu']}>
-      <Container onClick={handleClick}>
-        <IconContainer>
-          <MinAppIcon size={size} app={app} />
-          {isOpened && (
-            <StyledIndicator>
-              <IndicatorLight color="#22c55e" size={6} animation={!isActive} />
-            </StyledIndicator>
-          )}
-        </IconContainer>
-        <AppTitle>{isLast ? t('settings.miniapps.custom.title') : app.name}</AppTitle>
-      </Container>
+      <Tooltip title={app.desc} placement="top" mouseEnterDelay={0.3}>
+        <Container onClick={handleClick}>
+          <IconContainer>
+            <MinAppIcon size={size} app={app} />
+            {isOpened && (
+              <StyledIndicator>
+                <IndicatorLight color="#22c55e" size={6} animation={!isActive} />
+              </StyledIndicator>
+            )}
+          </IconContainer>
+          <AppTitle>{isLast ? t('settings.miniapps.custom.title') : app.name}</AppTitle>
+        </Container>
+      </Tooltip>
     </Dropdown>
   )
 }

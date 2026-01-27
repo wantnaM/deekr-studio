@@ -141,7 +141,7 @@ const DataSettings: FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search)
     const tab = params.get('tab')
-    if (tab && menuItems.some(item => item.key === tab)) {
+    if (tab && menuItems.some((item) => item.key === tab)) {
       setMenu(tab)
     }
   }, [location.search])

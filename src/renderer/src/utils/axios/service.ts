@@ -1,7 +1,8 @@
 import { loggerService } from '@logger'
 import { getAccessToken, getRefreshToken, removeToken, setToken } from '@renderer/hooks/useAuth'
 import { message } from 'antd'
-import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 import { config } from './config'
 import errorCode from './errorCode'

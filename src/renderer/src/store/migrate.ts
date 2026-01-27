@@ -2360,7 +2360,8 @@ const migrateConfig = {
         aihubmix_image_upscale: state?.paintings?.upscale || [],
         openai_image_generate: state?.paintings?.openai_image_generate || [],
         openai_image_edit: state?.paintings?.openai_image_edit || [],
-        ovms_paintings: []
+        ovms_paintings: [],
+        doubao_paintings: []
       }
 
       return state

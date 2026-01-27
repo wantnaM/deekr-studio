@@ -1144,7 +1144,6 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
     mainWindow.webContents.forcefullyCrashRenderer()
   })
 
-
   // Auth handlers
   const passwordHashes = new Map<string, string>()
 

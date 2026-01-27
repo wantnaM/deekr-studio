@@ -3,7 +3,8 @@ import App from '@renderer/components/MinApp/MinApp'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { useMinapps } from '@renderer/hooks/useMinapps'
 import { useNavbarPosition } from '@renderer/hooks/useSettings'
-import { Button, Input } from 'antd'
+import { Button, Empty, Input } from 'antd'
+import { groupBy, isEmpty } from 'lodash'
 import { Search, SettingsIcon } from 'lucide-react'
 import type { FC } from 'react'
 import React, { useState } from 'react'
@@ -25,11 +26,8 @@ const AppsPage: FC = () => {
       )
     : minapps
 
-  // Calculate the required number of lines
-  const itemsPerRow = Math.floor(930 / 115) // Maximum width divided by the width of each item (including spacing)
-  const rowCount = Math.ceil((filteredApps.length + 1) / itemsPerRow) // +1 for the add button
-  // Each line height is 85px (60px icon + 5px margin + 12px text + spacing)
-  const containerHeight = rowCount * 85 + (rowCount - 1) * 25 // 25px is the line spacing.
+  // 按分组分类，未分组的应用归类到'其他'
+  const groupedApps = groupBy(filteredApps, (app) => (app as any).group || '其他')
 
   // Disable right-click menu in blank area
   const handleContextMenu = (e: React.MouseEvent) => {
@@ -86,12 +84,25 @@ const AppsPage: FC = () => {
               </HeaderContainer>
             )}
             <AppsContainerWrapper>
-              <AppsContainer style={{ height: containerHeight }}>
-                {filteredApps.map((app) => (
-                  <App key={app.id} app={app} />
-                ))}
-                <NewAppButton />
-              </AppsContainer>
+              {isEmpty(filteredApps) ? (
+                <Center>
+                  <Empty />
+                </Center>
+              ) : (
+                <div style={{ width: '100%', maxWidth: 930 }}>
+                  {Object.entries(groupedApps).map(([groupName, apps]) => (
+                    <div key={groupName} style={{ marginBottom: 40 }}>
+                      <GroupTitle>{groupName}</GroupTitle>
+                      <AppsContainer>
+                        {apps.map((app) => (
+                          <App key={app.id} app={app} />
+                        ))}
+                      </AppsContainer>
+                    </div>
+                  ))}
+                  <NewAppButton />
+                </div>
+              )}
             </AppsContainerWrapper>
           </RightContainer>
         </MainContainer>
@@ -169,3 +180,20 @@ const AppsContainer = styled.div`
 `
 
 export default AppsPage
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`
+
+const GroupTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 15px;
+`

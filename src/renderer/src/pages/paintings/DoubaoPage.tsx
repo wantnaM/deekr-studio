@@ -180,7 +180,7 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
         seed: painting.seed || undefined,
         numInferenceSteps: 25,
         guidanceScale: painting.guidanceScale || 4.5,
-        signal: controller.signal,
+        signal: controller.signal
       })
 
       if (urls.length > 0) {
@@ -318,7 +318,12 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
           <ProviderTitleContainer>
             <SettingTitle style={{ marginBottom: 5 }}>{t('common.provider')}</SettingTitle>
           </ProviderTitleContainer>
-          <ProviderSelect provider={doubaoProvider} options={Options} onChange={handleProviderChange} className="mb-4" />
+          <ProviderSelect
+            provider={doubaoProvider}
+            options={Options}
+            onChange={handleProviderChange}
+            className="mb-4"
+          />
           <SettingTitle style={{ marginBottom: 5, marginTop: 15 }}>{t('common.model')}</SettingTitle>
           <Select
             value={painting.model}

@@ -163,17 +163,21 @@ const UserInfoPage: FC = () => {
           <SettingRowTitle>云备份</SettingRowTitle>
           <ActionButtons>
             <BackupInfo>
-            {webdavAutoSync ? (
-              webdavSync.lastSyncTime ? (
-                <Text type="secondary">上一次备份时间：{dayjs(webdavSync.lastSyncTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
+              {webdavAutoSync ? (
+                webdavSync.lastSyncTime ? (
+                  <Text type="secondary">
+                    上一次备份时间：{dayjs(webdavSync.lastSyncTime).format('YYYY-MM-DD HH:mm:ss')}
+                  </Text>
+                ) : (
+                  <Text type="secondary">从未备份</Text>
+                )
               ) : (
-                <Text type="secondary">从未备份</Text>
-              )
-            ) : (
-              <Text type="secondary">自动备份已关闭</Text>
-            )}
+                <Text type="secondary">自动备份已关闭</Text>
+              )}
             </BackupInfo>
-            <Button icon={<CloudOutlined />} onClick={handleToBackup}>去设置</Button>
+            <Button icon={<CloudOutlined />} onClick={handleToBackup}>
+              去设置
+            </Button>
           </ActionButtons>
         </SettingRow>
         <SettingDivider />

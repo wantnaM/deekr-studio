@@ -223,18 +223,16 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             icon={loading ? <LoadingOutlined /> : <ThunderboltOutlined />}
             onClick={handleGenerateButtonClick}
             style={{ position: 'absolute', top: 8, right: 8 }}
-            disabled={loading}
-          >
+            disabled={loading}>
             自动优化
           </Button>
           {showUndoButton && (
             <Button
               icon={<RollbackOutlined />}
               onClick={handleUndoButtonClick}
-              style={{ position: 'absolute', top: 8, right: 118 }}
-            >
+              style={{ position: 'absolute', top: 8, right: 118 }}>
               撤回
-          </Button>
+            </Button>
           )}
         </div>
         {showKnowledgeIcon && (

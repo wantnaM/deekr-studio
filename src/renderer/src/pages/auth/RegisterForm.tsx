@@ -1,7 +1,7 @@
 import { getDictData, getTeachersBySchoolAndKeyword } from '@renderer/services/AdminService'
 import type { RegisterCredentials } from '@renderer/services/AuthService'
 import authService from '@renderer/services/AuthService'
-import { DictDataType } from '@renderer/types'
+import type { DictDataType } from '@renderer/types'
 import { Button, Col, Form, Input, message, Radio, Row, Select } from 'antd'
 import { debounce } from 'lodash'
 import type { FC } from 'react'
