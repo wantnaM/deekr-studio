@@ -7,6 +7,7 @@ import { AnthropicAPIClient } from './anthropic/AnthropicAPIClient'
 import { AwsBedrockAPIClient } from './aws/AwsBedrockAPIClient'
 import type { BaseApiClient } from './BaseApiClient'
 import { CherryAiAPIClient } from './cherryai/CherryAiAPIClient'
+import { DoubaoAPIClient } from './doubao/DoubaoAPIClient'
 import { GeminiAPIClient } from './gemini/GeminiAPIClient'
 import { VertexAPIClient } from './gemini/VertexAPIClient'
 import { NewAPIClient } from './newapi/NewAPIClient'
@@ -61,6 +62,11 @@ export class ApiClientFactory {
 
     if (provider.id === 'zhipu') {
       instance = new ZhipuAPIClient(provider) as BaseApiClient
+      return instance
+    }
+
+    if (provider.id === 'doubao') {
+      instance = new DoubaoAPIClient(provider) as BaseApiClient
       return instance
     }
 

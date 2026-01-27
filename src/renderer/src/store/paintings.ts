@@ -29,6 +29,8 @@ const initialState: PaintingsState = {
   // TokenFlux
   tokenflux_paintings: [],
   zhipu_paintings: [],
+  // Doubao
+  doubao_paintings: [],
   // Aihubmix
   aihubmix_image_generate: [],
   aihubmix_image_remix: [],

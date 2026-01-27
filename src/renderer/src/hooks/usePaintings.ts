@@ -8,6 +8,7 @@ export function usePaintings() {
   const dmxapi_paintings = useAppSelector((state) => state.paintings.dmxapi_paintings)
   const tokenflux_paintings = useAppSelector((state) => state.paintings.tokenflux_paintings)
   const zhipu_paintings = useAppSelector((state) => state.paintings.zhipu_paintings)
+  const doubao_paintings = useAppSelector((state) => state.paintings.doubao_paintings)
   const aihubmix_image_generate = useAppSelector((state) => state.paintings.aihubmix_image_generate)
   const aihubmix_image_remix = useAppSelector((state) => state.paintings.aihubmix_image_remix)
   const aihubmix_image_edit = useAppSelector((state) => state.paintings.aihubmix_image_edit)
@@ -22,6 +23,7 @@ export function usePaintings() {
     dmxapi_paintings,
     tokenflux_paintings,
     zhipu_paintings,
+    doubao_paintings,
     aihubmix_image_generate,
     aihubmix_image_remix,
     aihubmix_image_edit,

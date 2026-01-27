@@ -444,6 +444,8 @@ export interface PaintingsState {
   tokenflux_paintings: TokenFluxPainting[]
   // Zhipu
   zhipu_paintings: Painting[]
+  // Doubao
+  doubao_paintings: Painting[]
   // Aihubmix
   aihubmix_image_generate: Partial<GeneratePainting> & PaintingParams[]
   aihubmix_image_remix: Partial<RemixPainting> & PaintingParams[]

@@ -9,6 +9,7 @@ import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { Route, Routes, useParams } from 'react-router-dom'
 
+// import DoubaoPage from './DoubaoPage'
 // import AihubmixPage from './AihubmixPage'
 // import DmxapiPage from './DmxapiPage'
 // import NewApiPage from './NewApiPage'
@@ -53,6 +54,7 @@ const PaintingsRoutePage: FC = () => {
   return (
     <Routes>
       <Route path="*" element={<ZhipuPage Options={validOptions} />} />
+      {/* <Route path="/doubao" element={<DoubaoPage Options={validOptions} />} /> */}
       <Route path="/zhipu" element={<ZhipuPage Options={validOptions} />} />
       {/* <Route path="/aihubmix" element={<AihubmixPage Options={validOptions} />} /> */}
       <Route path="/silicon" element={<SiliconPage Options={validOptions} />} />
