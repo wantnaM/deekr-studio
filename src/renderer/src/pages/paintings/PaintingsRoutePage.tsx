@@ -44,7 +44,7 @@ const PaintingsRoutePage: FC = () => {
 
   useEffect(() => {
     logger.debug(`defaultPaintingProvider: ${provider}`)
-    if (provider && validOptions.includes(provider)) {
+    if (provider && validOptions.includes(provider as PaintingProvider)) {
       dispatch(setDefaultPaintingProvider(provider as PaintingProvider))
       dispatch(updateTab({ id: 'paintings', updates: { path: `/paintings/${provider}` } }))
     }

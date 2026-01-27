@@ -4,7 +4,7 @@ import { Navbar, NavbarCenter, NavbarRight } from '@renderer/components/app/Navb
 import { HStack } from '@renderer/components/Layout'
 import Scrollbar from '@renderer/components/Scrollbar'
 import { isMac } from '@renderer/config/constant'
-import { getProviderLogo } from '@renderer/config/providers'
+// import { getProviderLogo } from '@renderer/config/providers'
 import { usePaintings } from '@renderer/hooks/usePaintings'
 import { useAllProviders } from '@renderer/hooks/useProvider'
 import { useRuntime } from '@renderer/hooks/useRuntime'
@@ -21,16 +21,16 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import SendMessageButton from '../home/Inputbar/SendMessageButton'
-import { SettingHelpLink, SettingTitle } from '../settings'
+import { SettingTitle } from '../settings'
 import Artboard from './components/Artboard'
 import PaintingsList from './components/PaintingsList'
 import ProviderSelect from './components/ProviderSelect'
 import {
-  COURSE_URL,
+  // COURSE_URL,
   DEFAULT_PAINTING,
   IMAGE_SIZES,
   QUALITY_OPTIONS,
-  TOP_UP_URL,
+  // TOP_UP_URL,
   ZHIPU_PAINTING_MODELS
 } from './config/ZhipuConfig'
 import { checkProviderEnabled } from './utils'
@@ -341,7 +341,7 @@ const ZhipuPage: FC<{ Options: string[] }> = ({ Options }) => {
         <LeftContainer>
           <ProviderTitleContainer>
             <SettingTitle style={{ marginBottom: 5 }}>{t('common.provider')}</SettingTitle>
-            <div>
+            {/* <div>
               <SettingHelpLink target="_blank" href={TOP_UP_URL}>
                 {t('paintings.top_up')}
               </SettingHelpLink>
@@ -354,7 +354,7 @@ const ZhipuPage: FC<{ Options: string[] }> = ({ Options }) => {
                 size={16}
                 style={{ marginLeft: 5 }}
               />
-            </div>
+            </div> */}
           </ProviderTitleContainer>
           <ProviderSelect provider={zhipuProvider} options={Options} onChange={handleProviderChange} className="mb-4" />
 
