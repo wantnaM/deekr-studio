@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { CHERRYAI_PROVIDER } from '@renderer/config/providers'
+// import { CHERRYAI_PROVIDER } from '@renderer/config/providers'
 import { getDefaultProvider } from '@renderer/services/AssistantService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import {
@@ -30,11 +30,8 @@ function normalizeProvider<T extends Provider>(provider: T): T {
 
 const selectEnabledProviders = createSelector(
   (state) => state.llm.providers,
-  (providers) =>
-    providers
-      .map(normalizeProvider)
-      .filter((p) => p.enabled)
-      .concat(CHERRYAI_PROVIDER)
+  (providers) => providers.map(normalizeProvider).filter((p) => p.enabled)
+  // .concat(CHERRYAI_PROVIDER)
 )
 
 export function useProviders() {
@@ -66,7 +63,7 @@ export function useProvider(id: string) {
   const provider =
     useAppSelector((state) =>
       state.llm.providers
-        .concat([CHERRYAI_PROVIDER])
+        // .concat([CHERRYAI_PROVIDER])
         .map(normalizeProvider)
         .find((p) => p.id === id)
     ) || getDefaultProvider()

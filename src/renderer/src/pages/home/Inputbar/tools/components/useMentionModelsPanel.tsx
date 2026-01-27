@@ -12,7 +12,7 @@ import { getFancyProviderName } from '@renderer/utils'
 import { Avatar } from 'antd'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { first, sortBy } from 'lodash'
-import { AtSign, CircleX, Plus } from 'lucide-react'
+import { AtSign, CircleX } from 'lucide-react'
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -191,12 +191,12 @@ export const useMentionModelsPanel = (params: Params, role: 'button' | 'manager'
       }
     })
 
-    items.push({
-      label: t('settings.models.add.add_model') + '...',
-      icon: <Plus />,
-      action: () => navigate('/settings/provider'),
-      isSelected: false
-    })
+    // items.push({
+    //   label: t('settings.models.add.add_model') + '...',
+    //   icon: <Plus />,
+    //   action: () => navigate('/settings/provider'),
+    //   isSelected: false
+    // })
 
     items.unshift({
       label: t('settings.input.clear.all'),
