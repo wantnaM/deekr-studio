@@ -51,7 +51,7 @@ const ExportMenuOptions: FC = () => {
       </SettingRow>
       <SettingDivider />
 
-      <SettingRow>
+      {/* <SettingRow>
         <SettingRowTitle>{t('settings.data.export_menu.notion')}</SettingRowTitle>
         <Switch checked={exportMenuOptions.notion} onChange={(checked) => handleToggleOption('notion', checked)} />
       </SettingRow>
@@ -79,7 +79,7 @@ const ExportMenuOptions: FC = () => {
         <SettingRowTitle>{t('settings.data.export_menu.siyuan')}</SettingRowTitle>
         <Switch checked={exportMenuOptions.siyuan} onChange={(checked) => handleToggleOption('siyuan', checked)} />
       </SettingRow>
-      <SettingDivider />
+      <SettingDivider /> */}
 
       <SettingRow>
         <SettingRowTitle>{t('settings.data.export_menu.docx')}</SettingRowTitle>

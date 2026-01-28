@@ -5,7 +5,6 @@ import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import { Divider as AntDivider } from 'antd'
 import {
   Brain,
-  Cloud,
   Command,
   FileCode,
   HardDrive,
@@ -13,7 +12,7 @@ import {
   MonitorCog,
   Package,
   PictureInPicture2,
-  Search,
+  // Search,
   Server,
   Settings2,
   TextCursorInput,
@@ -32,14 +31,13 @@ import DocProcessSettings from './DocProcessSettings'
 import GeneralSettings from './GeneralSettings'
 import MCPSettings from './MCPSettings'
 import MemorySettings from './MemorySettings'
-import { ProviderList } from './ProviderSettings'
 import QuickAssistantSettings from './QuickAssistantSettings'
 import QuickPhraseSettings from './QuickPhraseSettings'
 import SelectionAssistantSettings from './SelectionAssistantSettings/SelectionAssistantSettings'
 import ShortcutSettings from './ShortcutSettings'
 import { ApiServerSettings } from './ToolSettings/ApiServerSettings'
 import UserInfoPage from './UserInfoPage'
-import WebSearchSettings from './WebSearchSettings'
+// import WebSearchSettings from './WebSearchSettings'
 
 const SettingsPage: FC = () => {
   const { pathname } = useLocation()
@@ -61,12 +59,12 @@ const SettingsPage: FC = () => {
             </MenuItem>
           </MenuItemLink>
           <Divider />
-          <MenuItemLink to="/settings/provider">
+          {/* <MenuItemLink to="/settings/provider">
             <MenuItem className={isRoute('/settings/provider')}>
               <Cloud size={18} />
               {t('settings.provider.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/model">
             <MenuItem className={isRoute('/settings/model')}>
               <Package size={18} />
@@ -99,12 +97,12 @@ const SettingsPage: FC = () => {
               {t('settings.mcp.title')}
             </MenuItem>
           </MenuItemLink>
-          <MenuItemLink to="/settings/websearch">
+          {/* <MenuItemLink to="/settings/websearch">
             <MenuItem className={isRoute('/settings/websearch')}>
               <Search size={18} />
               {t('settings.tool.websearch.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/memory">
             <MenuItem className={isRoute('/settings/memory')}>
               <Brain size={18} />
@@ -159,9 +157,9 @@ const SettingsPage: FC = () => {
         <SettingContent>
           <Routes>
             <Route path="user" element={<UserInfoPage />} />
-            <Route path="provider" element={<ProviderList />} />
+            {/* <Route path="provider" element={<ProviderList />} /> */}
             <Route path="model" element={<ModelSettings />} />
-            <Route path="websearch/*" element={<WebSearchSettings />} />
+            {/* <Route path="websearch/*" element={<WebSearchSettings />} /> */}
             <Route path="api-server" element={<ApiServerSettings />} />
             <Route path="docprocess" element={<DocProcessSettings />} />
             <Route path="quickphrase" element={<QuickPhraseSettings />} />

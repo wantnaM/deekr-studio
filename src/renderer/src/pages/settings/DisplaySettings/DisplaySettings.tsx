@@ -1,7 +1,6 @@
-import CodeEditor from '@renderer/components/CodeEditor'
+// import CodeEditor from '@renderer/components/CodeEditor'
 import { ResetIcon } from '@renderer/components/Icons'
 import { HStack } from '@renderer/components/Layout'
-import TextBadge from '@renderer/components/TextBadge'
 import { isMac, THEME_COLOR_PRESETS } from '@renderer/config/constant'
 import { DEFAULT_SIDEBAR_ICONS } from '@renderer/config/sidebar'
 import { useTheme } from '@renderer/context/ThemeProvider'
@@ -12,7 +11,7 @@ import type { AssistantIconType } from '@renderer/store/settings'
 import {
   setAssistantIconType,
   setClickAssistantToShowTopic,
-  setCustomCss,
+  // setCustomCss,
   setPinTopicsToTop,
   setShowTopicTime,
   setSidebarIcons
@@ -263,7 +262,7 @@ const DisplaySettings: FC = () => {
       </SettingGroup>
       <SettingGroup theme={theme}>
         <SettingTitle style={{ justifyContent: 'flex-start', gap: 5 }}>
-          {t('settings.display.navbar.title')} <TextBadge text="New" />
+          {t('settings.display.navbar.title')}
         </SettingTitle>
         <SettingDivider />
         <SettingRow>
@@ -300,7 +299,7 @@ const DisplaySettings: FC = () => {
       </SettingGroup>
       <SettingGroup theme={theme}>
         <SettingTitle style={{ justifyContent: 'flex-start', gap: 5 }}>
-          {t('settings.display.font.title')} <TextBadge text="New" />
+          {t('settings.display.font.title')}
         </SettingTitle>
         <SettingDivider />
         <SettingRow>
@@ -436,7 +435,7 @@ const DisplaySettings: FC = () => {
           />
         </SettingGroup>
       )}
-      <SettingGroup theme={theme}>
+      {/* <SettingGroup theme={theme}>
         <SettingTitle>
           {t('settings.display.custom.css.label')}
           <TitleExtra onClick={() => window.api.openWebsite('https://cherrycss.com/')}>
@@ -463,7 +462,7 @@ const DisplaySettings: FC = () => {
             borderRadius: '5px'
           }}
         />
-      </SettingGroup>
+      </SettingGroup> */}
     </SettingContainer>
   )
 }

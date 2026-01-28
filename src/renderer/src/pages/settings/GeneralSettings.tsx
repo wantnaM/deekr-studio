@@ -1,16 +1,16 @@
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { HStack } from '@renderer/components/Layout'
 import Selector from '@renderer/components/Selector'
-import { InfoTooltip } from '@renderer/components/TooltipIcons'
+// import { InfoTooltip } from '@renderer/components/TooltipIcons'
 import { isMac } from '@renderer/config/constant'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { useEnableDeveloperMode, useSettings } from '@renderer/hooks/useSettings'
+import { useSettings } from '@renderer/hooks/useSettings'
 import { useTimer } from '@renderer/hooks/useTimer'
 import i18n from '@renderer/i18n'
 import type { RootState } from '@renderer/store'
 import { useAppDispatch } from '@renderer/store'
 import {
-  setEnableDataCollection,
+  // setEnableDataCollection,
   setEnableSpellCheck,
   setLanguage,
   setNotificationSettings,
@@ -23,7 +23,7 @@ import type { LanguageVarious } from '@renderer/types'
 import type { NotificationSource } from '@renderer/types/notification'
 import { isValidProxyUrl } from '@renderer/utils'
 import { formatErrorMessage } from '@renderer/utils/error'
-import { defaultByPassRules, defaultLanguage } from '@shared/config/constant'
+import { defaultByPassRules } from '@shared/config/constant'
 import { Flex, Input, Switch, Tooltip } from 'antd'
 import type { FC } from 'react'
 import { useState } from 'react'
@@ -61,7 +61,7 @@ const GeneralSettings: FC = () => {
     trayOnClose,
     tray,
     proxyMode: storeProxyMode,
-    enableDataCollection,
+    // enableDataCollection,
     enableSpellCheck,
     disableHardwareAcceleration,
     setDisableHardwareAcceleration
@@ -69,7 +69,7 @@ const GeneralSettings: FC = () => {
   const [proxyUrl, setProxyUrl] = useState<string | undefined>(storeProxyUrl)
   const [proxyBypassRules, setProxyBypassRules] = useState<string | undefined>(storeProxyBypassRules)
   const { theme } = useTheme()
-  const { enableDeveloperMode, setEnableDeveloperMode } = useEnableDeveloperMode()
+  // const { enableDeveloperMode, setEnableDeveloperMode } = useEnableDeveloperMode()
   const { setTimeoutTimer } = useTimer()
 
   const updateTray = (isShowTray: boolean) => {
@@ -196,7 +196,7 @@ const GeneralSettings: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.general.title')}</SettingTitle>
         <SettingDivider />
-        <SettingRow>
+        {/* <SettingRow>
           <SettingRowTitle>{t('common.language')}</SettingRowTitle>
           <Selector
             size={14}
@@ -215,7 +215,7 @@ const GeneralSettings: FC = () => {
             }))}
           />
         </SettingRow>
-        <SettingDivider />
+        <SettingDivider /> */}
         <SettingRow>
           <SettingRowTitle>{t('settings.proxy.mode.title')}</SettingRowTitle>
           <Selector value={storeProxyMode} onChange={onProxyModeChange} options={proxyModeOptions} />
@@ -340,7 +340,7 @@ const GeneralSettings: FC = () => {
           <Switch checked={trayOnClose} onChange={(checked) => updateTrayOnClose(checked)} />
         </SettingRow>
       </SettingGroup>
-      <SettingGroup theme={theme}>
+      {/* <SettingGroup theme={theme}>
         <SettingTitle>{t('settings.privacy.title')}</SettingTitle>
         <SettingDivider />
         <SettingRow>
@@ -364,7 +364,7 @@ const GeneralSettings: FC = () => {
           </Flex>
           <Switch checked={enableDeveloperMode} onChange={setEnableDeveloperMode} />
         </SettingRow>
-      </SettingGroup>
+      </SettingGroup> */}
     </SettingContainer>
   )
 }

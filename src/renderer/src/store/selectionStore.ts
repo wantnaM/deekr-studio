@@ -28,7 +28,7 @@ export const defaultActionItems: ActionItem[] = [
     enabled: true,
     isBuiltIn: true,
     icon: 'search',
-    searchEngine: 'Google|https://www.google.com/search?q={{queryString}}'
+    searchEngine: 'Baidu|https://www.baidu.com/s?wd={{queryString}}'
   },
   { id: 'copy', name: 'selection.action.builtin.copy', enabled: true, isBuiltIn: true, icon: 'clipboard-copy' },
   { id: 'refine', name: 'selection.action.builtin.refine', enabled: false, isBuiltIn: true, icon: 'wand-sparkles' },
@@ -36,7 +36,7 @@ export const defaultActionItems: ActionItem[] = [
 ]
 
 export const initialState: SelectionState = {
-  selectionEnabled: false,
+  selectionEnabled: true,
   triggerMode: 'selected',
   isCompact: false,
   isAutoClose: false,

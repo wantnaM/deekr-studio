@@ -120,7 +120,7 @@ const UserInfoPage: FC = () => {
   const getUserInfoItems = () => [
     { label: '用户名', value: user?.username || '-' },
     { label: '昵称', value: user?.nickname || '-' },
-    { label: '手机号', value: formatMobile(user?.mobile || null) },
+    { label: '手机号', value: user?.mobile || '-' },
     { label: '用户类型', value: getUserTypeLabel(user?.type || null) },
     { label: '学校', value: user?.school || '-' },
     { label: '学科', value: user?.subject || '-' },

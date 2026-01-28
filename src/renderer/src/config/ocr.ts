@@ -31,7 +31,7 @@ const systemOcr: OcrSystemProvider = {
   id: 'system',
   name: 'System',
   config: {
-    langs: isWin ? ['en-us'] : undefined
+    langs: isWin ? ['en-us', 'zh-cn'] : undefined
   },
   capabilities: {
     image: true

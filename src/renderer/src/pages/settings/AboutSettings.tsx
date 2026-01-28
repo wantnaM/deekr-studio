@@ -1,6 +1,6 @@
-import { GithubOutlined } from '@ant-design/icons'
+// import { GithubOutlined } from '@ant-design/icons'
 import IndicatorLight from '@renderer/components/IndicatorLight'
-import { HStack } from '@renderer/components/Layout'
+// import { HStack } from '@renderer/components/Layout'
 import UpdateDialogPopup from '@renderer/components/Popups/UpdateDialogPopup'
 import { APP_NAME, AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
@@ -15,13 +15,14 @@ import { runAsyncFunction } from '@renderer/utils'
 import { UpgradeChannel } from '@shared/config/constant'
 import { Avatar, Button, Progress, Radio, Row, Switch, Tag, Tooltip } from 'antd'
 import { debounce } from 'lodash'
-import { Briefcase, Bug, Building2, Github, Globe, Mail, Rss } from 'lucide-react'
-import { BadgeQuestionMark } from 'lucide-react'
+// import { Briefcase, Bug, Building2, Github, Globe, Mail, Rss } from 'lucide-react'
+import { Mail } from 'lucide-react'
+// import { BadgeQuestionMark } from 'lucide-react'
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { SettingContainer, SettingDivider, SettingGroup, SettingRow, SettingTitle } from '.'
@@ -177,16 +178,16 @@ const AboutSettings: FC = () => {
       <SettingGroup theme={theme}>
         <SettingTitle>
           {t('settings.about.title')}
-          <HStack alignItems="center">
+          {/* <HStack alignItems="center">
             <Link to="https://github.com/CherryHQ/cherry-studio">
               <GithubOutlined style={{ marginRight: 4, color: 'var(--color-text)', fontSize: 20 }} />
             </Link>
-          </HStack>
+          </HStack> */}
         </SettingTitle>
         <SettingDivider />
         <AboutHeader>
           <Row align="middle">
-            <AvatarWrapper onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio')}>
+            <AvatarWrapper>
               {update.downloadProgress > 0 && (
                 <ProgressCircle
                   type="circle"
@@ -203,9 +204,8 @@ const AboutSettings: FC = () => {
               <Title>{APP_NAME}</Title>
               <Description>{t('settings.about.description')}</Description>
               <Tag
-                onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/releases')}
                 color="cyan"
-                style={{ marginTop: 8, cursor: 'pointer' }}>
+                style={{ marginTop: 8 }}>
                 v{version}
               </Tag>
             </VersionWrapper>
@@ -230,13 +230,13 @@ const AboutSettings: FC = () => {
               <SettingRowTitle>{t('settings.general.auto_check_update.title')}</SettingRowTitle>
               <Switch value={autoCheckUpdate} onChange={(v) => setAutoCheckUpdate(v)} />
             </SettingRow>
-            <SettingDivider />
+            {/* <SettingDivider />
             <SettingRow>
               <SettingRowTitle>{t('settings.general.test_plan.title')}</SettingRowTitle>
               <Tooltip title={t('settings.general.test_plan.tooltip')} trigger={['hover', 'focus']}>
                 <Switch value={testPlan} onChange={(v) => handleSetTestPlan(v)} />
               </Tooltip>
-            </SettingRow>
+            </SettingRow> */}
             {testPlan && (
               <>
                 <SettingDivider />
@@ -277,7 +277,7 @@ const AboutSettings: FC = () => {
         </SettingGroup>
       )}
       <SettingGroup theme={theme}>
-        <SettingRow>
+        {/* <SettingRow>
           <SettingRowTitle>
             <BadgeQuestionMark size={18} />
             {t('docs.title')}
@@ -343,6 +343,15 @@ const AboutSettings: FC = () => {
             {t('settings.about.debug.title')}
           </SettingRowTitle>
           <Button onClick={debug}>{t('settings.about.debug.open')}</Button>
+        </SettingRow> */}
+        <SettingRow>
+          <SettingRowTitle>
+            <Mail size={18} />
+            {t('settings.about.feedback.title')}
+          </SettingRowTitle>
+          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/issues/new/choose')}>
+            {t('settings.about.feedback.button')}
+          </Button>
         </SettingRow>
       </SettingGroup>
     </SettingContainer>
@@ -383,7 +392,6 @@ const CheckUpdateButton = styled(Button)``
 
 const AvatarWrapper = styled.div`
   position: relative;
-  cursor: pointer;
   margin-right: 15px;
 `
 

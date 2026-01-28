@@ -376,7 +376,7 @@ export const initialState: SettingsState = {
   minappsOpenLinkExternal: false,
   enableDataCollection: false,
   enableSpellCheck: false,
-  spellCheckLanguages: [],
+  spellCheckLanguages: ['en-US'],
   enableQuickPanelTriggers: false,
   // 消息操作确认设置
   confirmDeleteMessage: true,
