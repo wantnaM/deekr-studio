@@ -319,7 +319,7 @@ export const initialState: SettingsState = {
   foldDisplayMode: 'expanded',
   gridColumns: 2,
   gridPopoverTrigger: 'click',
-  messageNavigation: 'none',
+  messageNavigation: 'anchor',
   skipBackupFile: false,
   webdavHost: '',
   webdavUser: '',
@@ -441,7 +441,7 @@ export const initialState: SettingsState = {
     port: API_SERVER_DEFAULTS.PORT,
     apiKey: `cs-sk-${uuid()}`
   },
-  showMessageOutline: false
+  showMessageOutline: true
 }
 
 const settingsSlice = createSlice({
