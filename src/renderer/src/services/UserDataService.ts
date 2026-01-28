@@ -1,5 +1,14 @@
 import store from '@renderer/store'
 import { setAssistantPresets } from '@renderer/store/assistants'
+import {
+  setWebdavAutoSync,
+  setWebdavHost,
+  setWebdavMaxBackups,
+  setWebdavPass,
+  setWebdavPath,
+  setWebdavSyncInterval,
+  setWebdavUser
+} from '@renderer/store/settings'
 import type { AssistantPreset, MinAppType, Model, Provider, Topic } from '@renderer/types'
 import request from '@renderer/utils/axios'
 
@@ -12,6 +21,7 @@ export interface UserDataConfig {
   defaultModel: Model
   quickModel: Model
   translateModel: Model
+  webdav?: any
 }
 
 class UserDataService {
@@ -49,6 +59,25 @@ class UserDataService {
     this.currentUserId = userId
 
     await this.loadAssistantsConfig(userId)
+    await this.loadWebDAV()
+  }
+
+  async loadWebDAV(): Promise<void> {
+    try {
+      const info = await this.getWebDavUser()
+      if (info) {
+        if (this.currentConfig) {
+          this.currentConfig.webdav = info
+        }
+        store.dispatch(setWebdavHost(info.webDAVHost))
+        store.dispatch(setWebdavMaxBackups(1))
+        store.dispatch(setWebdavPass(info.password))
+        store.dispatch(setWebdavPath(info.webDAVPath))
+        store.dispatch(setWebdavUser(info.username))
+        store.dispatch(setWebdavSyncInterval(5))
+        store.dispatch(setWebdavAutoSync(true))
+      }
+    } catch (error) {}
   }
 
   async loadAssistantsConfig(userId: number): Promise<void> {
@@ -68,6 +97,12 @@ class UserDataService {
   clearCurrentUser(): void {
     this.currentConfig = null
     this.currentUserId = null
+    store.dispatch(setWebdavHost(''))
+    store.dispatch(setWebdavPass(''))
+    store.dispatch(setWebdavPath(''))
+    store.dispatch(setWebdavUser(''))
+    store.dispatch(setWebdavSyncInterval(0))
+    store.dispatch(setWebdavAutoSync(false))
   }
 
   async getAssistants(userId: number): Promise<AssistantPreset[]> {
@@ -100,6 +135,10 @@ class UserDataService {
 
   async syncAssistantsToStudents(data: any): Promise<void> {
     await request.post({ url: `/ds/agent/sync-to-students`, data })
+  }
+
+  async getWebDavUser(): Promise<any> {
+    return await request.get({ url: `/ds/user-webdav/get` })
   }
 }
 

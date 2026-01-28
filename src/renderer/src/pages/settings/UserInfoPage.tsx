@@ -9,6 +9,7 @@ import {
   SettingTitle
 } from '@renderer/pages/settings'
 import authService from '@renderer/services/AuthService'
+import { stopAutoSync } from '@renderer/services/BackupService'
 import userDataService from '@renderer/services/UserDataService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import { logout, updateUser } from '@renderer/store/auth'
@@ -43,6 +44,7 @@ const UserInfoPage: FC = () => {
       cancelText: '取消',
       onOk: async () => {
         userDataService.clearCurrentUser()
+        stopAutoSync()
         dispatch(logout())
         await authService.logout()
         message.success('已登出')

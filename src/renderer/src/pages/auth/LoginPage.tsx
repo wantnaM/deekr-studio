@@ -4,6 +4,7 @@ import { useDefaultModel } from '@renderer/hooks/useAssistant'
 import { useProviders } from '@renderer/hooks/useProvider'
 import type { LoginCredentials } from '@renderer/services/AuthService'
 import authService from '@renderer/services/AuthService'
+import { startAutoSync } from '@renderer/services/BackupService'
 import userDataService from '@renderer/services/UserDataService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import { loginFailure, loginStart, loginSuccess, updateUser } from '@renderer/store/auth'
@@ -37,7 +38,7 @@ const LoginPage: FC = () => {
 
       const loginResult = await authService.login(credentials)
 
-      dispatch(
+      await dispatch(
         loginSuccess({
           user: {
             id: loginResult.userId,
@@ -58,12 +59,13 @@ const LoginPage: FC = () => {
 
       const userProfile = await authService.getUserProfile()
 
-      dispatch(updateUser(userProfile))
+      await dispatch(updateUser(userProfile))
 
       await userDataService.getDataConfigWithApi(loginResult.userId)
 
       await loadUserDataConfig()
 
+      startAutoSync(true, 'webdav')
       navigate('/', { replace: true })
     } catch (err) {
       dispatch(loginFailure(err instanceof Error ? err.message : '登录失败，请检查用户名和密码'))

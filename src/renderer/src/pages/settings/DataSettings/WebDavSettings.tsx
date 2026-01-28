@@ -10,15 +10,15 @@ import { useAppDispatch, useAppSelector } from '@renderer/store'
 import {
   setWebdavAutoSync,
   setWebdavDisableStream as _setWebdavDisableStream,
-  setWebdavHost as _setWebdavHost,
+  // setWebdavHost as _setWebdavHost,
   setWebdavMaxBackups as _setWebdavMaxBackups,
-  setWebdavPass as _setWebdavPass,
-  setWebdavPath as _setWebdavPath,
+  // setWebdavPass as _setWebdavPass,
+  // setWebdavPath as _setWebdavPath,
   setWebdavSkipBackupFile as _setWebdavSkipBackupFile,
   setWebdavSyncInterval as _setWebdavSyncInterval,
-  setWebdavUser as _setWebdavUser
+  // setWebdavUser as _setWebdavUser
 } from '@renderer/store/settings'
-import { Button, Input, Switch, Tooltip } from 'antd'
+import { Button, Switch, Tooltip } from 'antd'
 import dayjs from 'dayjs'
 import type { FC } from 'react'
 import { useState } from 'react'
@@ -124,7 +124,7 @@ const WebDavSettings: FC = () => {
     <SettingGroup theme={theme}>
       <SettingTitle>{t('settings.data.webdav.title')}</SettingTitle>
       <SettingDivider />
-      <SettingRow>
+      {/* <SettingRow>
         <SettingRowTitle>{t('settings.data.webdav.host.label')}</SettingRowTitle>
         <Input
           placeholder={t('settings.data.webdav.host.placeholder')}
@@ -168,7 +168,7 @@ const WebDavSettings: FC = () => {
           onBlur={() => dispatch(_setWebdavPath(webdavPath || ''))}
         />
       </SettingRow>
-      <SettingDivider />
+      <SettingDivider /> */}
       <SettingRow>
         <SettingRowTitle>{t('settings.general.backup.title')}</SettingRowTitle>
         <HStack gap="5px" justifyContent="space-between">
