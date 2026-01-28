@@ -333,7 +333,7 @@
     },
     "authHeaderText": "在授权标头中使用：",
     "configuration": "配置",
-    "description": "通过 OpenAI 兼容的 HTTP API 暴露 Cherry Studio 的 AI 功能",
+    "description": "通过 OpenAI 兼容的 HTTP API 暴露 Deekr Studio 的 AI 功能",
     "documentation": {
       "title": "API 文档"
     },
@@ -2994,7 +2994,7 @@
           },
           "description": {
             "0": "划词助手需「<strong>辅助功能权限</strong>」才能正常工作。",
-            "1": "请点击「<strong>去设置</strong>」，并在稍后弹出的权限请求弹窗中点击 「<strong>打开系统设置</strong>」 按钮，然后在之后的应用列表中找到 「<strong>Cherry Studio</strong>」，并打开权限开关。",
+            "1": "请点击「<strong>去设置</strong>」，并在稍后弹出的权限请求弹窗中点击 「<strong>打开系统设置</strong>」 按钮，然后在之后的应用列表中找到 「<strong>Deekr Studio</strong>」，并打开权限开关。",
             "2": "完成设置后，请再次开启划词助手。"
           },
           "title": "辅助功能权限"
@@ -3642,7 +3642,7 @@
         },
         "root": {
           "label": "备份目录（可选）",
-          "placeholder": "例如：/cherry-studio"
+          "placeholder": "例如：/deekr-studio"
         },
         "secretAccessKey": {
           "label": "Secret Access Key",
@@ -3678,7 +3678,7 @@
           "title": "连接检测"
         },
         "root_path": "文档根路径",
-        "root_path_placeholder": "例如：/CherryStudio",
+        "root_path_placeholder": "例如：/DeekrStudio",
         "title": "思源笔记配置",
         "token": {
           "help": "在思源笔记 -> 设置 -> 关于中获取",
@@ -4070,7 +4070,7 @@
       },
       "oauth": {
         "callback": {
-          "message": "您可以关闭此页面并返回 Cherry Studio",
+          "message": "您可以关闭此页面并返回 Deekr Studio",
           "title": "认证成功"
         }
       },

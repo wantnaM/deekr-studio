@@ -34,8 +34,8 @@ import { windowService } from './WindowService'
 const logger = loggerService.withContext('BackupManager')
 
 class BackupManager {
-  private tempDir = path.join(app.getPath('temp'), 'cherry-studio', 'backup', 'temp')
-  private backupDir = path.join(app.getPath('temp'), 'cherry-studio', 'backup')
+  private tempDir = path.join(app.getPath('temp'), 'deekr-studio', 'backup', 'temp')
+  private backupDir = path.join(app.getPath('temp'), 'deekr-studio', 'backup')
 
   // 缓存实例，避免重复创建
   private s3Storage: S3Storage | null = null
@@ -439,7 +439,7 @@ class BackupManager {
   }
 
   async backupToWebdav(_: Electron.IpcMainInvokeEvent, data: string, webdavConfig: WebDavConfig) {
-    const filename = webdavConfig.fileName || 'cherry-studio.backup.zip'
+    const filename = webdavConfig.fileName || 'deekr-studio.backup.zip'
     const backupedFilePath = await this.backup(_, filename, data, undefined, webdavConfig.skipBackupFile)
     const webdavClient = this.getWebDavInstance(webdavConfig)
     try {
@@ -467,7 +467,7 @@ class BackupManager {
   }
 
   async restoreFromWebdav(_: Electron.IpcMainInvokeEvent, webdavConfig: WebDavConfig) {
-    const filename = webdavConfig.fileName || 'cherry-studio.backup.zip'
+    const filename = webdavConfig.fileName || 'deekr-studio.backup.zip'
     const webdavClient = this.getWebDavInstance(webdavConfig)
     try {
       const retrievedFile = await webdavClient.getFileContents(filename)
@@ -639,7 +639,7 @@ class BackupManager {
       .toISOString()
       .replace(/[-:T.Z]/g, '')
       .slice(0, 14)
-    const filename = s3Config.fileName || `cherry-studio.backup.${deviceName}.${timestamp}.zip`
+    const filename = s3Config.fileName || `deekr-studio.backup.${deviceName}.${timestamp}.zip`
 
     logger.debug(`Starting S3 backup to ${filename}`)
 
@@ -718,7 +718,7 @@ class BackupManager {
   }
 
   async restoreFromS3(_: Electron.IpcMainInvokeEvent, s3Config: S3Config) {
-    const filename = s3Config.fileName || 'cherry-studio.backup.zip'
+    const filename = s3Config.fileName || 'deekr-studio.backup.zip'
 
     logger.debug(`Starting restore from S3: ${filename}`)
 
@@ -794,8 +794,8 @@ class BackupManager {
       .toISOString()
       .replace(/[-:T.Z]/g, '')
       .slice(0, 12)
-    const fileName = `cherry-studio.${timestamp}.zip`
-    const tempPath = path.join(app.getPath('temp'), 'cherry-studio', 'lan-transfer')
+    const fileName = `deekr-studio.${timestamp}.zip`
+    const tempPath = path.join(app.getPath('temp'), 'deekr-studio', 'lan-transfer')
 
     // Ensure temp directory exists
     await fs.ensureDir(tempPath)
@@ -813,7 +813,7 @@ class BackupManager {
   async deleteTempBackup(_: Electron.IpcMainInvokeEvent, filePath: string): Promise<boolean> {
     try {
       // Security check: only allow deletion within temp directory
-      const tempBase = path.normalize(path.join(app.getPath('temp'), 'cherry-studio', 'lan-transfer'))
+      const tempBase = path.normalize(path.join(app.getPath('temp'), 'deekr-studio', 'lan-transfer'))
       const resolvedPath = path.normalize(path.resolve(filePath))
 
       // Use normalized paths with trailing separator to prevent prefix attacks (e.g., /temp-evil)

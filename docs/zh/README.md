@@ -162,9 +162,9 @@ https://docs.cherry-ai.com
 # 🌈 主题
 
 - 主题库：https://cherrycss.com
-- Aero 主题：https://github.com/hakadao/CherryStudio-Aero
-- PaperMaterial 主题：https://github.com/rainoffallingstar/CherryStudio-PaperMaterial
-- 仿 Claude 主题：https://github.com/bjl101501/CherryStudio-Claudestyle-dynamic
+- Aero 主题：https://github.com/hakadao/DeekrStudio-Aero
+- PaperMaterial 主题：https://github.com/rainoffallingstar/DeekrStudio-PaperMaterial
+- 仿 Claude 主题：https://github.com/bjl101501/DeekrStudio-Claudestyle-dynamic
 - 霓虹枫叶主题：https://github.com/BoningtonChen/CherryStudio_themes
 
 欢迎 PR 更多主题
@@ -299,7 +299,7 @@ https://docs.cherry-ai.com
 [deepwiki-link]: https://deepwiki.com/CherryHQ/cherry-studio
 [twitter-shield]: https://img.shields.io/badge/Twitter-CherryStudioApp-0088CC?logo=x
 [twitter-link]: https://twitter.com/CherryStudioHQ
-[discord-shield]: https://img.shields.io/badge/Discord-@CherryStudio-0088CC?logo=discord
+[discord-shield]: https://img.shields.io/badge/Discord-@DeekrStudio-0088CC?logo=discord
 [discord-link]: https://discord.gg/wez8HtpxqQ
 [telegram-shield]: https://img.shields.io/badge/Telegram-@CherryStudioAI-0088CC?logo=telegram
 [telegram-link]: https://t.me/CherryStudioAI

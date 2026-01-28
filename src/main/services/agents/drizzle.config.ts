@@ -26,7 +26,7 @@ import { app } from 'electron'
 
 function getDbPath() {
   if (process.env.NODE_ENV === 'development') {
-    return path.join(os.homedir(), '.cherrystudio', 'data', 'agents.db')
+    return path.join(os.homedir(), '.deekrstudio', 'data', 'agents.db')
   }
   return path.join(app.getPath('userData'), 'agents.db')
 }

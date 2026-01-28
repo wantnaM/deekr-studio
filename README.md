@@ -156,9 +156,9 @@ Want to influence our roadmap? Join our [GitHub Discussions](https://github.com/
 # 🌈 Theme
 
 - Theme Gallery: <https://cherrycss.com>
-- Aero Theme: <https://github.com/hakadao/CherryStudio-Aero>
-- PaperMaterial Theme: <https://github.com/rainoffallingstar/CherryStudio-PaperMaterial>
-- Claude dynamic-style: <https://github.com/bjl101501/CherryStudio-Claudestyle-dynamic>
+- Aero Theme: <https://github.com/hakadao/DeekrStudio-Aero>
+- PaperMaterial Theme: <https://github.com/rainoffallingstar/DeekrStudio-PaperMaterial>
+- Claude dynamic-style: <https://github.com/bjl101501/DeekrStudio-Claudestyle-dynamic>
 - Maple Neon Theme: <https://github.com/BoningtonChen/CherryStudio_themes>
 
 Welcome PR for more themes
@@ -301,7 +301,7 @@ Should you require a commercial license that provides an exemption from the AGPL
 [deepwiki-link]: https://deepwiki.com/CherryHQ/cherry-studio
 [twitter-shield]: https://img.shields.io/badge/Twitter-CherryStudioApp-0088CC?logo=x
 [twitter-link]: https://twitter.com/CherryStudioHQ
-[discord-shield]: https://img.shields.io/badge/Discord-@CherryStudio-0088CC?logo=discord
+[discord-shield]: https://img.shields.io/badge/Discord-@DeekrStudio-0088CC?logo=discord
 [discord-link]: https://discord.gg/wez8HtpxqQ
 [telegram-shield]: https://img.shields.io/badge/Telegram-@CherryStudioAI-0088CC?logo=telegram
 [telegram-link]: https://t.me/CherryStudioAI

@@ -63,7 +63,7 @@ async function deleteWebdavFileWithRetry(fileName: string, webdavConfig: WebDavC
 }
 
 export async function backup(skipBackupFile: boolean) {
-  const filename = `cherry-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
+  const filename = `deekr-studio.${dayjs().format('YYYYMMDDHHmm')}.zip`
   const fileContnet = await getBackupData()
   const selectFolder = await window.api.file.selectFolder()
   if (selectFolder) {
@@ -179,7 +179,7 @@ export async function backupToWebdav({
     logger.error('Failed to get device type or hostname:', error as Error)
   }
   const timestamp = dayjs().format('YYYYMMDDHHmmss')
-  const backupFileName = customFileName || `cherry-studio.${timestamp}.${hostname}.${deviceType}.zip`
+  const backupFileName = customFileName || `deekr-studio.${timestamp}.${hostname}.${deviceType}.zip`
   const finalFileName = backupFileName.endsWith('.zip') ? backupFileName : `${backupFileName}.zip`
   const backupData = await getBackupData()
 
@@ -353,7 +353,7 @@ export async function backupToS3({
     logger.error('Failed to get device type or hostname:', error as Error)
   }
   const timestamp = dayjs().format('YYYYMMDDHHmmss')
-  const backupFileName = customFileName || `cherry-studio.${timestamp}.${hostname}.${deviceType}.zip`
+  const backupFileName = customFileName || `deekr-studio.${timestamp}.${hostname}.${deviceType}.zip`
   const finalFileName = backupFileName.endsWith('.zip') ? backupFileName : `${backupFileName}.zip`
   const backupData = await getBackupData()
 
@@ -843,14 +843,14 @@ export async function handleData(data: Record<string, any>) {
       }
     }
 
-    await localStorage.setItem('persist:cherry-studio', data.localStorage['persist:cherry-studio'])
+    await localStorage.setItem('persist:deekr-studio', data.localStorage['persist:deekr-studio'])
     window.toast.success(i18n.t('message.restore.success'))
     setTimeout(() => window.api.reload(), 1000)
     return
   }
 
   if (data.version >= 2) {
-    localStorage.setItem('persist:cherry-studio', data.localStorage['persist:cherry-studio'])
+    localStorage.setItem('persist:deekr-studio', data.localStorage['persist:deekr-studio'])
 
     // remove notes_tree from indexedDB
     if (data.indexedDB['notes_tree']) {
@@ -951,7 +951,7 @@ export async function backupToLocal({
     logger.error('Failed to get device type or hostname:', error as Error)
   }
   const timestamp = dayjs().format('YYYYMMDDHHmmss')
-  const backupFileName = customFileName || `cherry-studio.${timestamp}.${hostname}.${deviceType}.zip`
+  const backupFileName = customFileName || `deekr-studio.${timestamp}.${hostname}.${deviceType}.zip`
   const finalFileName = backupFileName.endsWith('.zip') ? backupFileName : `${backupFileName}.zip`
   const backupData = await getBackupData()
 

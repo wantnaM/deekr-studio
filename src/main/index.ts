@@ -43,8 +43,8 @@ const logger = loggerService.withContext('MainEntry')
 
 // enable local crash reports
 crashReporter.start({
-  companyName: 'CherryHQ',
-  productName: 'CherryStudio',
+  companyName: 'Deekr',
+  productName: 'DeekrStudio',
   submitURL: '',
   uploadToServer: false
 })
@@ -80,8 +80,8 @@ if (isLinux && process.env.XDG_SESSION_TYPE === 'wayland') {
  * This ensures the system tray and window manager identify the app correctly
  */
 if (isLinux) {
-  app.commandLine.appendSwitch('class', 'cherry-studio')
-  app.commandLine.appendSwitch('name', 'cherry-studio')
+  app.commandLine.appendSwitch('class', 'deekr-studio')
+  app.commandLine.appendSwitch('name', 'deekr-studio')
 }
 
 // DocumentPolicyIncludeJSCallStacksInCrashReports: Enable features for unresponsive renderer js call stacks
@@ -139,7 +139,7 @@ if (!app.requestSingleInstanceLock()) {
 
     initWebviewHotkeys()
     // Set app user model id for windows
-    electronApp.setAppUserModelId(import.meta.env.VITE_MAIN_BUNDLE_ID || 'com.kangfenmao.CherryStudio')
+    electronApp.setAppUserModelId(import.meta.env.VITE_MAIN_BUNDLE_ID || 'com.deerk.DeekrStudio')
 
     // Mac: Hide dock icon before window creation when launch to tray is set
     const isLaunchToTray = configManager.getLaunchToTray()

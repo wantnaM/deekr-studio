@@ -27,8 +27,8 @@ export class McpOAuthClientProvider implements OAuthClientProvider {
       callbackPort: options.callbackPort || 12346,
       callbackPath: options.callbackPath || '/oauth/callback',
       configDir: options.configDir || configDir,
-      clientName: options.clientName || 'Cherry Studio',
-      clientUri: options.clientUri || 'https://github.com/CherryHQ/cherry-studio'
+      clientName: options.clientName || 'Deekr Studio',
+      clientUri: options.clientUri || ''
     }
     this.storage = new JsonFileStorage(this.config.serverUrlHash, this.config.configDir)
   }

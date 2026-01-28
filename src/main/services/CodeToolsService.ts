@@ -707,7 +707,7 @@ class CodeToolsService {
         const command = envPrefix ? `${envPrefix} && ${baseCommand}` : baseCommand
 
         // Create temp bat file for debugging and avoid complex command line escaping issues
-        const tempDir = path.join(os.tmpdir(), 'cherrystudio')
+        const tempDir = path.join(os.tmpdir(), 'deekrstudio')
         const timestamp = Date.now()
         const batFileName = `launch_${cliTool}_${timestamp}.bat`
         const batFilePath = path.join(tempDir, batFileName)
@@ -721,9 +721,9 @@ class CodeToolsService {
         const batContent = [
           '@echo off',
           'chcp 65001 >nul 2>&1', // Switch to UTF-8 code page for international path support
-          `title ${cliTool} - Cherry Studio`, // Set window title in bat file
+          `title ${cliTool} - Deekr Studio`, // Set window title in bat file
           'echo ================================================',
-          'echo Cherry Studio CLI Tool Launcher',
+          'echo Deekr Studio CLI Tool Launcher',
           `echo Tool: ${cliTool}`,
           `echo Directory: ${directory}`,
           `echo Time: ${new Date().toLocaleString()}`,

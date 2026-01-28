@@ -83,7 +83,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(
   {
-    key: 'cherry-studio',
+    key: 'deekr-studio',
     storage,
     version: 192,
     blacklist: ['runtime', 'messages', 'messageBlocks', 'tabs', 'toolPermissions'],

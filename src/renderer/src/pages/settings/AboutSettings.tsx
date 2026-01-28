@@ -89,7 +89,7 @@ const AboutSettings: FC = () => {
     openSmartMinapp({
       id: 'cherrystudio-releases',
       name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+      url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
       logo: AppLogo
     })
   }
@@ -179,7 +179,7 @@ const AboutSettings: FC = () => {
         <SettingTitle>
           {t('settings.about.title')}
           {/* <HStack alignItems="center">
-            <Link to="https://github.com/CherryHQ/cherry-studio">
+            <Link to="https://github.com/CherryHQ/deekr-studio">
               <GithubOutlined style={{ marginRight: 4, color: 'var(--color-text)', fontSize: 20 }} />
             </Link>
           </HStack> */}
@@ -306,7 +306,7 @@ const AboutSettings: FC = () => {
             <Github size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
-          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/issues/new/choose')}>
+          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/deekr-studio/issues/new/choose')}>
             {t('settings.about.feedback.button')}
           </Button>
         </SettingRow>
@@ -349,7 +349,7 @@ const AboutSettings: FC = () => {
             <Mail size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
-          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/cherry-studio/issues/new/choose')}>
+          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/deekr-studio/issues/new/choose')}>
             {t('settings.about.feedback.button')}
           </Button>
         </SettingRow>

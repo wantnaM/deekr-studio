@@ -1,5 +1,5 @@
-appId: com.kangfenmao.CherryStudio
-productName: Cherry Studio
+appId: com.deerk.DeekrStudio
+productName: 教师智能体
 electronLanguages:
   - zh-CN
   - zh-TW
@@ -14,9 +14,9 @@ directories:
   buildResources: build
 
 protocols:
-  - name: Cherry Studio
+  - name: Deekr Studio
     schemes:
-      - cherrystudio
+      - deekrstudio
 files:
   - "**/*"
   - "!**/{.vscode,.yarn,.yarn-lock,.github,.cursorrules,.prettierrc}"
@@ -124,16 +124,16 @@ linux:
   category: Utility
   desktop:
     entry:
-      StartupWMClass: CherryStudio
+      StartupWMClass: DeekrStudio
   mimeTypes:
-    - x-scheme-handler/cherrystudio
+    - x-scheme-handler/deekrstudio
 rpm:
   # Workaround for electron build issue on rpm package:
   # https://github.com/electron/forge/issues/3594
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
 publish:
   provider: generic
-  url: https://releases.cherry-ai.com
+  url: http://8.134.23.119:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 beforePack: scripts/before-pack.js
@@ -142,31 +142,35 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    <!--LANG:en-->
-    Cherry Studio 1.7.13 - Security & Bug Fixes
-
-    🔒 Security
-    - [Plugin] Fix security vulnerability in DXT plugin system on Windows
-
-    🐛 Bug Fixes
-    - [Agent] Fix Agent not working when Node.js is not installed on system
-    - [Chat] Fix app crash when opening certain agents
-    - [Chat] Fix reasoning process not displaying correctly for some providers
-    - [Chat] Fix memory leak issue during streaming conversations
-    - [MCP] Fix timeout field not accepting string format in MCP configuration
-    - [Settings] Add careers section in About page
-
     <!--LANG:zh-CN-->
-    Cherry Studio 1.7.13 - 安全与问题修复
+    Deekr Studio 1.7.13 - 开启智能新纪元
 
-    🔒 安全修复
-    - [插件] 修复 Windows 系统 DXT 插件的安全漏洞
+    今天，我们正式发布 Deekr Studio 1.7.13 —— 迄今最具雄心的版本，带来全新的 Agent：能够自主思考、规划和行动的 AI。
 
-    🐛 问题修复
-    - [Agent] 修复系统未安装 Node.js 时 Agent 功能无法使用的问题
-    - [对话] 修复打开某些智能体时应用崩溃的问题
-    - [对话] 修复部分服务商推理过程无法正确显示的问题
-    - [对话] 修复流式对话时的内存泄漏问题
-    - [MCP] 修复 MCP 配置的 timeout 字段不支持字符串格式的问题
-    - [设置] 关于页面新增招聘入口
+    多年来，AI 助手一直是被动的——等待你的指令，回应你的问题。Agent 改变了这一切。现在，AI 能够真正与你并肩工作：理解复杂目标，将其拆解为步骤，并独立执行。
+
+    这是我们一直在构建的未来。而这，仅仅是开始。
+
+    🤖 认识 Agent
+    想象一位永不疲倦的得力伙伴。给 Agent 一个目标——撰写报告、分析数据、重构代码——然后看它工作。它会推理问题、拆解步骤、调用工具，并在情况变化时灵活应对。
+
+    - **思考 → 规划 → 行动**：从目标到执行，全程自主
+    - **深度推理**：多轮思考，解决真实问题
+    - **工具大师**：文件操作、网络搜索、代码执行，样样精通
+    - **技能插件**：自定义命令，无限扩展
+    - **你掌控全局**：敏感操作，实时审批
+    - **完全透明**：每一步思考，每一个决策，清晰可见
+
+    🌐 生态持续壮大
+    - **MCP 集成**：百炼、魔搭、Higress、MCP.so、TokenFlux 等平台
+
+    📝 笔记
+    - 全新功能，等你体验
+
+    ⚡ 更快、更精致
+    - 性能升级
+    - 新的用户界面
+    - 数十处 UI 细节打磨
+
+    Agent 纪元已至。期待你的创造。
     <!--LANG:END-->

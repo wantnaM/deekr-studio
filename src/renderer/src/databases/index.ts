@@ -28,7 +28,7 @@ import { Dexie, type EntityTable } from 'dexie'
 import { upgradeToV5, upgradeToV7, upgradeToV8 } from './upgrades'
 
 // Database declaration (move this to its own module also)
-export const db = new Dexie('CherryStudio', {
+export const db = new Dexie('DeekrStudio', {
   chromeTransactionDurability: 'strict'
 }) as Dexie & {
   files: EntityTable<FileMetadata, 'id'>
