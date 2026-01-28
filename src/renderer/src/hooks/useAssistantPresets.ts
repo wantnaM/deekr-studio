@@ -1,4 +1,5 @@
 import { loggerService } from '@logger'
+import UserDataService from '@renderer/services/UserDataService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import {
   addAssistantPreset,
@@ -30,8 +31,14 @@ export function useAssistantPresets() {
   return {
     presets,
     setAssistantPresets: (presets: AssistantPreset[]) => dispatch(setAssistantPresets(presets)),
-    addAssistantPreset: (preset: AssistantPreset) => dispatch(addAssistantPreset(preset)),
-    removeAssistantPreset: (id: string) => dispatch(removeAssistantPreset({ id }))
+    addAssistantPreset: (preset: AssistantPreset) => {
+      dispatch(addAssistantPreset(preset))
+      UserDataService.createAssistant(preset)
+    },
+    removeAssistantPreset: (id: string) => {
+      dispatch(removeAssistantPreset({ id }))
+      UserDataService.deleteAssistant(id)
+    }
   }
 }
 
@@ -47,7 +54,10 @@ export function useAssistantPreset(id: string) {
 
   return {
     preset: preset,
-    updateAssistantPreset: (preset: AssistantPreset) => dispatch(updateAssistantPreset(preset)),
+    updateAssistantPreset: (preset: AssistantPreset) => {
+      dispatch(updateAssistantPreset(preset))
+      UserDataService.updateAssistant(preset)
+    },
     updateAssistantPresetSettings: (settings: Partial<AssistantSettings>) => {
       if (!preset) {
         logger.warn(`Failed to update assistant preset settings because preset with id ${id} is missing.`)
