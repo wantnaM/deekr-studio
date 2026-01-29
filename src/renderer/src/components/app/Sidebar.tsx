@@ -103,7 +103,7 @@ const Sidebar: FC = () => {
           <StyledLink
             onClick={async () => {
               hideMinappPopup()
-              await to('/settings/provider')
+              await to('/settings/model')
             }}>
             <Icon theme={theme} className={pathname.startsWith('/settings') && !minappShow ? 'active' : ''}>
               <Settings size={20} className="icon" />
