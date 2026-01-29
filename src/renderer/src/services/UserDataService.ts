@@ -1,5 +1,6 @@
 import store from '@renderer/store'
 import { setAssistantPresets } from '@renderer/store/assistants'
+import { setDefaultModel, setQuickModel, setTranslateModel, updateProvider } from '@renderer/store/llm'
 import {
   setWebdavAutoSync,
   setWebdavHost,
@@ -52,14 +53,31 @@ class UserDataService {
       topics: [],
       miniApps: [],
       defaultModel: configData.llm?.defaultModel || null,
-      quickModel: configData.llm?.topicNamingModel || null,
+      quickModel: configData.llm?.quickModel || null,
       translateModel: configData.llm?.translateModel || null
     }
 
     this.currentUserId = userId
 
+    await this.loadUserDataConfig()
     await this.loadAssistantsConfig(userId)
     await this.loadWebDAV()
+  }
+
+  async loadUserDataConfig(): Promise<void> {
+    if (!this.currentConfig) {
+      return
+    }
+
+    // LLM 配置
+    for (let index = 0; index < this.currentConfig.providers.length; index++) {
+      const p = this.currentConfig.providers[index]
+      store.dispatch(updateProvider(p))
+    }
+
+    store.dispatch(setDefaultModel({ model: this.currentConfig.defaultModel }))
+    store.dispatch(setQuickModel({ model: this.currentConfig.quickModel }))
+    store.dispatch(setTranslateModel({ model: this.currentConfig.translateModel }))
   }
 
   async loadWebDAV(): Promise<void> {

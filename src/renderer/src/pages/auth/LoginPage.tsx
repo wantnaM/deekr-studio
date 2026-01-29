@@ -1,7 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import logoBackground from '@renderer/assets/images/logo-background.jpg'
-import { useDefaultModel } from '@renderer/hooks/useAssistant'
-import { useProviders } from '@renderer/hooks/useProvider'
 import type { LoginCredentials } from '@renderer/services/AuthService'
 import authService from '@renderer/services/AuthService'
 import { startAutoSync } from '@renderer/services/BackupService'
@@ -19,8 +17,6 @@ import RegisterForm from './RegisterForm'
 const LoginPage: FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { updateProvider } = useProviders()
-  const { setDefaultModel, setQuickModel, setTranslateModel } = useDefaultModel()
   const { isLoading } = useAppSelector((state) => state.auth)
   const [form] = Form.useForm()
 
@@ -63,30 +59,11 @@ const LoginPage: FC = () => {
 
       await userDataService.getDataConfigWithApi(loginResult.userId)
 
-      await loadUserDataConfig()
-
       startAutoSync(true, 'webdav')
       navigate('/', { replace: true })
     } catch (err) {
       dispatch(loginFailure(err instanceof Error ? err.message : '登录失败，请检查用户名和密码'))
     }
-  }
-
-  const loadUserDataConfig = async () => {
-    const userDataConfig = userDataService.getCurrentUser()
-    if (!userDataConfig) {
-      return
-    }
-
-    // LLM 配置
-    for (let index = 0; index < userDataConfig.providers.length; index++) {
-      const p = userDataConfig.providers[index]
-      updateProvider(p)
-    }
-
-    setDefaultModel(userDataConfig.defaultModel)
-    setQuickModel(userDataConfig.quickModel)
-    setTranslateModel(userDataConfig.translateModel)
   }
 
   return (
