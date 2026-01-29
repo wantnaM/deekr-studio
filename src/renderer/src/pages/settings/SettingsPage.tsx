@@ -17,6 +17,7 @@ import {
   Settings2,
   TextCursorInput,
   User,
+  Users,
   Zap
 } from 'lucide-react'
 import type { FC } from 'react'
@@ -36,6 +37,7 @@ import QuickAssistantSettings from './QuickAssistantSettings'
 import QuickPhraseSettings from './QuickPhraseSettings'
 import SelectionAssistantSettings from './SelectionAssistantSettings/SelectionAssistantSettings'
 import ShortcutSettings from './ShortcutSettings'
+import StudentsSettings from './StudentsSettings'
 import { ApiServerSettings } from './ToolSettings/ApiServerSettings'
 import UserInfoPage from './UserInfoPage'
 // import WebSearchSettings from './WebSearchSettings'
@@ -57,6 +59,12 @@ const SettingsPage: FC = () => {
             <MenuItem className={isRoute('/settings/user')}>
               <User size={18} />
               {t('settings.user.title')}
+            </MenuItem>
+          </MenuItemLink>
+          <MenuItemLink to="/settings/students">
+            <MenuItem className={isRoute('/settings/students')}>
+              <Users size={18} />
+              {t('settings.students.title')}
             </MenuItem>
           </MenuItemLink>
           <Divider />
@@ -174,6 +182,7 @@ const SettingsPage: FC = () => {
             <Route path="data" element={<DataSettings />} />
             <Route path="about" element={<AboutSettings />} />
             <Route path="feedback" element={<FeedbackSettings />} />
+            <Route path="students" element={<StudentsSettings />} />
           </Routes>
         </SettingContent>
       </ContentContainer>
