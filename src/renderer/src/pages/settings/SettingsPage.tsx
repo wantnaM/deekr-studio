@@ -28,6 +28,7 @@ import AboutSettings from './AboutSettings'
 import DataSettings from './DataSettings/DataSettings'
 import DisplaySettings from './DisplaySettings/DisplaySettings'
 import DocProcessSettings from './DocProcessSettings'
+import FeedbackSettings from './FeedbackSettings'
 import GeneralSettings from './GeneralSettings'
 import MCPSettings from './MCPSettings'
 import MemorySettings from './MemorySettings'
@@ -172,6 +173,7 @@ const SettingsPage: FC = () => {
             <Route path="selectionAssistant" element={<SelectionAssistantSettings />} />
             <Route path="data" element={<DataSettings />} />
             <Route path="about" element={<AboutSettings />} />
+            <Route path="feedback" element={<FeedbackSettings />} />
           </Routes>
         </SettingContent>
       </ContentContainer>

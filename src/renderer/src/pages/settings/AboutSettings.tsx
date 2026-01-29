@@ -22,6 +22,7 @@ import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'react-markdown'
+import { useNavigate } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -36,6 +37,7 @@ const AboutSettings: FC = () => {
   const dispatch = useAppDispatch()
   const { update } = useRuntime()
   const { openSmartMinapp } = useMinappPopup()
+  const navigate = useNavigate()
 
   const onCheckUpdate = debounce(
     async () => {
@@ -349,7 +351,7 @@ const AboutSettings: FC = () => {
             <Mail size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
-          <Button onClick={() => onOpenWebsite('https://github.com/CherryHQ/deekr-studio/issues/new/choose')}>
+          <Button onClick={() => navigate('/settings/feedback')}>
             {t('settings.about.feedback.button')}
           </Button>
         </SettingRow>
