@@ -1,6 +1,6 @@
 import { CheckCircleFilled, UploadOutlined } from '@ant-design/icons'
+import { submitFeedback } from '@renderer/services/AdminService'
 import userDataService from '@renderer/services/UserDataService'
-import request from '@renderer/utils/axios'
 import type { GetProp, UploadFile, UploadProps } from 'antd'
 import { Button, Col, Form, Input, message, Result, Row, Select, Space, Upload } from 'antd'
 import { FC, useState } from 'react'
@@ -51,16 +51,6 @@ const FeedbackForm: FC = () => {
     form.resetFields()
     setFileList([])
     setIsSubmitted(false) // 重置提交状态
-  }
-
-  const submitFeedback = async (data: any) => {
-    return await request.post({
-      url: `/ds/feedback/create`,
-      data,
-      headers: {
-        'Content-Type': 'multipart/form-data' // 确保设置正确的Content-Type
-      }
-    })
   }
 
   const uploadProps: UploadProps = {
