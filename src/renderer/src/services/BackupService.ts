@@ -745,7 +745,9 @@ export function startAutoSync(immediate = false, type?: BackupType) {
 
           await window.modal.error({
             title: i18n.t('message.backup.failed'),
-            content: `${logPrefix} ${new Date().toLocaleString()} ` + error.message
+            content:
+              `如需关闭自动备份请到设置-数据设置-云备份设置-云数据库，以下是错误信息：${logPrefix} ${new Date().toLocaleString()} ` +
+              error.message
           })
 
           scheduleNextBackup('fromNow', backupType)
