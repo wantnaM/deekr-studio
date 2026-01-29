@@ -1,6 +1,6 @@
 import store from '@renderer/store'
 import { setAssistantPresets } from '@renderer/store/assistants'
-import { setDefaultModel, setQuickModel, setTranslateModel, updateProvider } from '@renderer/store/llm'
+import { setDefaultModel, setQuickModel, setTranslateModel, sortProviders, updateProvider } from '@renderer/store/llm'
 import {
   setWebdavAutoSync,
   setWebdavHost,
@@ -73,6 +73,17 @@ class UserDataService {
     for (let index = 0; index < this.currentConfig.providers.length; index++) {
       const p = this.currentConfig.providers[index]
       store.dispatch(updateProvider(p))
+    }
+
+    // 提取 sort 属性构建排序列表
+    const sortOrder = this.currentConfig.providers
+      .filter((p: any) => typeof p.sort === 'number' && !isNaN(p.sort))
+      .sort((a: any, b: any) => a.sort - b.sort)
+      .map((p) => p.id)
+
+    // 应用排序
+    if (sortOrder.length > 0) {
+      store.dispatch(sortProviders(sortOrder))
     }
 
     store.dispatch(setDefaultModel({ model: this.currentConfig.defaultModel }))

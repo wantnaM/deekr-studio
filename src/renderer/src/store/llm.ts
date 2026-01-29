@@ -246,6 +246,26 @@ const llmSlice = createSlice({
           provider.models[modelIndex] = action.payload.model
         }
       }
+    },
+    sortProviders: (state, action: PayloadAction<string[]>) => {
+      const idList = action.payload
+      const sortedProviders: Provider[] = []
+      const remainingProviders: Provider[] = []
+
+      // 先将所有 provider 分为两类：在 idList 中的和不在 idList 中的
+      state.providers.forEach((provider) => {
+        if (idList.includes(provider.id)) {
+          sortedProviders.push(provider)
+        } else {
+          remainingProviders.push(provider)
+        }
+      })
+
+      // 按照 idList 的顺序重新排序 sortedProviders
+      sortedProviders.sort((a, b) => idList.indexOf(a.id) - idList.indexOf(b.id))
+
+      // 合并结果：先放排序后的，再放未排序的
+      state.providers = [...sortedProviders, ...remainingProviders]
     }
   }
 })
@@ -273,7 +293,8 @@ export const {
   setAwsBedrockSecretAccessKey,
   setAwsBedrockApiKey,
   setAwsBedrockRegion,
-  updateModel
+  updateModel,
+  sortProviders
 } = llmSlice.actions
 
 export default llmSlice.reducer
