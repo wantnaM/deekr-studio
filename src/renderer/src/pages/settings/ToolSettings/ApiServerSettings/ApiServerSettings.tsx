@@ -6,7 +6,7 @@ import { setApiServerApiKey, setApiServerPort } from '@renderer/store/settings'
 import { formatErrorMessage } from '@renderer/utils/error'
 import { API_SERVER_DEFAULTS } from '@shared/config/constant'
 import { Alert, Button, Input, InputNumber, Tooltip, Typography } from 'antd'
-import { Copy, ExternalLink, Play, RotateCcw, Square } from 'lucide-react'
+import { Play, RotateCcw, Square } from 'lucide-react'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -81,11 +81,11 @@ const ApiServerSettings: FC = () => {
           </Title>
           <Text type="secondary">{t('apiServer.description')}</Text>
         </HeaderContent>
-        {apiServerRunning && (
+        {/* {apiServerRunning && (
           <Button type="primary" icon={<ExternalLink size={14} />} onClick={openApiDocs}>
             {t('apiServer.documentation.title')}
           </Button>
-        )}
+        )} */}
       </HeaderSection>
 
       {!apiServerRunning && (
@@ -152,7 +152,7 @@ const ApiServerSettings: FC = () => {
       </ServerControlPanel>
 
       {/* API Key Configuration */}
-      <ConfigurationField>
+      {/* <ConfigurationField>
         <FieldLabel>{t('apiServer.fields.apiKey.label')}</FieldLabel>
         <FieldDescription>{t('apiServer.fields.apiKey.description')}</FieldDescription>
 
@@ -175,7 +175,6 @@ const ApiServerSettings: FC = () => {
           }
         />
 
-        {/* Authorization header info */}
         <AuthHeaderSection>
           <FieldLabel>{t('apiServer.authHeader.title')}</FieldLabel>
           <StyledInput
@@ -185,7 +184,7 @@ const ApiServerSettings: FC = () => {
             size="middle"
           />
         </AuthHeaderSection>
-      </ConfigurationField>
+      </ConfigurationField> */}
     </Container>
   )
 }
