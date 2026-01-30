@@ -4,13 +4,14 @@ import ListItem from '@renderer/components/ListItem'
 import Scrollbar from '@renderer/components/Scrollbar'
 import CustomTag from '@renderer/components/Tags/CustomTag'
 import { useAssistantPresets } from '@renderer/hooks/useAssistantPresets'
+import { useAuth } from '@renderer/hooks/useAuth'
 import { useNavbarPosition } from '@renderer/hooks/useSettings'
 import { createAssistantFromAgent } from '@renderer/services/AssistantService'
 import type { AssistantPreset } from '@renderer/types'
 import { uuid } from '@renderer/utils'
 import { Button, Empty, Flex, Input } from 'antd'
 import { omit } from 'lodash'
-import { Import, Plus, Search, Settings2 } from 'lucide-react'
+import { Import, Plus, RotateCw,Search, Settings2 } from 'lucide-react'
 import type { FC } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +25,7 @@ import AssistantPresetCard from './components/AssistantPresetCard'
 import { AssistantPresetGroupIcon } from './components/AssistantPresetGroupIcon'
 import ImportAssistantPresetPopup from './components/ImportAssistantPresetPopup'
 import ManageAssistantPresetsPopup from './components/ManageAssistantPresetsPopup'
+import SyncAssistantToStudentsPopup from './components/SyncAssistantToStudentsPopup'
 
 const AssistantPresetsPage: FC = () => {
   const [search, setSearch] = useState('')
@@ -34,6 +36,8 @@ const AssistantPresetsPage: FC = () => {
   const systemPresets = useSystemAssistantPresets()
   const { presets: userPresets } = useAssistantPresets()
   const { isTopNavbar } = useNavbarPosition()
+    const { user } = useAuth()
+    const isTeacher = user?.type === 3
 
   useEffect(() => {
     const systemAgentsGroupList = groupByCategories(systemPresets)
@@ -179,6 +183,14 @@ const AssistantPresetsPage: FC = () => {
     ManageAssistantPresetsPopup.show()
   }
 
+  const handleSyncToStudents = async () => {
+    try {
+      await SyncAssistantToStudentsPopup.show()
+    } catch (error) {
+      window.toast.error(error instanceof Error ? error.message : '同步失败')
+    }
+  }
+
   return (
     <Container>
       <Navbar>
@@ -278,6 +290,11 @@ const AssistantPresetsPage: FC = () => {
                   </Button>
                 )
               )}
+              {isTeacher && (
+                    <Button type="text" icon={<RotateCw size={18} color="var(--color-icon)" />} onClick={handleSyncToStudents}>
+                      同步给学生
+                    </Button>
+                  )}
               <Button type="text" onClick={handleImportAgent} icon={<Import size={18} color="var(--color-icon)" />}>
                 {t('assistants.presets.import.title')}
               </Button>

@@ -53,3 +53,13 @@ export const teacherDeleteStudent = async (studentId: number) => {
     params: { studentId }
   })
 }
+
+export const syncAgentsToStudents = async (ids: string[], studentIds: number[]) => {
+  return await request.post({
+    url: `/ds/agent/sync-to-students`,
+    data: {
+      ids,
+      studentIds
+    }
+  })
+}
