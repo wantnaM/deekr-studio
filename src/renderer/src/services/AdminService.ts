@@ -40,10 +40,16 @@ export const getTeachersBySchoolAndKeyword = async (school, keyword) => {
   })
 }
 
-export const deleteStudents = async (ids: string[]) => {
-  return await request.delete({ url: `/system/user/delete-students`, data: ids })
+export const teacherResetStudentPassword = async (studentId: number, password: string) => {
+  return await request.put({
+    url: `/system/user/teacher-reset-student-password`,
+    params: { studentId, password }
+  })
 }
 
-export const resetStudentsPassword = async (ids: string[]) => {
-  return await request.post({ url: `/system/user/reset-students-password`, data: ids })
+export const teacherDeleteStudent = async (studentId: number) => {
+  return await request.delete({
+    url: `/system/user/teacher-delete-student`,
+    params: { studentId }
+  })
 }

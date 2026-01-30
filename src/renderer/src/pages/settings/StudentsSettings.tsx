@@ -1,11 +1,11 @@
 import { DownloadOutlined, ExportOutlined, SearchOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { getAccessToken } from '@renderer/hooks/useAuth'
-import { exportStudents, getStudentsList, importStudentsTemplate } from '@renderer/services/AdminService'
+import { exportStudents, getStudentsList, importStudentsTemplate, teacherDeleteStudent,teacherResetStudentPassword } from '@renderer/services/AdminService'
 import userDataService from '@renderer/services/UserDataService'
 import { config } from '@renderer/utils/axios/config'
 import type { UploadProps } from 'antd'
-import { Button, Input, message, Row, Table, Tooltip, Upload } from 'antd'
+import { Button, Input, message, Modal, Row, Table, Tooltip, Upload } from 'antd'
 import { CircleHelp } from 'lucide-react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import { SettingContainer, SettingDivider, SettingGroup, SettingTitle } from '.'
 
 interface Student {
-  key: string
+  id: number
   username: string
   nickname: string
   grade: string
@@ -29,11 +29,48 @@ const StudentsSettings: FC = () => {
   const [searchText, setSearchText] = useState('')
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([])
   const [exportLoading, setExportLoading] = useState(false)
+  const [refreshLoading, setRefreshLoading] = useState(false)
   const userId = userDataService.getCurrentUserId()
 
   const [studentTip] = useState(
     '教师账号可以创建账号给学生使用。请下载模板后填写表格内容后导入，用户名推荐使用姓名拼音+班级学号，例如：zhangsan001。如果需要修改学生昵称或其他信息可使用导入文件修改，用户名作为唯一标识。学生初始密码是123456'
   )
+
+  const handleResetPassword = (record: Student) => {
+    Modal.confirm({
+      title: '确认重置密码',
+      content: `确定要重置学生 ${record.nickname} (${record.username}) 的密码为 123456 吗？`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        try {
+          await teacherResetStudentPassword(record.id, '123456')
+          messageApi.success('密码重置成功')
+        } catch (error) {
+          messageApi.error('密码重置失败')
+        }
+      }
+    })
+  }
+
+  const handleDelete = (record: Student) => {
+    Modal.confirm({
+      title: '确认删除',
+      content: `确定要删除学生 ${record.nickname} (${record.username}) 吗？此操作不可恢复。`,
+      okText: '确认',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await teacherDeleteStudent(record.id)
+          messageApi.success('删除成功')
+          fetchData()
+        } catch (error) {
+          messageApi.error('删除失败')
+        }
+      }
+    })
+  }
 
   const columns = [
     {
@@ -64,6 +101,21 @@ const StudentsSettings: FC = () => {
       key: 'createTime',
       render: (text: string) => formatDate(text),
       sorter: (a, b) => a.createTime - b.createTime
+    },
+    {
+      title: '操作',
+      key: 'action',
+      width: 150,
+      render: (_, record) => (
+        <>
+          <Button type="link" size="small" onClick={() => handleResetPassword(record)}>
+            重置密码
+          </Button>
+          <Button type="link" size="small" danger onClick={() => handleDelete(record)}>
+            删除
+          </Button>
+        </>
+      )
     }
   ]
 
@@ -111,10 +163,19 @@ const StudentsSettings: FC = () => {
     fetchData()
   }, [])
 
-  const fetchData = async () => {
-    const res = await getStudentsList()
-    setStudents(res)
-    setFilteredStudents(res)
+  const fetchData = async (showLoading = false) => {
+    if (showLoading) {
+      setRefreshLoading(true)
+    }
+    try {
+      const res = await getStudentsList()
+      setStudents(res)
+      setFilteredStudents(res)
+    } finally {
+      if (showLoading) {
+        setRefreshLoading(false)
+      }
+    }
   }
 
   const handleExportStudents = async () => {
@@ -148,7 +209,7 @@ const StudentsSettings: FC = () => {
     onChange(info) {
       if (info.file.status === 'done') {
         if (info.file.response && info.file.response.code === 0) {
-          messageApi.success(`文件导入成功`)
+          messageApi.success(`文件导入成功，初始密码为123456`)
           fetchData()
         } else {
           messageApi.error(`文件导入失败: ${info.file.response ? info.file.response.msg : '未知错误'}`)
@@ -195,7 +256,7 @@ const StudentsSettings: FC = () => {
         </SettingTitle>
 
         <SearchContainer>
-          <Button icon={<SyncOutlined />} onClick={() => fetchData()} style={{ marginTop: 10 }}></Button>
+          <Button icon={<SyncOutlined />} onClick={() => fetchData(true)} loading={refreshLoading} style={{ marginTop: 10 }}></Button>
           <Input
             placeholder="搜索学生"
             allowClear
