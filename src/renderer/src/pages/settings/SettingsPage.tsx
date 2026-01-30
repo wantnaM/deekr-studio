@@ -1,6 +1,7 @@
 import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import { McpLogo } from '@renderer/components/Icons'
 import Scrollbar from '@renderer/components/Scrollbar'
+import { useAuth } from '@renderer/hooks/useAuth'
 import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import { Divider as AntDivider } from 'antd'
 import {
@@ -45,6 +46,8 @@ import UserInfoPage from './UserInfoPage'
 const SettingsPage: FC = () => {
   const { pathname } = useLocation()
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const isStudent = user?.type === 4
 
   const isRoute = (path: string): string => (pathname.startsWith(path) ? 'active' : '')
 
@@ -61,12 +64,14 @@ const SettingsPage: FC = () => {
               {t('settings.user.title')}
             </MenuItem>
           </MenuItemLink>
-          <MenuItemLink to="/settings/students">
-            <MenuItem className={isRoute('/settings/students')}>
-              <Users size={18} />
-              {t('settings.students.title')}
-            </MenuItem>
-          </MenuItemLink>
+          {!isStudent && (
+            <MenuItemLink to="/settings/students">
+              <MenuItem className={isRoute('/settings/students')}>
+                <Users size={18} />
+                {t('settings.students.title')}
+              </MenuItem>
+            </MenuItemLink>
+          )}
           <Divider />
           {/* <MenuItemLink to="/settings/provider">
             <MenuItem className={isRoute('/settings/provider')}>
