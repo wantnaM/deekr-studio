@@ -13,7 +13,7 @@ const DEFAULT_FEED_TEMPLATES: Record<UpdateMirror, string> = {
   github: `https://github.com/${GITHUB_REPO}/releases/download/{{tag}}`,
   gitcode: `https://gitcode.com/${GITCODE_REPO}/releases/download/{{tag}}`
 }
-const GITCODE_LATEST_FALLBACK = 'https://releases.cherry-ai.com'
+const GITCODE_LATEST_FALLBACK = 'http://106.52.88.110:8090'
 
 interface CliOptions {
   tag?: string

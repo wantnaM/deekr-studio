@@ -3154,6 +3154,39 @@ const migrateConfig = {
         }
       })
       state.settings.readClipboardAtStartup = false
+
+      // Migrate auth state from settings if not present
+      if (!state.auth) {
+        // @ts-ignore
+        state.auth = {
+          isAuthenticated: false,
+          isLoading: false,
+          user: null,
+          accessToken: null,
+          refreshToken: null,
+          expiresTime: null,
+          error: null
+        }
+      }
+
+      // Reset settings to initial state
+      state.settings = settingsInitialState
+
+      // Update selection store settings
+      if (state.selectionStore) {
+        state.selectionStore.selectionEnabled = true
+        if (state.selectionStore.actionItems) {
+          const searchAction = state.selectionStore.actionItems.find((item) => item.id === 'search')
+          if (searchAction) {
+            searchAction.searchEngine = 'Baidu|https://www.baidu.com/s?wd={{queryString}}'
+          }
+        }
+      }
+
+      // Add doubao_paintings if not exists
+      if (state.paintings && !state.paintings.doubao_paintings) {
+        state.paintings.doubao_paintings = []
+      }
       logger.info('migrate 192 success')
       return state
     } catch (error) {

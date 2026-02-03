@@ -79,7 +79,7 @@ extraResources:
     to: "claude-code-plugins"
 
 win:
-  executableName: Cherry Studio
+  executableName: 教师智能体
   artifactName: ${productName}-${version}-${arch}-setup.${ext}
   target:
     - target: nsis
@@ -133,7 +133,7 @@ rpm:
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
 publish:
   provider: generic
-  url: http://8.134.23.119:8090
+  url: http://106.52.88.110:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 beforePack: scripts/before-pack.js

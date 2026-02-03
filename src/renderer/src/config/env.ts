@@ -5,5 +5,5 @@ export const APP_NAME = 'Deekr Studio'
 export const isLocalAi = false
 
 export const ADMIN_BASE_URL =
-  process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:48080' : 'http://8.134.23.119:8080'
+  process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:48080' : 'http://106.52.88.110:8080'
 export const ADMIN_API_URL = '/admin-api'
