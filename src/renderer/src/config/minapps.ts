@@ -114,6 +114,7 @@ const loadCustomMiniApp = async (): Promise<MinAppType[]> => {
 }
 
 // 初始化默认小应用
+// @ts-ignore
 const ORIGIN_DEFAULT_MIN_APPS: MinAppType[] = [
   {
     id: 'openai',

@@ -38,10 +38,10 @@ const WebDavSettings: FC = () => {
     webdavDisableStream: webDAVDisableStream
   } = useSettings()
 
-  const [webdavHost, setWebdavHost] = useState<string | undefined>(webDAVHost)
-  const [webdavUser, setWebdavUser] = useState<string | undefined>(webDAVUser)
-  const [webdavPass, setWebdavPass] = useState<string | undefined>(webDAVPass)
-  const [webdavPath, setWebdavPath] = useState<string | undefined>(webDAVPath)
+  const [webdavHost] = useState<string | undefined>(webDAVHost)
+  const [webdavUser] = useState<string | undefined>(webDAVUser)
+  const [webdavPass] = useState<string | undefined>(webDAVPass)
+  const [webdavPath] = useState<string | undefined>(webDAVPath)
   const [webdavSkipBackupFile, setWebdavSkipBackupFile] = useState<boolean>(webdDAVSkipBackupFile)
   const [webdavDisableStream, setWebdavDisableStream] = useState<boolean>(webDAVDisableStream)
   const [backupManagerVisible, setBackupManagerVisible] = useState(false)

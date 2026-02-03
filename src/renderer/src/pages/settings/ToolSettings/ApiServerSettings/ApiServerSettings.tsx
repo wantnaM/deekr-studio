@@ -2,17 +2,17 @@ import { useTheme } from '@renderer/context/ThemeProvider'
 import { useApiServer } from '@renderer/hooks/useApiServer'
 import type { RootState } from '@renderer/store'
 import { useAppDispatch } from '@renderer/store'
-import { setApiServerApiKey, setApiServerPort } from '@renderer/store/settings'
+import { setApiServerPort } from '@renderer/store/settings'
 import { formatErrorMessage } from '@renderer/utils/error'
 import { API_SERVER_DEFAULTS } from '@shared/config/constant'
-import { Alert, Button, Input, InputNumber, Tooltip, Typography } from 'antd'
+import { Alert, InputNumber, Tooltip, Typography } from 'antd'
 import { Play, RotateCcw, Square } from 'lucide-react'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { v4 as uuidv4 } from 'uuid'
 
+// import { v4 as uuidv4 } from 'uuid'
 import { SettingContainer } from '../..'
 
 const { Text, Title } = Typography
@@ -45,16 +45,16 @@ const ApiServerSettings: FC = () => {
     await restartApiServer()
   }
 
-  const copyApiKey = () => {
-    navigator.clipboard.writeText(apiServerConfig.apiKey)
-    window.toast.success(t('apiServer.messages.apiKeyCopied'))
-  }
+  // const copyApiKey = () => {
+  //   navigator.clipboard.writeText(apiServerConfig.apiKey)
+  //   window.toast.success(t('apiServer.messages.apiKeyCopied'))
+  // }
 
-  const regenerateApiKey = () => {
-    const newApiKey = `cs-sk-${uuidv4()}`
-    dispatch(setApiServerApiKey(newApiKey))
-    window.toast.success(t('apiServer.messages.apiKeyRegenerated'))
-  }
+  // const regenerateApiKey = () => {
+  //   const newApiKey = `cs-sk-${uuidv4()}`
+  //   dispatch(setApiServerApiKey(newApiKey))
+  //   window.toast.success(t('apiServer.messages.apiKeyRegenerated'))
+  // }
 
   const handlePortChange = (value: string) => {
     const port = parseInt(value) || API_SERVER_DEFAULTS.PORT
@@ -63,13 +63,13 @@ const ApiServerSettings: FC = () => {
     }
   }
 
-  const openApiDocs = () => {
-    if (apiServerRunning) {
-      const host = apiServerConfig.host || API_SERVER_DEFAULTS.HOST
-      const port = apiServerConfig.port || API_SERVER_DEFAULTS.PORT
-      window.open(`http://${host}:${port}/api-docs`, '_blank')
-    }
-  }
+  // const openApiDocs = () => {
+  //   if (apiServerRunning) {
+  //     const host = apiServerConfig.host || API_SERVER_DEFAULTS.HOST
+  //     const port = apiServerConfig.port || API_SERVER_DEFAULTS.PORT
+  //     window.open(`http://${host}:${port}/api-docs`, '_blank')
+  //   }
+  // }
 
   return (
     <Container theme={theme}>
@@ -329,61 +329,61 @@ const StopButton = styled.div<{ $loading: boolean }>`
   }
 `
 
-const ConfigurationField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  background: var(--color-background);
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-`
+// const ConfigurationField = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+//   padding: 16px;
+//   background: var(--color-background);
+//   border-radius: 8px;
+//   border: 1px solid var(--color-border);
+// `
 
-const FieldLabel = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-1);
-  margin: 0;
-`
+// const FieldLabel = styled.div`
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: var(--color-text-1);
+//   margin: 0;
+// `
 
-const FieldDescription = styled.div`
-  font-size: 12px;
-  color: var(--color-text-3);
-  margin: 0;
-`
+// const FieldDescription = styled.div`
+//   font-size: 12px;
+//   color: var(--color-text-3);
+//   margin: 0;
+// `
 
-const StyledInput = styled(Input)`
-  width: 100%;
-  border-radius: 6px;
-  border: 1.5px solid var(--color-border);
-`
+// const StyledInput = styled(Input)`
+//   width: 100%;
+//   border-radius: 6px;
+//   border: 1.5px solid var(--color-border);
+// `
 
-const InputButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`
+// const InputButtonContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 4px;
+// `
 
-const InputButton = styled(Button)`
-  border: none;
-  padding: 0 4px;
-  background: transparent;
-`
+// const InputButton = styled(Button)`
+//   border: none;
+//   padding: 0 4px;
+//   background: transparent;
+// `
 
-const RegenerateButton = styled(Button)`
-  padding: 0 4px;
-  font-size: 12px;
-  height: auto;
-  line-height: 1;
-  border: none;
-  background: transparent;
-`
+// const RegenerateButton = styled(Button)`
+//   padding: 0 4px;
+//   font-size: 12px;
+//   height: auto;
+//   line-height: 1;
+//   border: none;
+//   background: transparent;
+// `
 
-const AuthHeaderSection = styled.div`
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`
+// const AuthHeaderSection = styled.div`
+//   margin-top: 12px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+// `
 
 export default ApiServerSettings

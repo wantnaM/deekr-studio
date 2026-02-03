@@ -4,13 +4,13 @@ import IndicatorLight from '@renderer/components/IndicatorLight'
 import UpdateDialogPopup from '@renderer/components/Popups/UpdateDialogPopup'
 import { APP_NAME, AppLogo } from '@renderer/config/env'
 import { useTheme } from '@renderer/context/ThemeProvider'
-import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
+// import { useMinappPopup } from '@renderer/hooks/useMinappPopup'
 import { useRuntime } from '@renderer/hooks/useRuntime'
 import { useSettings } from '@renderer/hooks/useSettings'
-import i18n from '@renderer/i18n'
+// import i18n from '@renderer/i18n'
 import { useAppDispatch } from '@renderer/store'
 import { setUpdateState } from '@renderer/store/runtime'
-import { ThemeMode } from '@renderer/types'
+// import { ThemeMode } from '@renderer/types'
 import { runAsyncFunction } from '@renderer/utils'
 import { UpgradeChannel } from '@shared/config/constant'
 import { Avatar, Button, Progress, Radio, Row, Switch, Tag, Tooltip } from 'antd'
@@ -32,11 +32,11 @@ const AboutSettings: FC = () => {
   const [version, setVersion] = useState('')
   const [isPortable, setIsPortable] = useState(false)
   const { t } = useTranslation()
-  const { autoCheckUpdate, setAutoCheckUpdate, testPlan, setTestPlan, testChannel, setTestChannel } = useSettings()
+  const { autoCheckUpdate, setAutoCheckUpdate, testPlan, testChannel, setTestChannel } = useSettings()
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
   const { update } = useRuntime()
-  const { openSmartMinapp } = useMinappPopup()
+  // const { openSmartMinapp } = useMinappPopup()
   const navigate = useNavigate()
 
   const onCheckUpdate = debounce(
@@ -65,36 +65,36 @@ const AboutSettings: FC = () => {
     { leading: true, trailing: false }
   )
 
-  const onOpenWebsite = (url: string) => {
-    window.api.openWebsite(url)
-  }
+  // const onOpenWebsite = (url: string) => {
+  //   window.api.openWebsite(url)
+  // }
 
-  const mailto = async () => {
-    const email = 'support@cherry-ai.com'
-    const subject = `${APP_NAME} Feedback`
-    const version = (await window.api.getAppInfo()).version
-    const platform = window.electron.process.platform
-    const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
-    onOpenWebsite(url)
-  }
+  // const mailto = async () => {
+  //   const email = 'support@cherry-ai.com'
+  //   const subject = `${APP_NAME} Feedback`
+  //   const version = (await window.api.getAppInfo()).version
+  //   const platform = window.electron.process.platform
+  //   const url = `mailto:${email}?subject=${subject}&body=%0A%0AVersion: ${version} | Platform: ${platform}`
+  //   onOpenWebsite(url)
+  // }
 
-  const debug = async () => {
-    await window.api.devTools.toggle()
-  }
+  // const debug = async () => {
+  //   await window.api.devTools.toggle()
+  // }
 
-  const showEnterprise = async () => {
-    onOpenWebsite('https://cherry-ai.com/enterprise')
-  }
+  // const showEnterprise = async () => {
+  //   onOpenWebsite('https://cherry-ai.com/enterprise')
+  // }
 
-  const showReleases = async () => {
-    const { appPath } = await window.api.getAppInfo()
-    openSmartMinapp({
-      id: 'cherrystudio-releases',
-      name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
-      logo: AppLogo
-    })
-  }
+  // const showReleases = async () => {
+  //   const { appPath } = await window.api.getAppInfo()
+  //   openSmartMinapp({
+  //     id: 'cherrystudio-releases',
+  //     name: t('settings.about.releases.title'),
+  //     url: `file://${appPath}/resources/deekr-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
+  //     logo: AppLogo
+  //   })
+  // }
 
   const currentChannelByVersion =
     [
@@ -136,23 +136,23 @@ const AboutSettings: FC = () => {
     ]
   }
 
-  const handleSetTestPlan = (value: boolean) => {
-    setTestPlan(value)
-    dispatch(
-      setUpdateState({
-        available: false,
-        info: null,
-        downloaded: false,
-        checking: false,
-        downloading: false,
-        downloadProgress: 0
-      })
-    )
+  // const handleSetTestPlan = (value: boolean) => {
+  //   setTestPlan(value)
+  //   dispatch(
+  //     setUpdateState({
+  //       available: false,
+  //       info: null,
+  //       downloaded: false,
+  //       checking: false,
+  //       downloading: false,
+  //       downloadProgress: 0
+  //     })
+  //   )
 
-    if (value === true) {
-      setTestChannel(getTestChannel())
-    }
-  }
+  //   if (value === true) {
+  //     setTestChannel(getTestChannel())
+  //   }
+  // }
 
   const getTestChannel = () => {
     if (testChannel === UpgradeChannel.LATEST) {
@@ -170,10 +170,10 @@ const AboutSettings: FC = () => {
     setAutoCheckUpdate(autoCheckUpdate)
   }, [autoCheckUpdate, setAutoCheckUpdate])
 
-  const onOpenDocs = () => {
-    const isChinese = i18n.language.startsWith('zh')
-    window.api.openWebsite(isChinese ? 'https://docs.cherry-ai.com/' : 'https://docs.cherry-ai.com/docs/en-us')
-  }
+  // const onOpenDocs = () => {
+  //   const isChinese = i18n.language.startsWith('zh')
+  //   window.api.openWebsite(isChinese ? 'https://docs.cherry-ai.com/' : 'https://docs.cherry-ai.com/docs/en-us')
+  // }
 
   return (
     <SettingContainer theme={theme}>

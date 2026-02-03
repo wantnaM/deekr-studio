@@ -102,11 +102,6 @@ const UserInfoPage: FC = () => {
     }
   }
 
-  const formatMobile = (mobile: string | null): string => {
-    if (!mobile || mobile.length < 11) return mobile || '-'
-    return `${mobile.slice(0, 3)}****${mobile.slice(-4)}`
-  }
-
   const getUserTypeLabel = (type: number | null): string => {
     if (type === null) return '未知'
     switch (type) {

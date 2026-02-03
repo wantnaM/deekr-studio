@@ -6,20 +6,17 @@ import { isMac } from '@renderer/config/constant'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useSettings } from '@renderer/hooks/useSettings'
 import { useTimer } from '@renderer/hooks/useTimer'
-import i18n from '@renderer/i18n'
 import type { RootState } from '@renderer/store'
 import { useAppDispatch } from '@renderer/store'
 import {
   // setEnableDataCollection,
   setEnableSpellCheck,
-  setLanguage,
   setNotificationSettings,
   setProxyBypassRules as _setProxyBypassRules,
   setProxyMode,
   setProxyUrl as _setProxyUrl,
   setSpellCheckLanguages
 } from '@renderer/store/settings'
-import type { LanguageVarious } from '@renderer/types'
 import type { NotificationSource } from '@renderer/types/notification'
 import { isValidProxyUrl } from '@renderer/utils'
 import { formatErrorMessage } from '@renderer/utils/error'
@@ -51,7 +48,7 @@ const spellCheckLanguageOptions: readonly SpellCheckOption[] = [
 
 const GeneralSettings: FC = () => {
   const {
-    language,
+    // language,
     proxyUrl: storeProxyUrl,
     proxyBypassRules: storeProxyBypassRules,
     setLaunch,
@@ -103,12 +100,12 @@ const GeneralSettings: FC = () => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
-  const onSelectLanguage = (value: LanguageVarious) => {
-    dispatch(setLanguage(value))
-    localStorage.setItem('language', value)
-    window.api.setLanguage(value)
-    i18n.changeLanguage(value)
-  }
+  // const onSelectLanguage = (value: LanguageVarious) => {
+  //   dispatch(setLanguage(value))
+  //   localStorage.setItem('language', value)
+  //   window.api.setLanguage(value)
+  //   i18n.changeLanguage(value)
+  // }
 
   const handleSpellCheckChange = (checked: boolean) => {
     dispatch(setEnableSpellCheck(checked))
@@ -138,19 +135,19 @@ const GeneralSettings: FC = () => {
     dispatch(setProxyMode(mode))
   }
 
-  const languagesOptions: { value: LanguageVarious; label: string; flag: string }[] = [
-    { value: 'zh-CN', label: '中文', flag: '🇨🇳' },
-    { value: 'zh-TW', label: '中文（繁体）', flag: '🇭🇰' },
-    { value: 'en-US', label: 'English', flag: '🇺🇸' },
-    { value: 'de-DE', label: 'Deutsch', flag: '🇩🇪' },
-    { value: 'ja-JP', label: '日本語', flag: '🇯🇵' },
-    { value: 'ru-RU', label: 'Русский', flag: '🇷🇺' },
-    { value: 'el-GR', label: 'Ελληνικά', flag: '🇬🇷' },
-    { value: 'es-ES', label: 'Español', flag: '🇪🇸' },
-    { value: 'fr-FR', label: 'Français', flag: '🇫🇷' },
-    { value: 'pt-PT', label: 'Português', flag: '🇵🇹' },
-    { value: 'ro-RO', label: 'Română', flag: '🇷🇴' }
-  ]
+  // const languagesOptions: { value: LanguageVarious; label: string; flag: string }[] = [
+  //   { value: 'zh-CN', label: '中文', flag: '🇨🇳' },
+  //   { value: 'zh-TW', label: '中文（繁体）', flag: '🇭🇰' },
+  //   { value: 'en-US', label: 'English', flag: '🇺🇸' },
+  //   { value: 'de-DE', label: 'Deutsch', flag: '🇩🇪' },
+  //   { value: 'ja-JP', label: '日本語', flag: '🇯🇵' },
+  //   { value: 'ru-RU', label: 'Русский', flag: '🇷🇺' },
+  //   { value: 'el-GR', label: 'Ελληνικά', flag: '🇬🇷' },
+  //   { value: 'es-ES', label: 'Español', flag: '🇪🇸' },
+  //   { value: 'fr-FR', label: 'Français', flag: '🇫🇷' },
+  //   { value: 'pt-PT', label: 'Português', flag: '🇵🇹' },
+  //   { value: 'ro-RO', label: 'Română', flag: '🇷🇴' }
+  // ]
 
   const notificationSettings = useSelector((state: RootState) => state.settings.notification)
   const spellCheckLanguages = useSelector((state: RootState) => state.settings.spellCheckLanguages)

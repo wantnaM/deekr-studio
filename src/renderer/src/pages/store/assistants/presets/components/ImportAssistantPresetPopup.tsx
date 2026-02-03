@@ -1,11 +1,11 @@
 import { TopView } from '@renderer/components/TopView'
 import { useAssistantPresets } from '@renderer/hooks/useAssistantPresets'
-import { useSettings } from '@renderer/hooks/useSettings'
+// import { useSettings } from '@renderer/hooks/useSettings'
 import { useTimer } from '@renderer/hooks/useTimer'
 import { getDefaultModel } from '@renderer/services/AssistantService'
 import { EVENT_NAMES, EventEmitter } from '@renderer/services/EventService'
-import { useAppDispatch } from '@renderer/store'
-import { setAgentssubscribeUrl } from '@renderer/store/settings'
+// import { useAppDispatch } from '@renderer/store'
+// import { setAgentssubscribeUrl } from '@renderer/store/settings'
 import type { AssistantPreset } from '@renderer/types'
 import { uuid } from '@renderer/utils'
 import { Button, Flex, Form, Input, Modal, Typography } from 'antd'
@@ -21,18 +21,18 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const [form] = Form.useForm()
   const { t } = useTranslation()
   const { addAssistantPreset } = useAssistantPresets()
-  const [importType, setImportType] = useState<'url' | 'file'>('file')
+  const [importType] = useState<'url' | 'file'>('file')
   const [loading, setLoading] = useState(false)
-  const [subscribeLoading, setSubscribeLoading] = useState(false)
+  // const [setSubscribeLoading] = useState(false)
   const { setTimeoutTimer } = useTimer()
-  const dispatch = useAppDispatch()
-  const { agentssubscribeUrl } = useSettings()
-  const [subscribeUrl, setSubscribeUrl] = useState(agentssubscribeUrl || '')
+  // const dispatch = useAppDispatch()
+  // const { agentssubscribeUrl } = useSettings()
+  // const [subscribeUrl, setSubscribeUrl] = useState(agentssubscribeUrl || '')
   const [selectedFile, setSelectedFile] = useState<{ name: string; content: Uint8Array } | null>(null)
   const [urlValue, setUrlValue] = useState('')
 
   const isImportDisabled = importType === 'url' ? !urlValue.trim() : !selectedFile
-  const isSubscribed = !!agentssubscribeUrl
+  // const isSubscribed = !!agentssubscribeUrl
 
   const handleSelectFile = async () => {
     const result = await window.api.file.open({
@@ -111,41 +111,41 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     setOpen(false)
   }
 
-  const handleSubscribeUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubscribeUrl(e.target.value)
-  }
+  // const handleSubscribeUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSubscribeUrl(e.target.value)
+  // }
 
-  const handleSubscribe = async () => {
-    // If already subscribed, unsubscribe
-    if (isSubscribed) {
-      dispatch(setAgentssubscribeUrl(''))
-      setSubscribeUrl('')
-      window.location.reload()
-      return
-    }
+  // const handleSubscribe = async () => {
+  //   // If already subscribed, unsubscribe
+  //   if (isSubscribed) {
+  //     dispatch(setAgentssubscribeUrl(''))
+  //     setSubscribeUrl('')
+  //     window.location.reload()
+  //     return
+  //   }
 
-    if (!subscribeUrl.trim()) {
-      return
-    }
+  //   if (!subscribeUrl.trim()) {
+  //     return
+  //   }
 
-    setSubscribeLoading(true)
-    try {
-      const response = await fetch(subscribeUrl)
-      if (!response.ok) {
-        throw new Error(t('assistants.presets.import.error.fetch_failed'))
-      }
-      dispatch(setAgentssubscribeUrl(subscribeUrl))
-      window.location.reload()
-    } catch (error) {
-      window.toast.error(error instanceof Error ? error.message : t('message.agents.import.error'))
-    } finally {
-      setSubscribeLoading(false)
-    }
-  }
+  //   setSubscribeLoading(true)
+  //   try {
+  //     const response = await fetch(subscribeUrl)
+  //     if (!response.ok) {
+  //       throw new Error(t('assistants.presets.import.error.fetch_failed'))
+  //     }
+  //     dispatch(setAgentssubscribeUrl(subscribeUrl))
+  //     window.location.reload()
+  //   } catch (error) {
+  //     window.toast.error(error instanceof Error ? error.message : t('message.agents.import.error'))
+  //   } finally {
+  //     setSubscribeLoading(false)
+  //   }
+  // }
 
-  const handleHelpClick = () => {
-    window.open('https://docs.cherry-ai.com/data-settings/assistants-subscribe', '_blank')
-  }
+  // const handleHelpClick = () => {
+  //   window.open('https://docs.cherry-ai.com/data-settings/assistants-subscribe', '_blank')
+  // }
 
   return (
     <Modal

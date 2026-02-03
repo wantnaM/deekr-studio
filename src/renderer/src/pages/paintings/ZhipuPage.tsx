@@ -12,7 +12,7 @@ import FileManager from '@renderer/services/FileManager'
 import { useAppDispatch } from '@renderer/store'
 import { setGenerating } from '@renderer/store/runtime'
 import { getErrorMessage, uuid } from '@renderer/utils'
-import { Avatar, Button, InputNumber, Radio, Select } from 'antd'
+import { Button, InputNumber, Radio, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
@@ -538,10 +538,6 @@ const ProviderTitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-`
-
-const ProviderLogo = styled(Avatar)`
-  border-radius: 4px;
 `
 
 export default ZhipuPage
