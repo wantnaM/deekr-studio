@@ -73,11 +73,6 @@ asarUnpack:
   - "**/*.{metal,exp,lib}"
   - "node_modules/@img/sharp-libvips-*/**"
 
-# copy from node_modules/claude-code-plugins/plugins to resources/data/claude-code-pluginso
-extraResources:
-  - from: "./node_modules/claude-code-plugins/plugins/"
-    to: "claude-code-plugins"
-
 win:
   executableName: 教师智能体
   artifactName: ${productName}-${version}-${arch}-setup.${ext}
@@ -116,6 +111,7 @@ dmg:
   writeUpdateInfo: false
 linux:
   artifactName: ${productName}-${version}-${arch}.${ext}
+  executableName: CherryStudio
   target:
     - target: AppImage
     - target: deb

@@ -48,6 +48,7 @@ export enum IpcChannel {
 
   App_QuoteToMain = 'app:quote-to-main',
   App_SetDisableHardwareAcceleration = 'app:set-disable-hardware-acceleration',
+  App_SetUseSystemTitleBar = 'app:set-use-system-title-bar',
 
   Notification_Send = 'notification:send',
   Notification_OnClick = 'notification:on-click',
@@ -156,7 +157,6 @@ export enum IpcChannel {
   KnowledgeBase_Remove = 'knowledge-base:remove',
   KnowledgeBase_Search = 'knowledge-base:search',
   KnowledgeBase_Rerank = 'knowledge-base:rerank',
-  KnowledgeBase_Check_Quota = 'knowledge-base:check-quota',
 
   //file
   File_Open = 'file:open',
@@ -194,6 +194,7 @@ export enum IpcChannel {
   Fs_ReadText = 'fs:readText',
   File_OpenWithRelativePath = 'file:openWithRelativePath',
   File_IsTextFile = 'file:isTextFile',
+  File_IsDirectory = 'file:isDirectory',
   File_ListDirectory = 'file:listDirectory',
   File_GetDirectoryStructure = 'file:getDirectoryStructure',
   File_CheckFileName = 'file:checkFileName',
@@ -377,13 +378,13 @@ export enum IpcChannel {
   Cherryai_GetSignature = 'cherryai:get-signature',
 
   // Claude Code Plugins
-  ClaudeCodePlugin_ListAvailable = 'claudeCodePlugin:list-available',
   ClaudeCodePlugin_Install = 'claudeCodePlugin:install',
   ClaudeCodePlugin_Uninstall = 'claudeCodePlugin:uninstall',
+  ClaudeCodePlugin_UninstallPackage = 'claudeCodePlugin:uninstall-package',
   ClaudeCodePlugin_ListInstalled = 'claudeCodePlugin:list-installed',
-  ClaudeCodePlugin_InvalidateCache = 'claudeCodePlugin:invalidate-cache',
-  ClaudeCodePlugin_ReadContent = 'claudeCodePlugin:read-content',
   ClaudeCodePlugin_WriteContent = 'claudeCodePlugin:write-content',
+  ClaudeCodePlugin_InstallFromZip = 'claudeCodePlugin:install-from-zip',
+  ClaudeCodePlugin_InstallFromDirectory = 'claudeCodePlugin:install-from-directory',
 
   // Local Transfer
   LocalTransfer_ListServices = 'local-transfer:list',
