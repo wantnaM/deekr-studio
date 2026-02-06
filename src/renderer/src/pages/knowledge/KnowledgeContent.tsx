@@ -37,6 +37,7 @@ const KnowledgeContent: FC<KnowledgeContentProps> = ({ selectedBase }) => {
   const [preprocessMap, setPreprocessMap] = useState<Map<string, boolean>>(new Map())
 
   const providerName = getProviderName(base?.model)
+  const isCloud = selectedBase?.source === 'cloud'
 
   useEffect(() => {
     const handlers = [
@@ -137,33 +138,35 @@ const KnowledgeContent: FC<KnowledgeContentProps> = ({ selectedBase }) => {
 
   return (
     <MainContainer>
-      <HeaderContainer>
-        <ModelInfo>
-          <Button
-            type="text"
-            icon={<Settings size={18} color="var(--color-icon)" />}
-            onClick={() => EditKnowledgeBasePopup.show({ base })}
-            size="small"
-          />
-          <div className="model-row">
-            <div className="label-column">
-              <label>{t('models.embedding_model')}</label>
-            </div>
-            <Tooltip title={providerName} placement="bottom">
-              <div className="tag-column">
-                <Tag style={{ borderRadius: 20, margin: 0 }}>{base.model.name}</Tag>
+      {!isCloud && (
+        <HeaderContainer>
+          <ModelInfo>
+            <Button
+              type="text"
+              icon={<Settings size={18} color="var(--color-icon)" />}
+              onClick={() => EditKnowledgeBasePopup.show({ base })}
+              size="small"
+            />
+            <div className="model-row">
+              <div className="label-column">
+                <label>{t('models.embedding_model')}</label>
               </div>
-            </Tooltip>
-            {base.rerankModel && <Tag style={{ borderRadius: 20, margin: 0 }}>{base.rerankModel.name}</Tag>}
-          </div>
-        </ModelInfo>
-        <HStack gap={8} alignItems="center">
-          {/* 使用selected base导致修改设置后没有响应式更新 */}
-          <NavbarIcon onClick={() => base && KnowledgeSearchPopup.show({ base: base })}>
-            <Search size={18} />
-          </NavbarIcon>
-        </HStack>
-      </HeaderContainer>
+              <Tooltip title={providerName} placement="bottom">
+                <div className="tag-column">
+                  <Tag style={{ borderRadius: 20, margin: 0 }}>{base.model.name}</Tag>
+                </div>
+              </Tooltip>
+              {base.rerankModel && <Tag style={{ borderRadius: 20, margin: 0 }}>{base.rerankModel.name}</Tag>}
+            </div>
+          </ModelInfo>
+          <HStack gap={8} alignItems="center">
+            {/* 使用selected base导致修改设置后没有响应式更新 */}
+            <NavbarIcon onClick={() => base && KnowledgeSearchPopup.show({ base: base })}>
+              <Search size={18} />
+            </NavbarIcon>
+          </HStack>
+        </HeaderContainer>
+      )}
       <StyledTabs activeKey={activeKey} onChange={setActiveKey} items={tabItems} type="line" size="small" />
     </MainContainer>
   )

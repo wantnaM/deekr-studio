@@ -69,6 +69,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
 
   const providerName = getProviderName(base?.model)
   const disabled = !base?.version || !providerName
+  const isCloud = selectedBase.source === 'cloud'
 
   const estimateSize = useCallback(() => 75, [])
 
@@ -129,6 +130,9 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
   }
 
   const showPreprocessIcon = (item: KnowledgeItem) => {
+    if (isCloud) {
+      return false
+    }
     if (base.preprocessProvider && item.isPreprocessed !== false) {
       return true
     }
@@ -141,36 +145,40 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
   return (
     <ItemContainer>
       <ItemHeader>
-        <ResponsiveButton
-          type="primary"
-          icon={<PlusIcon size={16} />}
-          onClick={(e) => {
-            e.stopPropagation()
-            handleAddFile()
-          }}
-          disabled={disabled}>
-          {t('knowledge.add_file')}
-        </ResponsiveButton>
+        {!isCloud && (
+          <ResponsiveButton
+            type="primary"
+            icon={<PlusIcon size={16} />}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleAddFile()
+            }}
+            disabled={disabled}>
+            {t('knowledge.add_file')}
+          </ResponsiveButton>
+        )}
       </ItemHeader>
 
       <ItemFlexColumn>
-        <div
-          onClick={(e) => {
-            e.stopPropagation()
-            handleAddFile()
-          }}>
-          <Dragger
-            showUploadList={false}
-            customRequest={({ file }) => handleDrop([file as File])}
-            multiple={true}
-            accept={fileTypes.join(',')}
-            openFileDialogOnClick={false}>
-            <p className="ant-upload-text">{t('knowledge.drag_file')}</p>
-            <p className="ant-upload-hint">
-              {t('knowledge.file_hint', { file_types: 'TXT, MD, HTML, PDF, DOCX, PPTX, XLSX, EPUB...' })}
-            </p>
-          </Dragger>
-        </div>
+        {!isCloud && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation()
+              handleAddFile()
+            }}>
+            <Dragger
+              showUploadList={false}
+              customRequest={({ file }) => handleDrop([file as File])}
+              multiple={true}
+              accept={fileTypes.join(',')}
+              openFileDialogOnClick={false}>
+              <p className="ant-upload-text">{t('knowledge.drag_file')}</p>
+              <p className="ant-upload-hint">
+                {t('knowledge.file_hint', { file_types: 'TXT, MD, HTML, PDF, DOCX, PPTX, XLSX, EPUB...' })}
+              </p>
+            </Dragger>
+          </div>
+        )}
         {fileItems.length === 0 ? (
           <KnowledgeEmptyView />
         ) : (
@@ -191,7 +199,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
                     key={item.id}
                     fileInfo={{
                       name: (
-                        <ClickableSpan onClick={() => window.api.file.openFileWithRelativePath(file)}>
+                        <ClickableSpan onClick={() => !isCloud && window.api.file.openFileWithRelativePath(file)}>
                           <Ellipsis>
                             <Tooltip title={file.origin_name}>{file.origin_name}</Tooltip>
                           </Ellipsis>
@@ -199,7 +207,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
                       ),
                       ext: file.ext,
                       extra: `${getDisplayTime(item)} · ${formatFileSize(file.size)}`,
-                      actions: (
+                      actions: !isCloud && (
                         <FlexAlignCenter>
                           {item.uniqueId && (
                             <Button type="text" icon={<RefreshIcon />} onClick={() => refreshItem(item)} />

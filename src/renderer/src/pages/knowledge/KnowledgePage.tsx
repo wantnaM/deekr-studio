@@ -9,8 +9,8 @@ import { useShortcut } from '@renderer/hooks/useShortcuts'
 import KnowledgeSearchPopup from '@renderer/pages/knowledge/components/KnowledgeSearchPopup'
 import type { KnowledgeBase } from '@renderer/types'
 import type { MenuProps } from 'antd'
-import { Dropdown, Empty } from 'antd'
-import { Book, Plus, Settings } from 'lucide-react'
+import { Dropdown, Empty, Tag } from 'antd'
+import { Book, Cloud, Plus, Settings } from 'lucide-react'
 import type { FC } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,6 +47,7 @@ const KnowledgePage: FC = () => {
 
   const getMenuItems = useCallback(
     (base: KnowledgeBase) => {
+      if (base.source === 'cloud') return []
       const menus: MenuProps['items'] = [
         {
           label: t('knowledge.rename'),
@@ -117,9 +118,10 @@ const KnowledgePage: FC = () => {
                 <div>
                   <ListItem
                     active={selectedBase?.id === base.id}
-                    icon={<Book size={16} />}
+                    icon={base.source === 'cloud' ? <Cloud size={16} /> : <Book size={16} />}
                     title={base.name}
                     onClick={() => setSelectedBase(base)}
+                    rightContent={base.source === 'cloud' && <Tag color="lime">共享</Tag>}
                   />
                 </div>
               </Dropdown>

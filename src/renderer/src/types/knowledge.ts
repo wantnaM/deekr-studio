@@ -79,6 +79,11 @@ export const isKnowledgeSitemapItem = (item: KnowledgeItem): item is KnowledgeSi
 export type KnowledgeGeneralItem = KnowledgeItem & {
   content: string
 }
+
+/**
+ * 知识库来源类型
+ */
+export type KnowledgeBaseSource = 'local' | 'cloud'
 export interface KnowledgeBase {
   id: string
   name: string
@@ -100,6 +105,7 @@ export interface KnowledgeBase {
     type: 'preprocess'
     provider: PreprocessProvider
   }
+  source?: KnowledgeBaseSource // 新增：标识是本地还是云知识库
 }
 
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'

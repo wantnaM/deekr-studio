@@ -234,6 +234,11 @@ const knowledgeSlice = createSlice({
           item.isPreprocessed = action.payload.isPreprocessed
         }
       }
+    },
+
+    syncCloudKnowledge(state, action: PayloadAction<KnowledgeBase[]>) {
+      const filteredState = state.bases.filter((item) => item.source !== 'cloud')
+      state.bases = [...action.payload, ...filteredState]
     }
   }
 })
@@ -254,7 +259,8 @@ export const {
   clearAllProcessing,
   updateBaseItemUniqueId,
   updateBaseItemIsPreprocessed,
-  syncPreprocessProvider
+  syncPreprocessProvider,
+  syncCloudKnowledge
 } = knowledgeSlice.actions
 
 export default knowledgeSlice.reducer

@@ -1,5 +1,6 @@
 import store from '@renderer/store'
 import { setAssistantPresets } from '@renderer/store/assistants'
+import { syncCloudKnowledge } from '@renderer/store/knowledge'
 import { setDefaultModel, setQuickModel, setTranslateModel, sortProviders, updateProvider } from '@renderer/store/llm'
 import {
   setWebdavAutoSync,
@@ -11,6 +12,7 @@ import {
   setWebdavUser
 } from '@renderer/store/settings'
 import type { AssistantPreset, MinAppType, Model, Provider, Topic } from '@renderer/types'
+import { type KnowledgeBase } from '@renderer/types'
 import request from '@renderer/utils/axios'
 
 export interface UserDataConfig {
@@ -23,6 +25,7 @@ export interface UserDataConfig {
   quickModel: Model
   translateModel: Model
   webdav?: any
+  knowledge: KnowledgeBase[]
 }
 
 class UserDataService {
@@ -54,7 +57,8 @@ class UserDataService {
       miniApps: [],
       defaultModel: configData.llm?.defaultModel || null,
       quickModel: configData.llm?.quickModel || null,
-      translateModel: configData.llm?.translateModel || null
+      translateModel: configData.llm?.translateModel || null,
+      knowledge: []
     }
 
     this.currentUserId = userId
@@ -62,6 +66,21 @@ class UserDataService {
     await this.loadUserDataConfig()
     await this.loadAssistantsConfig(userId)
     await this.loadWebDAV()
+    await this.loadKnowledge()
+  }
+
+  async loadKnowledge(): Promise<void> {
+    try {
+      const userId = this.getCurrentUserId()
+      if (!userId) return
+      const list = await this.getKnowledgeList(userId)
+      if (list) {
+        if (this.currentConfig) {
+          this.currentConfig.knowledge = list
+        }
+        store.dispatch(syncCloudKnowledge(list))
+      }
+    } catch (error) {}
   }
 
   async loadUserDataConfig(): Promise<void> {
@@ -168,6 +187,10 @@ class UserDataService {
 
   async getWebDavUser(): Promise<any> {
     return await request.get({ url: `/ds/user-webdav/get` })
+  }
+
+  async getKnowledgeList(userId: number): Promise<any> {
+    return await request.get({ url: `/ds/knowledge/get?userId=${userId}` })
   }
 }
 

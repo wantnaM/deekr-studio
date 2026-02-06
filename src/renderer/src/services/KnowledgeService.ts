@@ -21,6 +21,7 @@ import type { Chunk } from '@renderer/types/chunk'
 import { ChunkType } from '@renderer/types/chunk'
 import { MessageBlockStatus, MessageBlockType } from '@renderer/types/newMessage'
 import { routeToEndpoint } from '@renderer/utils'
+import request from '@renderer/utils/axios'
 import type { ExtractResults } from '@renderer/utils/extract'
 import { createCitationBlock } from '@renderer/utils/messageUtils/create'
 import { isAzureOpenAIProvider, isGeminiProvider } from '@renderer/utils/provider'
@@ -139,6 +140,29 @@ export const getKnowledgeSourceUrl = async (item: KnowledgeSearchResult & { file
   return item.metadata.source
 }
 
+const searchCloudKnowledge = async ({
+  search,
+  id
+}: {
+  search: string
+  id: string
+}): Promise<KnowledgeSearchResult[]> => {
+  try {
+    logger.info(`搜索云知识库 ${id}`, { search })
+
+    const response = await request.post({
+      url: `/ds/knowledge/search`,
+      data: { search, id }
+    })
+
+    logger.info(`搜索完成，返回 ${response.length} 条结果`)
+    return response || []
+  } catch (error) {
+    logger.error('搜索云知识库失败', { error })
+    throw error
+  }
+}
+
 export const searchKnowledgeBase = async (
   query: string,
   base: KnowledgeBase,
@@ -148,6 +172,40 @@ export const searchKnowledgeBase = async (
   modelName?: string
 ): Promise<Array<KnowledgeSearchResult & { file: FileMetadata | null }>> => {
   // Truncate query based on embedding model's max_context to prevent embedding errors
+  if (base.source === 'cloud') {
+    logger.info('搜索云知识库', { name: base.name, query })
+
+    try {
+      // 调用云知识库搜索API
+      const cloudResults = await searchCloudKnowledge({
+        id: base.id,
+        search: query || rewrite || ''
+      })
+
+      logger.info(`云知识库搜索完成，返回 ${cloudResults.length} 条结果`)
+
+      // 转换结果格式
+      const result = await Promise.all(
+        cloudResults.map(async (item) => {
+          const file = null
+          return { ...item, file }
+        })
+      )
+
+      return result
+    } catch (error) {
+      logger.error(`Error searching knowledge base ${base.name}:`, error as Error)
+      if (topicId) {
+        endSpan({
+          topicId,
+          error: error instanceof Error ? error : new Error(String(error)),
+          modelName
+        })
+      }
+      throw error
+    }
+  }
+  // ===== 本地知识库搜索逻辑 =====
   const maxContext = getEmbeddingMaxContext(base.model.id)
   if (maxContext) {
     const estimatedTokens = estimateTextTokens(query)
