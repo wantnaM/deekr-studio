@@ -71,9 +71,7 @@ class UserDataService {
 
   async loadKnowledge(): Promise<void> {
     try {
-      const userId = this.getCurrentUserId()
-      if (!userId) return
-      const list = await this.getKnowledgeList(userId)
+      const list = await this.getKnowledgeList()
       if (list) {
         if (this.currentConfig) {
           this.currentConfig.knowledge = list
@@ -189,8 +187,8 @@ class UserDataService {
     return await request.get({ url: `/ds/user-webdav/get` })
   }
 
-  async getKnowledgeList(userId: number): Promise<any> {
-    return await request.get({ url: `/ds/knowledge/get?userId=${userId}` })
+  async getKnowledgeList(): Promise<any> {
+    return await request.get({ url: `/ds/knowledge/list` })
   }
 }
 
