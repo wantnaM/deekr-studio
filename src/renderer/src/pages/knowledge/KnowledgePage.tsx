@@ -7,6 +7,7 @@ import Scrollbar from '@renderer/components/Scrollbar'
 import { useKnowledgeBases } from '@renderer/hooks/useKnowledge'
 import { useShortcut } from '@renderer/hooks/useShortcuts'
 import KnowledgeSearchPopup from '@renderer/pages/knowledge/components/KnowledgeSearchPopup'
+import UserDataService from '@renderer/services/UserDataService'
 import type { KnowledgeBase } from '@renderer/types'
 import type { MenuProps } from 'antd'
 import { Dropdown, Empty, Tag } from 'antd'
@@ -44,6 +45,11 @@ const KnowledgePage: FC = () => {
     const hasSelectedBase = bases.find((base) => base.id === selectedBase?.id)
     !hasSelectedBase && setSelectedBase(bases[0])
   }, [bases, selectedBase])
+
+  // 页面进入时自动获取共享知识库列表
+  useEffect(() => {
+    UserDataService.loadKnowledge()
+  }, [])
 
   const getMenuItems = useCallback(
     (base: KnowledgeBase) => {
