@@ -151,7 +151,7 @@ const searchCloudKnowledge = async ({
     logger.info(`搜索云知识库 ${id}`, { search })
 
     const response = await request.post({
-      url: `/ds/knowledge/search`,
+      url: `/ds/knowledge/query`,
       data: { search, id }
     })
 
