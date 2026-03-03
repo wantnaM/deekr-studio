@@ -1,5 +1,5 @@
-appId: com.deerk.DeekrStudio
-productName: 教师智能体
+appId: com.deerk.DeekrStudio.Test
+productName: 教师智能体(测试版)
 electronLanguages:
   - zh-CN
   - zh-TW
@@ -14,9 +14,9 @@ directories:
   buildResources: build
 
 protocols:
-  - name: Deekr Studio
+  - name: Deekr Studio Test
     schemes:
-      - deekrstudio
+      - deekrstudio-test
 files:
   - "**/*"
   - "!**/{.vscode,.yarn,.yarn-lock,.github,.cursorrules,.prettierrc}"
@@ -74,7 +74,7 @@ asarUnpack:
   - "node_modules/@img/sharp-libvips-*/**"
 
 win:
-  executableName: 教师智能体
+  executableName: 教师智能体(测试版)
   artifactName: ${productName}-${version}-${arch}-setup.${ext}
   target:
     - target: nsis
@@ -129,7 +129,7 @@ rpm:
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
 publish:
   provider: generic
-  url: http://106.52.88.110:8090
+  url: http://studio-dev.deekr.com.cn:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 beforePack: scripts/before-pack.js
@@ -138,35 +138,30 @@ afterSign: scripts/notarize.js
 artifactBuildCompleted: scripts/artifact-build-completed.js
 releaseInfo:
   releaseNotes: |
-    <!--LANG:zh-CN-->
-    Deekr Studio 1.7.13 - 开启智能新纪元
 
-    今天，我们正式发布 Deekr Studio 1.7.13 —— 迄今最具雄心的版本，带来全新的 Agent：能够自主思考、规划和行动的 AI。
+    **把重复劳动交给 AI，把时间留给学生**
 
-    多年来，AI 助手一直是被动的——等待你的指令，回应你的问题。Agent 改变了这一切。现在，AI 能够真正与你并肩工作：理解复杂目标，将其拆解为步骤，并独立执行。
+    **🍎 老师们，请查收您的“全能 AI 助教”！Deekr Studio 1.7.15 更新啦**
 
-    这是我们一直在构建的未来。而这，仅仅是开始。
+    以前用 AI，是你问它答，最后还得自己复制粘贴去排版。
+    现在的 Deekr Studio 引入了 **Agent（智能体）**，它不再只是个聊天机器人，而是真正能帮你“干活”的助教。
 
-    🤖 认识 Agent
-    想象一位永不疲倦的得力伙伴。给 Agent 一个目标——撰写报告、分析数据、重构代码——然后看它工作。它会推理问题、拆解步骤、调用工具，并在情况变化时灵活应对。
+    🎓 **它能帮老师做什么？**
+    你只需给出一个模糊的目标，比如：“**帮我设计一份关于‘气候变化’的跨学科教案，并生成配套的随堂测验**”。
 
-    - **思考 → 规划 → 行动**：从目标到执行，全程自主
-    - **深度推理**：多轮思考，解决真实问题
-    - **工具大师**：文件操作、网络搜索、代码执行，样样精通
-    - **技能插件**：自定义命令，无限扩展
-    - **你掌控全局**：敏感操作，实时审批
-    - **完全透明**：每一步思考，每一个决策，清晰可见
+    Agent 就会像一位经验丰富的搭档：
+    1.  **主动思考**：拆解教学目标（地理、物理、社会学角度）。
+    2.  **搜集素材**：并自主联网搜索最新的案例数据。
+    3.  **整合产出**：直接生成文档，甚至帮你整理好引用来源。
 
-    🌐 生态持续壮大
-    - **MCP 集成**：百炼、魔搭、Higress、MCP.so、TokenFlux 等平台
+    ✨ **为什么适合？**
+    *   **科研利器**：不仅能读论文，还能帮你做文献综述、分析实验数据（支持文件上传与代码分析），它会一步步推理给你看，逻辑严密。
+    *   **教务减负**：处理复杂的班级表格、分析学生成绩趋势，交给它，瞬间完成。
+    *   **完全透明**：它的每一步思考路径你都能看见，确保教学内容的严谨性，你随时可以介入调整。
 
-    📝 笔记
-    - 全新功能，等你体验
+    🚀 **更多功能**
+    界面更清爽，操作更流畅，还接入了代码CLI工具，帮助你一键写代码。
+    除此之外，我们还重磅推出了 📚 共享知识库 功能！
 
-    ⚡ 更快、更精致
-    - 性能升级
-    - 新的用户界面
-    - 数十处 UI 细节打磨
+    快让 Deekr Studio 帮你分担 80% 的重复工作！👩‍🏫👨‍🏫
 
-    Agent 纪元已至。期待你的创造。
-    <!--LANG:END-->
