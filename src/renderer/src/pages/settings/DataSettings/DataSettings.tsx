@@ -107,7 +107,7 @@ const DataSettings: FC = () => {
       key: 'markdown_export',
       title: t('settings.data.markdown_export.title'),
       icon: <FileText size={16} />
-    },
+    }
 
     // { key: 'divider_4', isDivider: true, text: t('settings.data.divider.third_party') },
     // { key: 'notion', title: t('settings.data.notion.title'), icon: <i className="iconfont icon-notion" /> },

@@ -2,12 +2,15 @@ import fs from 'node:fs'
 import { arch } from 'node:os'
 import path from 'node:path'
 
+import type { TokenUsageData } from '@cherrystudio/analytics-client'
 import { loggerService } from '@logger'
 import { isLinux, isMac, isPortable, isWin } from '@main/constant'
 import { generateSignature } from '@main/integration/cherryai'
 import anthropicService from '@main/services/AnthropicService'
+import { getIpCountry } from '@main/utils/ipService'
 import {
   autoDiscoverGitBash,
+  checkGitAvailable,
   getBinaryPath,
   getGitBashPathInfo,
   isBinaryExists,
@@ -20,12 +23,12 @@ import type { UpgradeChannel } from '@shared/config/constant'
 import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from '@shared/config/constant'
 import type { LocalTransferConnectPayload } from '@shared/config/types'
 import { IpcChannel } from '@shared/IpcChannel'
-import type { PluginError } from '@types'
 import type {
   AgentPersistedMessage,
   FileMetadata,
   Notification,
   OcrProvider,
+  PluginError,
   Provider,
   Shortcut,
   SupportedOcrFile,
@@ -38,15 +41,18 @@ import fontList from 'font-list'
 
 import { agentMessageRepository } from './services/agents/database'
 import { PluginService } from './services/agents/plugins/PluginService'
+import { analyticsService } from './services/AnalyticsService'
 import { apiServerService } from './services/ApiServerService'
 import appService from './services/AppService'
 import AppUpdater from './services/AppUpdater'
 import BackupManager from './services/BackupManager'
+import CherryINOAuthService from './services/CherryINOAuthService'
 import { codeToolsService } from './services/CodeToolsService'
 import { ConfigKeys, configManager } from './services/ConfigManager'
 import CopilotService from './services/CopilotService'
 import DxtService from './services/DxtService'
 import { ExportService } from './services/ExportService'
+import { externalAppsService } from './services/ExternalAppsService'
 import { fileStorage as fileManager } from './services/FileStorage'
 import FileService from './services/FileSystemService'
 import KnowledgeService from './services/KnowledgeService'
@@ -59,6 +65,7 @@ import NotificationService from './services/NotificationService'
 import * as NutstoreService from './services/NutstoreService'
 import ObsidianVaultService from './services/ObsidianVaultService'
 import { ocrService } from './services/ocr/OcrService'
+import { openClawService } from './services/OpenClawService'
 import { isOvmsSupported } from './services/OvmsManager'
 import powerMonitorService from './services/PowerMonitorService'
 import { proxyManager } from './services/ProxyManager'
@@ -85,7 +92,7 @@ import { themeService } from './services/ThemeService'
 import VertexAIService from './services/VertexAIService'
 import { setOpenLinkExternal } from './services/WebviewService'
 import { windowService } from './services/WindowService'
-import { calculateDirectorySize, getResourcePath } from './utils'
+import { calculateDirectorySize, getDataPath, getResourcePath } from './utils'
 import { decrypt, encrypt } from './utils/aes'
 import {
   getCacheDir,
@@ -97,6 +104,7 @@ import {
   untildify
 } from './utils/file'
 import { updateAppDataConfig } from './utils/init'
+import { closeAllDataConnections } from './utils/lifecycle'
 import { getCpuName, getDeviceType, getHostname } from './utils/system'
 import { compress, decompress } from './utils/zip'
 
@@ -300,6 +308,11 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
     }
   })
 
+  // Get IP Country
+  ipcMain.handle(IpcChannel.App_GetIpCountry, async () => {
+    return getIpCountry()
+  })
+
   ipcMain.handle(IpcChannel.Config_Set, (_, key: string, value: any, isNotify: boolean = false) => {
     configManager.set(key, value, isNotify)
   })
@@ -479,6 +492,17 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
 
     app.relaunch(options)
     app.exit(0)
+  })
+
+  // Reset all data (factory reset)
+  // Best-effort: close handles then delete. Failures are logged but not thrown,
+  // because the caller must always proceed to relaunchApp() — process exit
+  // releases any remaining handles, and services auto-recreate on next start.
+  ipcMain.handle(IpcChannel.App_ResetData, async () => {
+    await closeAllDataConnections()
+    await fs.promises.rm(getDataPath(), { recursive: true, force: true }).catch((e) => {
+      logger.warn('Failed to remove Data directory (will be cleaned up on restart)', e as Error)
+    })
   })
 
   // check for update
@@ -798,6 +822,10 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
   ipcMain.handle(IpcChannel.Mcp_GetInstallInfo, mcpService.getInstallInfo)
   ipcMain.handle(IpcChannel.Mcp_CheckConnectivity, mcpService.checkMcpConnectivity)
   ipcMain.handle(IpcChannel.Mcp_AbortTool, mcpService.abortTool)
+  ipcMain.handle(IpcChannel.Mcp_ResolveHubTool, async (_event, nameOrId: string) => {
+    const { resolveHubToolName } = await import('@main/mcpServers/hub/mcp-bridge')
+    return resolveHubToolName(nameOrId)
+  })
   ipcMain.handle(IpcChannel.Mcp_GetServerVersion, mcpService.getServerVersion)
   ipcMain.handle(IpcChannel.Mcp_GetServerLogs, mcpService.getServerLogs)
 
@@ -840,6 +868,14 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
   ipcMain.handle(IpcChannel.Copilot_GetToken, CopilotService.getToken.bind(CopilotService))
   ipcMain.handle(IpcChannel.Copilot_Logout, CopilotService.logout.bind(CopilotService))
   ipcMain.handle(IpcChannel.Copilot_GetUser, CopilotService.getUser.bind(CopilotService))
+
+  // CherryIN OAuth
+  ipcMain.handle(IpcChannel.CherryIN_SaveToken, CherryINOAuthService.saveToken.bind(CherryINOAuthService))
+  ipcMain.handle(IpcChannel.CherryIN_HasToken, CherryINOAuthService.hasToken.bind(CherryINOAuthService))
+  ipcMain.handle(IpcChannel.CherryIN_GetBalance, CherryINOAuthService.getBalance.bind(CherryINOAuthService))
+  ipcMain.handle(IpcChannel.CherryIN_Logout, CherryINOAuthService.logout.bind(CherryINOAuthService))
+  ipcMain.handle(IpcChannel.CherryIN_StartOAuthFlow, CherryINOAuthService.startOAuthFlow.bind(CherryINOAuthService))
+  ipcMain.handle(IpcChannel.CherryIN_ExchangeToken, CherryINOAuthService.exchangeToken.bind(CherryINOAuthService))
 
   // Obsidian service
   ipcMain.handle(IpcChannel.Obsidian_GetVaults, () => {
@@ -957,6 +993,9 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
   ipcMain.handle(IpcChannel.Anthropic_GetAccessToken, () => anthropicService.getValidAccessToken())
   ipcMain.handle(IpcChannel.Anthropic_HasCredentials, () => anthropicService.hasCredentials())
   ipcMain.handle(IpcChannel.Anthropic_ClearCredentials, () => anthropicService.clearCredentials())
+
+  // ExternalApps
+  ipcMain.handle(IpcChannel.ExternalApps_DetectInstalled, () => externalAppsService.detectInstalledApps())
 
   // CodeTools
   ipcMain.handle(IpcChannel.CodeTools_Run, codeToolsService.run)
@@ -1137,4 +1176,26 @@ export async function registerIpc(mainWindow: BrowserWindow, app: Electron.App) 
     passwordHashes.delete(username)
     logger.info(`Password hash deleted for user: ${username}`)
   })
+
+  // OpenClaw
+  ipcMain.handle(IpcChannel.OpenClaw_CheckInstalled, openClawService.checkInstalled)
+  ipcMain.handle(IpcChannel.OpenClaw_CheckNodeVersion, openClawService.checkNodeVersion)
+  ipcMain.handle(IpcChannel.OpenClaw_CheckGitAvailable, checkGitAvailable)
+  ipcMain.handle(IpcChannel.OpenClaw_GetNodeDownloadUrl, openClawService.getNodeDownloadUrl)
+  ipcMain.handle(IpcChannel.OpenClaw_GetGitDownloadUrl, openClawService.getGitDownloadUrl)
+  ipcMain.handle(IpcChannel.OpenClaw_Install, openClawService.install)
+  ipcMain.handle(IpcChannel.OpenClaw_Uninstall, openClawService.uninstall)
+  ipcMain.handle(IpcChannel.OpenClaw_StartGateway, openClawService.startGateway)
+  ipcMain.handle(IpcChannel.OpenClaw_StopGateway, openClawService.stopGateway)
+  ipcMain.handle(IpcChannel.OpenClaw_RestartGateway, openClawService.restartGateway)
+  ipcMain.handle(IpcChannel.OpenClaw_GetStatus, openClawService.getStatus)
+  ipcMain.handle(IpcChannel.OpenClaw_CheckHealth, openClawService.checkHealth)
+  ipcMain.handle(IpcChannel.OpenClaw_GetDashboardUrl, openClawService.getDashboardUrl)
+  ipcMain.handle(IpcChannel.OpenClaw_SyncConfig, openClawService.syncProviderConfig)
+  ipcMain.handle(IpcChannel.OpenClaw_GetChannels, openClawService.getChannelStatus)
+
+  // Analytics
+  ipcMain.handle(IpcChannel.Analytics_TrackTokenUsage, (_, data: TokenUsageData) =>
+    analyticsService.trackTokenUsage(data)
+  )
 }
