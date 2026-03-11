@@ -1,5 +1,5 @@
-appId: com.deerk.DeekrStudio.Test
-productName: 教师智能体(测试版)
+appId: com.deerk.DeekrStudio
+productName: 教师智能体
 electronLanguages:
   - zh-CN
   - zh-TW
@@ -14,9 +14,9 @@ directories:
   buildResources: build
 
 protocols:
-  - name: Deekr Studio Test
+  - name: Deekr Studio
     schemes:
-      - deekrstudio-test
+      - deekrstudio
 files:
   - "**/*"
   - "!**/{.vscode,.yarn,.yarn-lock,.github,.cursorrules,.prettierrc}"
@@ -74,7 +74,7 @@ asarUnpack:
   - "node_modules/@img/sharp-libvips-*/**"
 
 win:
-  executableName: 教师智能体(测试版)
+  executableName: 教师智能体
   artifactName: ${productName}-${version}-${arch}-setup.${ext}
   target:
     - target: nsis
@@ -129,7 +129,7 @@ rpm:
   fpm: ["--rpm-rpmbuild-define=_build_id_links none"]
 publish:
   provider: generic
-  url: http://studio-dev.deekr.com.cn:8090
+  url: http://studio.deekr.com.cn:8090
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
 beforePack: scripts/before-pack.js
