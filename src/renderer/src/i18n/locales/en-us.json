@@ -1635,6 +1635,49 @@
       "title": "Import ChatGPT Conversations",
       "untitled_conversation": "Untitled Conversation"
     },
+    "backup": {
+      "assistant_name": "Backup Import",
+      "choose_other": "Choose Another File",
+      "duplicate": "Possible Duplicate",
+      "error": {
+        "import_failed": "Import failed",
+        "invalid_backup": "Invalid backup file: data.json not found",
+        "invalid_format": "Invalid backup format",
+        "no_topics": "No conversations found in backup",
+        "no_valid_topics": "No valid conversations to import",
+        "not_zip": "Please upload a ZIP backup file",
+        "parse_failed": "Failed to parse backup file"
+      },
+      "help": {
+        "step1": "1. On computer A, go to Settings > Data > Backup",
+        "step2": "2. Click \"Backup\" button to create a backup file",
+        "step3": "3. Transfer the backup file to computer B",
+        "step4": "4. On computer B, upload the backup file here",
+        "title": "How to get backup file?"
+      },
+      "import": "Import",
+      "importing": "Importing...",
+      "loading": "Loading...",
+      "parsing": "Parsing backup file...",
+      "select_desc": "Found {{total}} conversations ({{duplicates}} possible duplicates)",
+      "select_title": "Select conversations to import",
+      "status": {
+        "completed": "Import completed!",
+        "merging": "Merging with existing data...",
+        "parsing": "Parsing backup data...",
+        "saving": "Saving to database..."
+      },
+      "success": "Successfully imported {{count}} conversations",
+      "table": {
+        "date": "Created",
+        "messages": "Messages",
+        "name": "Name"
+      },
+      "title": "Import from Backup",
+      "untitled_topic": "Untitled Topic",
+      "upload_hint": "Supports CherryStudio backup files (.zip)",
+      "upload_text": "Click or drag backup ZIP file to this area"
+    },
     "confirm": {
       "button": "Select Import File",
       "label": "Are you sure you want to import external data?"
@@ -3701,6 +3744,8 @@
       "hour_interval_one": "{{count}} hour",
       "hour_interval_other": "{{count}} hours",
       "import_settings": {
+        "backup": "Import from Backup",
+        "backup_button": "Import Backup File",
         "button": "Import Json File",
         "chatgpt": "Import from ChatGPT",
         "title": "Import Outside Application Data"

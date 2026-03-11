@@ -1635,6 +1635,49 @@
       "title": "匯入 ChatGPT 對話",
       "untitled_conversation": "未命名對話"
     },
+    "backup": {
+      "assistant_name": "備份匯入",
+      "choose_other": "選擇其他檔案",
+      "duplicate": "可能重複",
+      "error": {
+        "import_failed": "匯入失敗",
+        "invalid_backup": "無效的備份檔案：找不到 data.json",
+        "invalid_format": "無效的備份格式",
+        "no_topics": "備份中未找到任何對話",
+        "no_valid_topics": "沒有可匯入的有效對話",
+        "not_zip": "請上傳 ZIP 格式的備份檔案",
+        "parse_failed": "解析備份檔案失敗"
+      },
+      "help": {
+        "step1": "1. 在電腦A上，進入 設定 > 資料設定 > 備份",
+        "step2": "2. 點擊「備份」按鈕建立備份檔案",
+        "step3": "3. 將備份檔案傳輸到電腦B",
+        "step4": "4. 在電腦B上，在此處上傳備份檔案",
+        "title": "如何取得備份檔案？"
+      },
+      "import": "匯入",
+      "importing": "正在匯入...",
+      "loading": "載入中...",
+      "parsing": "正在解析備份檔案...",
+      "select_desc": "找到 {{total}} 個對話（{{duplicates}} 個可能重複）",
+      "select_title": "選擇要匯入的對話",
+      "status": {
+        "completed": "匯入完成！",
+        "merging": "正在合併資料...",
+        "parsing": "正在解析備份資料...",
+        "saving": "正在儲存到資料庫..."
+      },
+      "success": "成功匯入 {{count}} 個對話",
+      "table": {
+        "date": "建立時間",
+        "messages": "訊息數",
+        "name": "名稱"
+      },
+      "title": "從備份匯入",
+      "untitled_topic": "未命名對話",
+      "upload_hint": "支援 CherryStudio 備份檔案（.zip）",
+      "upload_text": "點擊或拖曳備份 ZIP 檔案到此處"
+    },
     "confirm": {
       "button": "選擇匯入檔案",
       "label": "確定要匯入外部資料嗎？"
@@ -3701,6 +3744,8 @@
       "hour_interval_one": "{{count}} 小時",
       "hour_interval_other": "{{count}} 小時",
       "import_settings": {
+        "backup": "從備份匯入",
+        "backup_button": "匯入備份檔案",
         "button": "匯入 JSON 檔案",
         "chatgpt": "匯入 ChatGPT 資料",
         "title": "匯入外部應用程式資料"

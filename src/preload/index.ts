@@ -211,7 +211,15 @@ const api = {
     createLanTransferBackup: (data: string): Promise<string> =>
       ipcRenderer.invoke(IpcChannel.Backup_CreateLanTransferBackup, data),
     deleteTempBackup: (filePath: string): Promise<boolean> =>
-      ipcRenderer.invoke(IpcChannel.Backup_DeleteTempBackup, filePath)
+      ipcRenderer.invoke(IpcChannel.Backup_DeleteTempBackup, filePath),
+    parseForImport: (
+      backupPath: string
+    ): Promise<{
+      version: number
+      timestamp: number
+      topics: Array<{ id: string; messages: any[] }>
+      messageBlocks: any[]
+    }> => ipcRenderer.invoke(IpcChannel.Backup_ParseForImport, backupPath)
   },
   file: {
     select: (options?: OpenDialogOptions): Promise<FileMetadata[] | null> =>

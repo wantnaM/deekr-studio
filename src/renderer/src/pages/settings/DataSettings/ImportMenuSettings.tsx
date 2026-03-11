@@ -1,4 +1,5 @@
 import { HStack } from '@renderer/components/Layout'
+import BackupUploadPopup from '@renderer/components/Popups/BackupUploadPopup'
 import ImportPopup from '@renderer/components/Popups/ImportPopup'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { Button } from 'antd'
@@ -20,6 +21,17 @@ const ImportMenuOptions: FC = () => {
         <SettingRowTitle>{t('settings.data.import_settings.chatgpt')}</SettingRowTitle>
         <HStack gap="5px" justifyContent="space-between">
           <Button onClick={ImportPopup.show}>{t('settings.data.import_settings.button')}</Button>
+        </HStack>
+      </SettingRow>
+      <SettingDivider />
+      <SettingRow>
+        <SettingRowTitle>
+          {t('settings.data.import_settings.backup', { defaultValue: 'Import from Backup' })}
+        </SettingRowTitle>
+        <HStack gap="5px" justifyContent="space-between">
+          <Button onClick={BackupUploadPopup.show}>
+            {t('settings.data.import_settings.backup_button', { defaultValue: 'Import from Backup File' })}
+          </Button>
         </HStack>
       </SettingRow>
     </SettingGroup>

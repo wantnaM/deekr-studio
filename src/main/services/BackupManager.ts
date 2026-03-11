@@ -837,6 +837,54 @@ class BackupManager {
       return false
     }
   }
+
+  /**
+   * Parse backup file for import without restoring
+   * Returns the backup data for preview before import
+   */
+  async parseForImport(
+    _: Electron.IpcMainInvokeEvent,
+    backupPath: string
+  ): Promise<{
+    version: number
+    timestamp: number
+    topics: Array<{ id: string; messages: any[] }>
+    messageBlocks: any[]
+  }> {
+    const tempDir = path.join(app.getPath('temp'), 'deekr-studio', 'import-preview')
+
+    try {
+      // Create temp directory
+      await fs.ensureDir(tempDir)
+
+      logger.info(`[BackupManager] Parsing backup for import: ${backupPath}`)
+
+      // Extract ZIP file
+      const zip = new StreamZip.async({ file: backupPath })
+      await zip.extract(null, tempDir)
+      await zip.close()
+
+      // Read data.json
+      const dataPath = path.join(tempDir, 'data.json')
+      const dataContent = await fs.readFile(dataPath, 'utf-8')
+      const data = JSON.parse(dataContent)
+
+      // Clean up temp directory
+      await fs.remove(tempDir)
+
+      return {
+        version: data.version || 1,
+        timestamp: data.time || Date.now(),
+        topics: data.indexedDB?.topics || [],
+        messageBlocks: data.indexedDB?.message_blocks || []
+      }
+    } catch (error) {
+      // Clean up temp directory on error
+      await fs.remove(tempDir).catch(() => {})
+      logger.error('[BackupManager] Failed to parse backup for import:', error as Error)
+      throw new Error(`Failed to parse backup file: ${(error as Error).message}`)
+    }
+  }
 }
 
 export default BackupManager

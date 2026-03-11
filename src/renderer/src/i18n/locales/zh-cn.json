@@ -1635,6 +1635,49 @@
       "title": "导入 ChatGPT 对话",
       "untitled_conversation": "未命名对话"
     },
+    "backup": {
+      "assistant_name": "备份导入",
+      "choose_other": "选择其他文件",
+      "duplicate": "可能重复",
+      "error": {
+        "import_failed": "导入失败",
+        "invalid_backup": "无效的备份文件：找不到 data.json",
+        "invalid_format": "无效的备份格式",
+        "no_topics": "备份中未找到任何对话",
+        "no_valid_topics": "没有可导入的有效对话",
+        "not_zip": "请上传 ZIP 格式的备份文件",
+        "parse_failed": "解析备份文件失败"
+      },
+      "help": {
+        "step1": "1. 在电脑A上，进入 设置 > 数据设置 > 备份",
+        "step2": "2. 点击「备份」按钮创建备份文件",
+        "step3": "3. 将备份文件传输到电脑B",
+        "step4": "4. 在电脑B上，在此处上传备份文件",
+        "title": "如何获取备份文件？"
+      },
+      "import": "导入",
+      "importing": "正在导入...",
+      "loading": "加载中...",
+      "parsing": "正在解析备份文件...",
+      "select_desc": "找到 {{total}} 个对话（{{duplicates}} 个可能重复）",
+      "select_title": "选择要导入的对话",
+      "status": {
+        "completed": "导入完成！",
+        "merging": "正在合并数据...",
+        "parsing": "正在解析备份数据...",
+        "saving": "正在保存到数据库..."
+      },
+      "success": "成功导入 {{count}} 个对话",
+      "table": {
+        "date": "创建时间",
+        "messages": "消息数",
+        "name": "名称"
+      },
+      "title": "从备份导入",
+      "untitled_topic": "未命名对话",
+      "upload_hint": "支持 CherryStudio 备份文件（.zip）",
+      "upload_text": "点击或拖拽备份 ZIP 文件到此处"
+    },
     "confirm": {
       "button": "选择导入文件",
       "label": "确定要导入外部数据吗？"
@@ -3701,6 +3744,8 @@
       "hour_interval_one": "{{count}} 小时",
       "hour_interval_other": "{{count}} 小时",
       "import_settings": {
+        "backup": "从备份导入",
+        "backup_button": "导入备份文件",
         "button": "导入文件",
         "chatgpt": "导入 ChatGPT 数据",
         "title": "导入外部应用数据"

@@ -91,12 +91,12 @@ const DataSettings: FC = () => {
     { key: 'webdav', title: t('settings.data.webdav.title'), icon: <CloudSyncOutlined style={{ fontSize: 16 }} /> },
     // { key: 'nutstore', title: t('settings.data.nutstore.title'), icon: <NutstoreIcon /> },
     // { key: 's3', title: t('settings.data.s3.title.label'), icon: <CloudServerOutlined style={{ fontSize: 16 }} /> },
-    // { key: 'divider_2', isDivider: true, text: t('settings.data.divider.import_settings') },
-    // {
-    //   key: 'import_settings',
-    //   title: t('settings.data.import_settings.title'),
-    //   icon: <FolderOpen size={16} />
-    // },
+    { key: 'divider_2', isDivider: true, text: t('settings.data.divider.import_settings') },
+    {
+      key: 'import_settings',
+      title: t('settings.data.import_settings.title'),
+      icon: <FolderOpen size={16} />
+    },
     { key: 'divider_3', isDivider: true, text: t('settings.data.divider.export_settings') },
     {
       key: 'export_menu',

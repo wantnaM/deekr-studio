@@ -55,7 +55,7 @@ const HomePage: FC = () => {
         }
         // 同步更新 active topic，避免不必要的重新渲染
         const newTopic = newAssistant.topics[0]
-        _setActiveTopic((prev) => (newTopic?.id === prev.id ? prev : newTopic))
+        _setActiveTopic((prev) => (newTopic?.id === prev?.id ? prev : newTopic))
       })
     },
     [_setActiveTopic, activeAssistant?.id, dispatch]
