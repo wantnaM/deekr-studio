@@ -1653,7 +1653,7 @@
       },
       "title": "Import from Backup",
       "untitled_topic": "Untitled Topic",
-      "upload_hint": "Supports CherryStudio backup files (.zip)",
+      "upload_hint": "Supports DeekrStudio backup files (.zip)",
       "upload_text": "Click or drag backup ZIP file to this area"
     },
     "chatgpt": {

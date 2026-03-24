@@ -312,7 +312,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
                 {t('import.backup.upload_text', { defaultValue: 'Click or drag backup ZIP file to this area' })}
               </p>
               <p className="ant-upload-hint">
-                {t('import.backup.upload_hint', { defaultValue: 'Supports CherryStudio backup files (.zip)' })}
+                {t('import.backup.upload_hint', { defaultValue: 'Supports DeekrStudio backup files (.zip)' })}
               </p>
             </Dragger>
 

@@ -1653,7 +1653,7 @@
       },
       "title": "从备份导入",
       "untitled_topic": "未命名对话",
-      "upload_hint": "支持 CherryStudio 备份文件（.zip）",
+      "upload_hint": "支持 DeekrStudio 备份文件（.zip）",
       "upload_text": "点击或拖拽备份 ZIP 文件到此处"
     },
     "chatgpt": {
