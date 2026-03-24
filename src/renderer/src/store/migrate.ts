@@ -3289,6 +3289,26 @@ const migrateConfig = {
       logger.error('migrate 199 error', error as Error)
       return state
     }
+  },
+  '200': (state: RootState) => {
+    try {
+      // Hide openclaw and code_tools from sidebar by default
+      if (state.settings && state.settings.sidebarIcons) {
+        const hiddenIcons = ['openclaw', 'code_tools']
+        state.settings.sidebarIcons.visible = state.settings.sidebarIcons.visible.filter(
+          (icon) => !hiddenIcons.includes(icon)
+        )
+        for (const icon of hiddenIcons) {
+          if (!state.settings.sidebarIcons.disabled.includes(icon as any)) {
+            state.settings.sidebarIcons.disabled = [...state.settings.sidebarIcons.disabled, icon as any]
+          }
+        }
+      }
+      return state
+    } catch (error) {
+      logger.error('migrate 200 error', error as Error)
+      return state
+    }
   }
 }
 
