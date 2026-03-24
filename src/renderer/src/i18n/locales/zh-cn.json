@@ -1627,7 +1627,7 @@
         "parse_failed": "解析备份文件失败"
       },
       "help": {
-        "step1": "1. 在电脑A上，进入 设置 > 数据设置 > 备份",
+        "step1": "1. 在电脑A上，进入 设置 > 数据设置 > 数据目录",
         "step2": "2. 点击「备份」按钮创建备份文件",
         "step3": "3. 将备份文件传输到电脑B",
         "step4": "4. 在电脑B上，在此处上传备份文件",
@@ -3744,7 +3744,7 @@
       "hour_interval_one": "{{count}} 小时",
       "hour_interval_other": "{{count}} 小时",
       "import_settings": {
-        "backup": "从备份导入",
+        "backup": "从备份导入（合并对话）",
         "backup_button": "导入备份文件",
         "button": "导入文件",
         "chatgpt": "导入 ChatGPT 数据",

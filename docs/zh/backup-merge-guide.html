@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeekrStudio 备份合并操作指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+  :root {
+    --green: #00b96b;
+    --green-light: #e6f7ef;
+    --green-dark: #009456;
+    --red-annotation: #e8453c;
+    --blue-info: #e8f4fd;
+    --blue-border: #91caff;
+    --blue-icon: #1677ff;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555770;
+    --text-muted: #8c8ca1;
+    --bg-page: #f8f7f4;
+    --bg-card: #ffffff;
+    --bg-sidebar: #fafafa;
+    --border: #e8e8ec;
+    --border-light: #f0f0f3;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    --shadow-dialog: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Header Banner --- */
+  .hero {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2f4e 40%, #1e3a5f 100%);
+    padding: 72px 32px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 140%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(0,185,107,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(22,119,255,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,185,107,0.15);
+    color: #5eda9e;
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,185,107,0.2);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero p {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  /* --- Main Container --- */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* --- Scenario Card --- */
+  .scenario {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 48px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .scenario::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--green-dark));
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .scenario-label {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .scenario h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+  .scenario p {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    line-height: 1.85;
+  }
+
+  /* --- Flow Diagram --- */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 28px 0 8px;
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+  }
+  .flow-node {
+    background: var(--green-light);
+    border: 1px solid rgba(0,185,107,0.2);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    text-align: center;
+    min-width: 120px;
+  }
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* --- Step Sections --- */
+  .step {
+    margin-bottom: 52px;
+    position: relative;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,185,107,0.25);
+  }
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .step-body {
+    margin-left: 56px;
+  }
+  .step-instructions {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    line-height: 2;
+  }
+  .step-instructions ol {
+    padding-left: 20px;
+  }
+  .step-instructions li {
+    margin-bottom: 4px;
+  }
+  .step-instructions strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .step-instructions code {
+    background: #f3f3f6;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: var(--green-dark);
+  }
+
+  /* --- UI Mockups --- */
+  .mockup-container {
+    margin-top: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    background: var(--bg-card);
+  }
+  .mockup-titlebar {
+    background: #f6f6f8;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mockup-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+  }
+  .mockup-dot.r { background: #ff5f57; }
+  .mockup-dot.y { background: #ffbd2e; }
+  .mockup-dot.g { background: #28c840; }
+  .mockup-titlebar-text {
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 8px;
+  }
+
+  /* Settings Page Mockup */
+  .settings-mock {
+    display: grid;
+    grid-template-columns: 160px 200px 1fr;
+    min-height: 360px;
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+  }
+  .settings-sidebar {
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-light);
+    padding: 12px 0;
+    font-size: 13px;
+  }
+  .settings-sidebar-item {
+    padding: 7px 16px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+  }
+  .settings-sidebar-item.active {
+    background: rgba(0,185,107,0.08);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-right: 2px solid var(--green);
+  }
+  .settings-sidebar-item .icon {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.6;
+  }
+  .settings-middle {
+    border-right: 1px solid var(--border-light);
+    padding: 16px;
+    font-size: 13px;
+  }
+  .settings-section-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 12px 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-light);
+    letter-spacing: 1px;
+  }
+  .settings-section-label:first-child { margin-top: 0; }
+  .settings-menu-item {
+    padding: 8px 12px;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .settings-menu-item.active {
+    background: rgba(0,185,107,0.08);
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  .settings-menu-item .icon {
+    font-size: 14px;
+    opacity: 0.5;
+  }
+  .settings-content {
+    padding: 20px 24px;
+  }
+  .settings-content h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+    position: relative;
+  }
+  .settings-row-label {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+  .settings-row-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: default;
+    font-family: inherit;
+  }
+
+  /* Annotation Circle */
+  .annotation {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--red-annotation);
+    color: #fff;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(232,69,60,0.35);
+    z-index: 10;
+  }
+
+  /* Dialog Mockup */
+  .dialog-mock-wrapper {
+    margin-top: 24px;
+    background: rgba(0,0,0,0.25);
+    border-radius: var(--radius);
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .dialog-mock {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-dialog);
+    width: 100%;
+    max-width: 580px;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+  }
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .dialog-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .dialog-close {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: default;
+  }
+  .dialog-body {
+    padding: 24px;
+  }
+  .upload-zone {
+    border: 2px dashed #d9d9de;
+    border-radius: var(--radius);
+    padding: 36px 24px;
+    text-align: center;
+    background: #fafafa;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .upload-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--green);
+  }
+  .upload-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .upload-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .info-box {
+    background: var(--blue-info);
+    border: 1px solid var(--blue-border);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+  }
+  .info-box-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+  .info-box-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--blue-icon);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    font-style: italic;
+    font-family: Georgia, serif;
+  }
+  .info-box ol {
+    padding-left: 18px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 2;
+  }
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    border-top: 1px solid var(--border-light);
+  }
+  .btn-cancel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 20px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: default;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--green);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 7px 20px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+    cursor: default;
+    font-family: inherit;
+  }
+
+  /* Preview Table Mockup */
+  .preview-mock {
+    margin-top: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    background: var(--bg-card);
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+  }
+  .preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .preview-table th {
+    background: #f8f8fa;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+  .preview-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-secondary);
+  }
+  .preview-table tr:last-child td { border-bottom: none; }
+  .checkbox-mock {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+  }
+  .checkbox-mock::after { content: '✓'; }
+  .preview-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Notes Section */
+  .notes {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 12px;
+  }
+  .notes h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ad6800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .notes ul {
+    list-style: none;
+    padding: 0;
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 14px;
+    color: #8c6900;
+    line-height: 2.2;
+  }
+  .notes li::before {
+    content: '⚠️';
+    margin-right: 8px;
+  }
+
+  /* Success State */
+  .success-mock {
+    margin-top: 24px;
+    text-align: center;
+    padding: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--green-light);
+    color: var(--green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .success-text {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .success-sub {
+    font-family: system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Print */
+  @media print {
+    .hero { background: #1a2f4e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .dialog-mock-wrapper { background: #f0f0f0 !important; }
+    body { background: #fff; }
+    .container { padding: 24px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .hero { padding: 48px 20px 40px; }
+    .hero h1 { font-size: 26px; }
+    .container { padding: 32px 16px 60px; }
+    .settings-mock { grid-template-columns: 1fr; min-height: auto; }
+    .settings-sidebar, .settings-middle { display: none; }
+    .step-body { margin-left: 0; margin-top: 12px; }
+    .flow { flex-wrap: wrap; }
+    .dialog-mock-wrapper { padding: 16px; }
+    .scenario { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-badge">操作指南</div>
+  <h1>备份合并操作指南</h1>
+  <p>跨设备同步对话记录，合并而非覆盖——在电脑B上安全导入电脑A的对话</p>
+</header>
+
+<!-- ===== Main Content ===== -->
+<main class="container">
+
+  <!-- Scenario -->
+  <section class="scenario">
+    <div class="scenario-label">使用场景</div>
+    <h2>多设备对话合并</h2>
+    <p>
+      你在电脑A上使用 DeekrStudio 进行了对话，之后在电脑B上也进行了一些对话。现在你希望在电脑B上导入电脑A的对话记录，但<strong>不想覆盖电脑B已有的对话</strong>。
+    </p>
+    <p style="margin-top: 8px;">
+      DeekrStudio 的「<strong>从备份导入（合并对话）</strong>」功能正是为此设计——它只新增不存在的对话，已有数据完全不受影响。
+    </p>
+    <div class="flow">
+      <div class="flow-node">💻 电脑A<br><span style="font-size:11px;font-weight:400;opacity:0.7;">创建备份</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">📦 备份文件<br><span style="font-size:11px;font-weight:400;opacity:0.7;">.zip 格式</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">💻 电脑B<br><span style="font-size:11px;font-weight:400;opacity:0.7;">合并导入</span></div>
+    </div>
+  </section>
+
+  <!-- Step 1 -->
+  <section class="step">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <h2 class="step-title">在电脑A上创建备份</h2>
+    </div>
+    <div class="step-body">
+      <div class="step-instructions">
+        <ol>
+          <li>打开 DeekrStudio，进入 <strong>设置 → 数据设置 → 数据目录</strong></li>
+          <li>点击「<strong>备份</strong>」按钮，创建备份 ZIP 文件</li>
+          <li>将生成的备份文件传输到电脑B（通过 U盘、网盘、微信、邮件等方式）</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="step">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <h2 class="step-title">在电脑B上打开导入功能</h2>
+    </div>
+    <div class="step-body">
+      <div class="step-instructions">
+        <ol>
+          <li>打开 DeekrStudio，进入 <strong>设置 → 数据设置 → 导入外部应用数据</strong></li>
+          <li>找到「<strong>从备份导入（合并对话）</strong>」选项</li>
+          <li>点击右侧的「<strong>导入备份文件</strong>」按钮</li>
+        </ol>
+      </div>
+
+      <!-- Settings Page Mockup -->
+      <div class="mockup-container">
+        <div class="mockup-titlebar">
+          <div class="mockup-dot r"></div>
+          <div class="mockup-dot y"></div>
+          <div class="mockup-dot g"></div>
+          <span class="mockup-titlebar-text">设置</span>
+        </div>
+        <div class="settings-mock">
+          <!-- Left Sidebar -->
+          <div class="settings-sidebar">
+            <div class="settings-sidebar-item"><span class="icon">👤</span> 用户信息</div>
+            <div class="settings-sidebar-item"><span class="icon">👥</span> 我的学生</div>
+            <div class="settings-sidebar-item"><span class="icon">🤖</span> 默认模型</div>
+            <div class="settings-sidebar-item"><span class="icon">⚙️</span> 常规设置</div>
+            <div class="settings-sidebar-item"><span class="icon">🖥️</span> 显示设置</div>
+            <div class="settings-sidebar-item active"><span class="icon">💾</span> 数据设置</div>
+            <div class="settings-sidebar-item"><span class="icon">🔌</span> MCP 服务器</div>
+            <div class="settings-sidebar-item"><span class="icon">🧠</span> 全局记忆</div>
+            <div class="settings-sidebar-item"><span class="icon">📡</span> API 服务器</div>
+          </div>
+          <!-- Middle Panel -->
+          <div class="settings-middle">
+            <div class="settings-section-label">基础数据设置</div>
+            <div class="settings-menu-item"><span class="icon">📁</span> 数据目录</div>
+            <div class="settings-section-label">云备份设置</div>
+            <div class="settings-menu-item"><span class="icon">💾</span> 本地备份</div>
+            <div class="settings-menu-item"><span class="icon">☁️</span> 云数据库</div>
+            <div class="settings-section-label">导入设置</div>
+            <div class="settings-menu-item active"><span class="icon">📥</span> 导入外部应用数据</div>
+            <div class="settings-section-label">导出设置</div>
+            <div class="settings-menu-item"><span class="icon">📤</span> 导出菜单设置</div>
+            <div class="settings-menu-item"><span class="icon">📄</span> Markdown 导出</div>
+          </div>
+          <!-- Right Content -->
+          <div class="settings-content">
+            <h3>导入外部应用数据</h3>
+            <div class="settings-row" style="position:relative;">
+              <span class="settings-row-label">从备份导入（合并对话）</span>
+              <span class="settings-row-btn">导入备份文件</span>
+              <span class="annotation" style="right: -14px; top: 50%; transform: translateY(-50%);">③</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="step">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <h2 class="step-title">上传备份文件</h2>
+    </div>
+    <div class="step-body">
+      <div class="step-instructions">
+        <ol>
+          <li>在弹出的「<strong>从备份导入</strong>」对话框中，找到上传区域</li>
+          <li><strong>点击上传区域</strong>或<strong>拖拽</strong>备份 ZIP 文件到虚线框内</li>
+          <li>仅支持 DeekrStudio 导出的备份文件（<code>.zip</code> 格式）</li>
+        </ol>
+      </div>
+
+      <!-- Dialog Mockup -->
+      <div class="dialog-mock-wrapper">
+        <div class="dialog-mock">
+          <div class="dialog-header">
+            <h4>从备份导入</h4>
+            <div class="dialog-close">✕</div>
+          </div>
+          <div class="dialog-body">
+            <div class="upload-zone">
+              <div class="upload-icon">📥</div>
+              <div class="upload-text">点击或拖拽备份 ZIP 文件到此处</div>
+              <div class="upload-hint">支持 DeekrStudio 备份文件（.zip）</div>
+              <span class="annotation" style="position:absolute; top: 12px; right: 12px;">②</span>
+            </div>
+            <div class="info-box">
+              <div class="info-box-title">
+                <span class="info-box-icon">i</span>
+                如何获取备份文件？
+              </div>
+              <ol>
+                <li>在电脑A上，进入 设置 &gt; 数据设置 &gt; 数据目录</li>
+                <li>点击「备份」按钮创建备份文件</li>
+                <li>将备份文件传输到电脑B</li>
+                <li>在电脑B上，在此处上传备份文件</li>
+              </ol>
+            </div>
+          </div>
+          <div class="dialog-footer">
+            <span class="btn-cancel">取 消</span>
+            <span class="btn-primary">导 入</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="step">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <h2 class="step-title">预览并选择要合并的对话</h2>
+    </div>
+    <div class="step-body">
+      <div class="step-instructions">
+        <ol>
+          <li>上传完成后，系统会自动解析备份文件并显示<strong>预览列表</strong></li>
+          <li>勾选你想要合并的对话（默认全选）</li>
+          <li>已存在的对话会自动标记跳过，不会重复导入</li>
+          <li>确认后点击「<strong>导入</strong>」按钮开始合并</li>
+        </ol>
+      </div>
+
+      <!-- Preview Table Mockup -->
+      <div class="preview-mock">
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><span class="checkbox-mock"></span></th>
+              <th>助手名称</th>
+              <th>对话数量</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="checkbox-mock"></span></td>
+              <td style="color:var(--text-primary);font-weight:500;">默认助手</td>
+              <td>12 条对话</td>
+              <td><span style="color:var(--green);font-weight:600;font-size:12px;">● 待导入</span></td>
+            </tr>
+            <tr>
+              <td><span class="checkbox-mock"></span></td>
+              <td style="color:var(--text-primary);font-weight:500;">写作助手</td>
+              <td>5 条对话</td>
+              <td><span style="color:var(--green);font-weight:600;font-size:12px;">● 待导入</span></td>
+            </tr>
+            <tr>
+              <td><span class="checkbox-mock"></span></td>
+              <td style="color:var(--text-primary);font-weight:500;">代码助手</td>
+              <td>8 条对话</td>
+              <td><span style="color:var(--text-muted);font-size:12px;">⊘ 已存在，跳过</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="preview-footer">
+          <span>共 3 个助手，25 条对话</span>
+          <span class="btn-primary" style="font-size:12px;padding:5px 16px;">导 入</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 5 -->
+  <section class="step">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <h2 class="step-title">合并完成</h2>
+    </div>
+    <div class="step-body">
+      <div class="step-instructions">
+        <p>导入完成后，电脑A的对话会合并到电脑B中，电脑B原有的对话<strong>完全不受影响</strong>。</p>
+      </div>
+
+      <!-- Success Mockup -->
+      <div class="success-mock">
+        <div class="success-icon">✓</div>
+        <div class="success-text">合并导入完成！</div>
+        <div class="success-sub">成功导入 17 条对话，跳过 8 条已存在的对话</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notes -->
+  <section class="notes">
+    <h3>📋 注意事项</h3>
+    <ul>
+      <li>合并导入只会<strong>新增</strong>不存在的对话，不会覆盖已有数据</li>
+      <li>如果两台电脑有相同的对话（相同 ID），会自动跳过</li>
+      <li>建议在合并前先在电脑B上做一次<strong>本地备份</strong>，以防万一</li>
+      <li>备份文件必须是 DeekrStudio 导出的 <strong>.zip</strong> 格式</li>
+    </ul>
+  </section>
+
+</main>
+
+</body>
+</html>
