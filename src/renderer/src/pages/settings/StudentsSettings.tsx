@@ -1,7 +1,13 @@
 import { DownloadOutlined, ExportOutlined, SearchOutlined, SyncOutlined, UploadOutlined } from '@ant-design/icons'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { getAccessToken } from '@renderer/hooks/useAuth'
-import { exportStudents, getStudentsList, importStudentsTemplate, teacherDeleteStudent,teacherResetStudentPassword } from '@renderer/services/AdminService'
+import {
+  exportStudents,
+  getStudentsList,
+  importStudentsTemplate,
+  teacherDeleteStudent,
+  teacherResetStudentPassword
+} from '@renderer/services/AdminService'
 import userDataService from '@renderer/services/UserDataService'
 import { config } from '@renderer/utils/axios/config'
 import type { UploadProps } from 'antd'
@@ -257,7 +263,11 @@ const StudentsSettings: FC = () => {
         </SettingTitle>
 
         <SearchContainer>
-          <Button icon={<SyncOutlined />} onClick={() => fetchData(true)} loading={refreshLoading} style={{ marginTop: 10 }}></Button>
+          <Button
+            icon={<SyncOutlined />}
+            onClick={() => fetchData(true)}
+            loading={refreshLoading}
+            style={{ marginTop: 10 }}></Button>
           <Input
             placeholder="搜索学生"
             allowClear

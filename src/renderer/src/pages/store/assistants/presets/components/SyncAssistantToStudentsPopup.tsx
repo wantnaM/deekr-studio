@@ -1,7 +1,7 @@
 import { TopView } from '@renderer/components/TopView'
 import { useAssistantPresets } from '@renderer/hooks/useAssistantPresets'
 import { getStudentsList, syncAgentsToStudents } from '@renderer/services/AdminService'
-import { Checkbox, message,Modal, Table } from 'antd'
+import { Checkbox, message, Modal, Table } from 'antd'
 import { useEffect, useState } from 'react'
 
 interface Props {

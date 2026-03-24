@@ -15,7 +15,7 @@ import {
   // setWebdavPass as _setWebdavPass,
   // setWebdavPath as _setWebdavPath,
   setWebdavSkipBackupFile as _setWebdavSkipBackupFile,
-  setWebdavSyncInterval as _setWebdavSyncInterval,
+  setWebdavSyncInterval as _setWebdavSyncInterval
   // setWebdavUser as _setWebdavUser
 } from '@renderer/store/settings'
 import { Button, Switch, Tooltip } from 'antd'

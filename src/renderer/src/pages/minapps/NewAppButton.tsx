@@ -129,9 +129,7 @@ const NewAppButton: FC<Props> = ({ size = 60 }) => {
             rules={[{ required: true, message: t('settings.miniapps.custom.url_error') }]}>
             <Input placeholder={t('settings.miniapps.custom.url_placeholder')} />
           </Form.Item>
-          <Form.Item
-            name="group"
-            label="分组">
+          <Form.Item name="group" label="分组">
             <Input placeholder="请输入分组" />
           </Form.Item>
           <Form.Item label={t('settings.miniapps.custom.logo')}>

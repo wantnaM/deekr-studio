@@ -205,9 +205,7 @@ const AboutSettings: FC = () => {
             <VersionWrapper>
               <Title>{APP_NAME}</Title>
               <Description>{t('settings.about.description')}</Description>
-              <Tag
-                color="cyan"
-                style={{ marginTop: 8 }}>
+              <Tag color="cyan" style={{ marginTop: 8 }}>
                 v{version}
               </Tag>
             </VersionWrapper>
@@ -351,9 +349,7 @@ const AboutSettings: FC = () => {
             <Mail size={18} />
             {t('settings.about.feedback.title')}
           </SettingRowTitle>
-          <Button onClick={() => navigate('/settings/feedback')}>
-            {t('settings.about.feedback.button')}
-          </Button>
+          <Button onClick={() => navigate('/settings/feedback')}>{t('settings.about.feedback.button')}</Button>
         </SettingRow>
       </SettingGroup>
     </SettingContainer>

@@ -1613,28 +1613,6 @@
     "split": "分屏"
   },
   "import": {
-    "chatgpt": {
-      "assistant_name": "ChatGPT 导入",
-      "button": "选择文件",
-      "description": "仅导入对话文字，不携带图片和附件",
-      "error": {
-        "invalid_json": "无效的 JSON 文件格式",
-        "no_conversations": "文件中未找到任何对话",
-        "no_valid_conversations": "没有可导入的有效对话",
-        "unknown": "导入失败，请检查文件格式"
-      },
-      "help": {
-        "step1": "1. 登录 ChatGPT，进入设置 > 数据控制 > 导出数据",
-        "step2": "2. 等待邮件接收导出文件",
-        "step3": "3. 解压下载的文件，找到 conversations.json",
-        "title": "如何导出 ChatGPT 对话？"
-      },
-      "importing": "正在导入对话...",
-      "selecting": "正在选择文件...",
-      "success": "成功导入 {{topics}} 个对话，共 {{messages}} 条消息",
-      "title": "导入 ChatGPT 对话",
-      "untitled_conversation": "未命名对话"
-    },
     "backup": {
       "assistant_name": "备份导入",
       "choose_other": "选择其他文件",
@@ -1677,6 +1655,28 @@
       "untitled_topic": "未命名对话",
       "upload_hint": "支持 CherryStudio 备份文件（.zip）",
       "upload_text": "点击或拖拽备份 ZIP 文件到此处"
+    },
+    "chatgpt": {
+      "assistant_name": "ChatGPT 导入",
+      "button": "选择文件",
+      "description": "仅导入对话文字，不携带图片和附件",
+      "error": {
+        "invalid_json": "无效的 JSON 文件格式",
+        "no_conversations": "文件中未找到任何对话",
+        "no_valid_conversations": "没有可导入的有效对话",
+        "unknown": "导入失败，请检查文件格式"
+      },
+      "help": {
+        "step1": "1. 登录 ChatGPT，进入设置 > 数据控制 > 导出数据",
+        "step2": "2. 等待邮件接收导出文件",
+        "step3": "3. 解压下载的文件，找到 conversations.json",
+        "title": "如何导出 ChatGPT 对话？"
+      },
+      "importing": "正在导入对话...",
+      "selecting": "正在选择文件...",
+      "success": "成功导入 {{topics}} 个对话，共 {{messages}} 条消息",
+      "title": "导入 ChatGPT 对话",
+      "untitled_conversation": "未命名对话"
     },
     "confirm": {
       "button": "选择导入文件",
@@ -5203,7 +5203,6 @@
       "zoom_out": "缩小界面",
       "zoom_reset": "重置缩放"
     },
-    "students.title": "我的学生",
     "theme": {
       "color_primary": "主题颜色",
       "dark": "深色",
@@ -5217,6 +5216,9 @@
           "transparent": "透明窗口"
         }
       }
+    },
+    "students": {
+      "title": "我的学生"
     },
     "title": "设置",
     "tool": {
@@ -5420,6 +5422,9 @@
       "show": "显示托盘图标",
       "title": "托盘"
     },
+    "user": {
+      "title": "用户信息"
+    },
     "use_system_title_bar": {
       "confirm": {
         "content": "更改标题栏样式需要重启应用才能生效，是否现在重启？",
@@ -5427,7 +5432,6 @@
       },
       "title": "使用系统标题栏 (Linux)"
     },
-    "user.title": "用户信息",
     "zoom": {
       "reset": "重置",
       "title": "缩放"
@@ -5440,7 +5444,6 @@
     "home": "首页",
     "knowledge": "知识库",
     "launchpad": "启动台",
-    "login": "登录",
     "mcp-servers": "MCP 服务器",
     "memories": "记忆",
     "notes": "笔记",

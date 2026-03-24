@@ -2,13 +2,14 @@ import { InboxOutlined } from '@ant-design/icons'
 import { loggerService } from '@logger'
 import { DEFAULT_ASSISTANT_SETTINGS, getDefaultTopic } from '@renderer/services/AssistantService'
 import { BackupImporter } from '@renderer/services/import/importers'
+import type { ImportResult } from '@renderer/services/import/types'
 import { mergeWithExistingData, saveMergedData } from '@renderer/services/import/utils/mergeUtils'
 import store from '@renderer/store'
 import { addAssistant } from '@renderer/store/assistants'
 import type { Assistant } from '@renderer/types'
 import { uuid } from '@renderer/utils'
-import { Alert, Button, Modal, Progress, Space, Spin, Table, Typography } from 'antd'
-import { useState } from 'react'
+import { Alert, Button, Modal, Progress, Space, Spin, Table, Typography, Upload } from 'antd'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -16,7 +17,6 @@ import { TopView } from '../TopView'
 
 const { Dragger } = Upload
 const { Text } = Typography
-import { Upload } from 'antd'
 
 const logger = loggerService.withContext('BackupUploadPopup')
 
@@ -44,17 +44,20 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
   const [importing, setImporting] = useState(false)
   const [previewData, setPreviewData] = useState<PreviewItem[]>([])
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
-  const [backupContent, setBackupContent] = useState<string | null>(null)
+  const [hasBackup, setHasBackup] = useState(false)
   const [importProgress, setImportProgress] = useState(0)
   const [importStatus, setImportStatus] = useState('')
   const { t } = useTranslation()
+
+  // Store the parsed import result so we don't re-parse (which generates different IDs)
+  const importResultRef = useRef<ImportResult | null>(null)
+  const assistantIdRef = useRef<string>('')
 
   const importer = new BackupImporter()
 
   const handleUpload = async (file: File): Promise<boolean> => {
     logger.info(`Uploading file: ${file.name}`)
 
-    // Check if it's a zip file
     if (!file.name.endsWith('.zip')) {
       window.toast.error(t('import.backup.error.not_zip', { defaultValue: 'Please upload a ZIP backup file' }))
       return false
@@ -64,20 +67,14 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
     setParsing(true)
 
     try {
-      // Use the file path from the file object
-      // Note: In Electron, File objects from input have a path property
       const filePath = (file as any).path
 
       if (!filePath) {
-        // If no path (e.g., drag & drop), we need to read the file content
         const arrayBuffer = await file.arrayBuffer()
         const uint8Array = new Uint8Array(arrayBuffer)
-
-        // Create a temporary file
         const tempFileName = `temp-backup-${Date.now()}.zip`
         const tempPath = await window.api.file.createTempFile(tempFileName)
         await window.api.file.write(tempPath, uint8Array)
-
         await processBackupFile(tempPath)
       } else {
         await processBackupFile(filePath)
@@ -90,14 +87,12 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       setParsing(false)
     }
 
-    return false // Prevent default upload behavior
+    return false
   }
 
   const processBackupFile = async (filePath: string) => {
-    // Parse backup file using main process
     const parsed = await window.api.backup.parseForImport(filePath)
 
-    // Create backup content string for the importer
     const backupData = {
       time: parsed.timestamp,
       version: parsed.version,
@@ -108,17 +103,17 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       }
     }
     const content = JSON.stringify(backupData)
-    setBackupContent(content)
 
-    // Validate backup format
     if (!importer.validate(content)) {
       window.toast.error(t('import.backup.error.invalid_format', { defaultValue: 'Invalid backup format' }))
       return
     }
 
-    // Parse for preview
+    // Parse once and store the result for later import
     const assistantId = uuid()
+    assistantIdRef.current = assistantId
     const importResult = await importer.parse(content, assistantId)
+    importResultRef.current = importResult
 
     // Check for duplicates with existing data
     const db = (await import('@renderer/databases')).default
@@ -128,6 +123,8 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       const isDuplicate = existingTopics.some(
         (existing) =>
           existing.messages.length === topic.messages.length &&
+          existing.messages.length > 0 &&
+          topic.messages.length > 0 &&
           Math.abs(
             new Date(existing.messages[0]?.createdAt || 0).getTime() -
               new Date(topic.messages[0]?.createdAt || 0).getTime()
@@ -145,52 +142,49 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
 
     setPreviewData(preview)
     setSelectedKeys(preview.filter((p) => !p.isDuplicate).map((p) => p.key))
+    setHasBackup(true)
 
     logger.info(`Parsed ${preview.length} topics from backup`)
   }
 
   const handleImport = async () => {
-    if (!backupContent || selectedKeys.length === 0) return
+    const importResult = importResultRef.current
+    if (!importResult || selectedKeys.length === 0) return
 
     setImporting(true)
     setImportProgress(0)
     setImportStatus(t('import.backup.status.parsing', { defaultValue: 'Parsing backup data...' }))
 
     try {
-      // Parse backup
-      const assistantId = uuid()
-      const importResult = await importer.parse(backupContent, assistantId)
+      const assistantId = assistantIdRef.current
 
-      // Filter selected topics
+      // Filter to only selected topics using the stored parse result
       const selectedTopicIds = new Set(selectedKeys as string[])
-      const filteredResult = {
-        topics: importResult.topics.filter((t) => selectedTopicIds.has(t.id)),
-        messages: importResult.messages.filter((m) => {
-          const topic = importResult.topics.find((t) => t.id === (m as any).topicId)
-          return topic && selectedTopicIds.has(topic.id)
-        }),
-        blocks: importResult.blocks.filter((b) => {
-          const message = importResult.messages.find((m) => m.id === (b as any).messageId)
-          if (!message) return false
-          const topic = importResult.topics.find((t) => t.id === (message as any).topicId)
-          return topic && selectedTopicIds.has(topic.id)
-        })
+      const filteredTopics = importResult.topics.filter((topic) => selectedTopicIds.has(topic.id))
+      const filteredTopicIdSet = new Set(filteredTopics.map((topic) => topic.id))
+
+      const filteredMessages = importResult.messages.filter((m) => filteredTopicIdSet.has(m.topicId))
+      const filteredMessageIdSet = new Set(filteredMessages.map((m) => m.id))
+
+      const filteredBlocks = importResult.blocks.filter((b) => filteredMessageIdSet.has(b.messageId))
+
+      const filteredResult: ImportResult = {
+        topics: filteredTopics,
+        messages: filteredMessages,
+        blocks: filteredBlocks
       }
 
       setImportProgress(30)
       setImportStatus(t('import.backup.status.merging', { defaultValue: 'Merging with existing data...' }))
 
-      // Merge with existing data
       const mergeResult = await mergeWithExistingData(filteredResult)
 
       setImportProgress(60)
       setImportStatus(t('import.backup.status.saving', { defaultValue: 'Saving to database...' }))
 
-      // Save merged data
       await saveMergedData(mergeResult)
 
       // Create assistant for imported data
-      // Ensure at least one topic exists to prevent UI errors
       const assistantTopics =
         mergeResult.topicsToAdd.length > 0 ? mergeResult.topicsToAdd : [getDefaultTopic(assistantId)]
 
@@ -210,7 +204,6 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       setImportProgress(100)
       setImportStatus(t('import.backup.status.completed', { defaultValue: 'Import completed!' }))
 
-      // Only show as success if we actually imported some topics
       const importedCount = mergeResult.topicsToAdd.length
       if (importedCount > 0) {
         window.toast.success(
@@ -297,7 +290,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       width={800}
       maskClosable={false}
       okButtonProps={{
-        disabled: selectedKeys.length === 0 || !backupContent || importing,
+        disabled: selectedKeys.length === 0 || !hasBackup || importing,
         loading: importing
       }}
       cancelButtonProps={{ disabled: importing }}
@@ -309,7 +302,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
       transitionName="animation-move-down"
       centered>
       <Container>
-        {!backupContent && !loading && (
+        {!hasBackup && !loading && (
           <>
             <Dragger accept=".zip" beforeUpload={handleUpload} showUploadList={false} disabled={loading || parsing}>
               <p className="ant-upload-drag-icon">
@@ -361,7 +354,7 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
           </LoadingContainer>
         )}
 
-        {backupContent && !loading && !importing && (
+        {hasBackup && !loading && !importing && (
           <>
             <Alert
               message={t('import.backup.select_title', { defaultValue: 'Select conversations to import' })}
@@ -387,7 +380,9 @@ const PopupContainer: React.FC<Props> = ({ resolve }) => {
             <Button
               style={{ marginTop: 16 }}
               onClick={() => {
-                setBackupContent(null)
+                importResultRef.current = null
+                assistantIdRef.current = ''
+                setHasBackup(false)
                 setPreviewData([])
                 setSelectedKeys([])
               }}>

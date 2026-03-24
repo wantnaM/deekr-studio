@@ -11,7 +11,7 @@ import type { AssistantPreset } from '@renderer/types'
 import { uuid } from '@renderer/utils'
 import { Button, Empty, Flex, Input } from 'antd'
 import { omit } from 'lodash'
-import { Import, Plus, RotateCw,Search, Settings2 } from 'lucide-react'
+import { Import, Plus, RotateCw, Search, Settings2 } from 'lucide-react'
 import type { FC } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -36,8 +36,8 @@ const AssistantPresetsPage: FC = () => {
   const systemPresets = useSystemAssistantPresets()
   const { presets: userPresets } = useAssistantPresets()
   const { isTopNavbar } = useNavbarPosition()
-    const { user } = useAuth()
-    const isTeacher = user?.type === 3
+  const { user } = useAuth()
+  const isTeacher = user?.type === 3
 
   useEffect(() => {
     const systemAgentsGroupList = groupByCategories(systemPresets)
@@ -291,10 +291,13 @@ const AssistantPresetsPage: FC = () => {
                 )
               )}
               {isTeacher && (
-                    <Button type="text" icon={<RotateCw size={18} color="var(--color-icon)" />} onClick={handleSyncToStudents}>
-                      同步给学生
-                    </Button>
-                  )}
+                <Button
+                  type="text"
+                  icon={<RotateCw size={18} color="var(--color-icon)" />}
+                  onClick={handleSyncToStudents}>
+                  同步给学生
+                </Button>
+              )}
               <Button type="text" onClick={handleImportAgent} icon={<Import size={18} color="var(--color-icon)" />}>
                 {t('assistants.presets.import.title')}
               </Button>

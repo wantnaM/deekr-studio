@@ -42,7 +42,8 @@ function areTopicsSimilar(topic1: Topic, topic2: Partial<Topic>): boolean {
 }
 
 /**
- * Generate new IDs for imported data to avoid conflicts
+ * Generate new IDs for imported data to avoid conflicts.
+ * Order: topics → blocks (create ID mapping) → messages (reference new block IDs)
  */
 function regenerateIds(
   topics: Topic[],
@@ -51,51 +52,49 @@ function regenerateIds(
 ): { topics: Topic[]; messages: Message[]; blocks: MainTextMessageBlock[]; idMap: Map<string, string> } {
   const idMap = new Map<string, string>()
 
-  // Generate new IDs for topics
+  // 1. Generate new IDs for topics
   const newTopics = topics.map((topic): Topic => {
     const newTopicId = uuid()
     idMap.set(topic.id, newTopicId)
-
     return {
       ...topic,
       id: newTopicId
     }
   })
 
-  // Generate new IDs for messages and update topicId references
+  // 2. Generate new IDs for blocks FIRST (so messages can reference them)
+  const newBlocks = blocks.map((block) => {
+    const newBlockId = uuid()
+    idMap.set(block.id, newBlockId)
+    return {
+      ...block,
+      id: newBlockId
+    }
+  })
+
+  // 3. Generate new IDs for messages, update topicId and block references
   const newMessages = messages.map((message) => {
     const newMessageId = uuid()
     idMap.set(message.id, newMessageId)
 
-    const newTopicId = idMap.get(message.topicId) || message.topicId
-
     return {
       ...message,
       id: newMessageId,
-      topicId: newTopicId,
-      // Update block references
+      topicId: idMap.get(message.topicId) || message.topicId,
       blocks: message.blocks?.map((blockId) => idMap.get(blockId) || blockId) || []
     }
   })
 
-  // Generate new IDs for blocks and update messageId references
-  const newBlocks = blocks.map((block) => {
-    const newBlockId = idMap.get(block.id) || uuid()
-    idMap.set(block.id, newBlockId)
-
-    const newMessageId = idMap.get(block.messageId) || block.messageId
-
-    return {
-      ...block,
-      id: newBlockId,
-      messageId: newMessageId
-    }
-  })
+  // 4. Update messageId references in blocks (now that message IDs are mapped)
+  const finalBlocks = newBlocks.map((block) => ({
+    ...block,
+    messageId: idMap.get(block.messageId) || block.messageId
+  }))
 
   return {
     topics: newTopics,
     messages: newMessages,
-    blocks: newBlocks,
+    blocks: finalBlocks,
     idMap
   }
 }

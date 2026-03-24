@@ -1613,6 +1613,49 @@
     "split": "Dividir"
   },
   "import": {
+    "backup": {
+      "assistant_name": "[to be translated]:Backup Import",
+      "choose_other": "[to be translated]:Choose Another File",
+      "duplicate": "[to be translated]:Possible Duplicate",
+      "error": {
+        "import_failed": "[to be translated]:Import failed",
+        "invalid_backup": "[to be translated]:Invalid backup file: data.json not found",
+        "invalid_format": "[to be translated]:Invalid backup format",
+        "no_topics": "[to be translated]:No conversations found in backup",
+        "no_valid_topics": "[to be translated]:No valid conversations to import",
+        "not_zip": "[to be translated]:Please upload a ZIP backup file",
+        "parse_failed": "[to be translated]:Failed to parse backup file"
+      },
+      "help": {
+        "step1": "[to be translated]:1. On computer A, go to Settings > Data > Backup",
+        "step2": "[to be translated]:2. Click \"Backup\" button to create a backup file",
+        "step3": "[to be translated]:3. Transfer the backup file to computer B",
+        "step4": "[to be translated]:4. On computer B, upload the backup file here",
+        "title": "[to be translated]:How to get backup file?"
+      },
+      "import": "[to be translated]:Import",
+      "importing": "[to be translated]:Importing...",
+      "loading": "[to be translated]:Loading...",
+      "parsing": "[to be translated]:Parsing backup file...",
+      "select_desc": "[to be translated]:Found {{total}} conversations ({{duplicates}} possible duplicates)",
+      "select_title": "[to be translated]:Select conversations to import",
+      "status": {
+        "completed": "[to be translated]:Import completed!",
+        "merging": "[to be translated]:Merging with existing data...",
+        "parsing": "[to be translated]:Parsing backup data...",
+        "saving": "[to be translated]:Saving to database..."
+      },
+      "success": "[to be translated]:Successfully imported {{count}} conversations",
+      "table": {
+        "date": "[to be translated]:Created",
+        "messages": "[to be translated]:Messages",
+        "name": "[to be translated]:Name"
+      },
+      "title": "[to be translated]:Import from Backup",
+      "untitled_topic": "[to be translated]:Untitled Topic",
+      "upload_hint": "[to be translated]:Supports CherryStudio backup files (.zip)",
+      "upload_text": "[to be translated]:Click or drag backup ZIP file to this area"
+    },
     "chatgpt": {
       "assistant_name": "Importación de ChatGPT",
       "button": "Seleccionar archivo",
@@ -3701,6 +3744,8 @@
       "hour_interval_one": "{{count}} hora",
       "hour_interval_other": "{{count}} horas",
       "import_settings": {
+        "backup": "[to be translated]:Import from Backup",
+        "backup_button": "[to be translated]:Import Backup File",
         "button": "Importar archivo Json",
         "chatgpt": "Importar desde ChatGPT",
         "title": "Importar datos de aplicaciones externas"

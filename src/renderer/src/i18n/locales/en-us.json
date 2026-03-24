@@ -1613,28 +1613,6 @@
     "split": "Split"
   },
   "import": {
-    "chatgpt": {
-      "assistant_name": "ChatGPT Import",
-      "button": "Select File",
-      "description": "Only imports conversation text, does not include images and attachments",
-      "error": {
-        "invalid_json": "Invalid JSON file format",
-        "no_conversations": "No conversations found in file",
-        "no_valid_conversations": "No valid conversations to import",
-        "unknown": "Import failed, please check file format"
-      },
-      "help": {
-        "step1": "1. Log in to ChatGPT, go to Settings > Data controls > Export data",
-        "step2": "2. Wait for the export file via email",
-        "step3": "3. Extract the downloaded file and find conversations.json",
-        "title": "How to export ChatGPT conversations?"
-      },
-      "importing": "Importing conversations...",
-      "selecting": "Selecting file...",
-      "success": "Successfully imported {{topics}} conversations with {{messages}} messages",
-      "title": "Import ChatGPT Conversations",
-      "untitled_conversation": "Untitled Conversation"
-    },
     "backup": {
       "assistant_name": "Backup Import",
       "choose_other": "Choose Another File",
@@ -1677,6 +1655,28 @@
       "untitled_topic": "Untitled Topic",
       "upload_hint": "Supports CherryStudio backup files (.zip)",
       "upload_text": "Click or drag backup ZIP file to this area"
+    },
+    "chatgpt": {
+      "assistant_name": "ChatGPT Import",
+      "button": "Select File",
+      "description": "Only imports conversation text, does not include images and attachments",
+      "error": {
+        "invalid_json": "Invalid JSON file format",
+        "no_conversations": "No conversations found in file",
+        "no_valid_conversations": "No valid conversations to import",
+        "unknown": "Import failed, please check file format"
+      },
+      "help": {
+        "step1": "1. Log in to ChatGPT, go to Settings > Data controls > Export data",
+        "step2": "2. Wait for the export file via email",
+        "step3": "3. Extract the downloaded file and find conversations.json",
+        "title": "How to export ChatGPT conversations?"
+      },
+      "importing": "Importing conversations...",
+      "selecting": "Selecting file...",
+      "success": "Successfully imported {{topics}} conversations with {{messages}} messages",
+      "title": "Import ChatGPT Conversations",
+      "untitled_conversation": "Untitled Conversation"
     },
     "confirm": {
       "button": "Select Import File",
@@ -5217,6 +5217,9 @@
         }
       }
     },
+    "students": {
+      "title": "Students"
+    },
     "title": "Settings",
     "tool": {
       "ocr": {
@@ -5418,6 +5421,9 @@
       "onclose": "Minimize to Tray on Close",
       "show": "Show Tray Icon",
       "title": "Tray"
+    },
+    "user": {
+      "title": "User"
     },
     "use_system_title_bar": {
       "confirm": {
