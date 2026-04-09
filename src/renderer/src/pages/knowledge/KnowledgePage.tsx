@@ -102,7 +102,7 @@ const KnowledgePage: FC = () => {
 
   useShortcut('search_message', () => {
     if (selectedBase) {
-      KnowledgeSearchPopup.show({ base: selectedBase }).then()
+      void KnowledgeSearchPopup.show({ base: selectedBase }).then()
     }
   })
 

@@ -16,7 +16,6 @@ import { AtSign, CircleX } from 'lucide-react'
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router'
 import styled from 'styled-components'
 
 export type MentionTriggerInfo = { type: 'input' | 'button'; position?: number; originalText?: string }
@@ -45,7 +44,6 @@ export const useMentionModelsPanel = (params: Params, role: 'button' | 'manager'
   const { open, close, updateList, isVisible, symbol } = quickPanelController
   const { providers } = useProviders()
   const { t } = useTranslation()
-  const navigate = useNavigate()
 
   const hasModelActionRef = useRef(false)
   const triggerInfoRef = useRef<MentionTriggerInfo | undefined>(undefined)
@@ -223,7 +221,6 @@ export const useMentionModelsPanel = (params: Params, role: 'button' | 'manager'
   }, [
     couldMentionNotVisionModel,
     mentionedModels,
-    navigate,
     onClearMentionModels,
     onMentionModel,
     pinnedModels,
@@ -254,7 +251,7 @@ export const useMentionModelsPanel = (params: Params, role: 'button' | 'manager'
               setText((currentText) => {
                 const textArea = document.querySelector('.inputbar textarea') as HTMLTextAreaElement | null
                 const caret = textArea ? (textArea.selectionStart ?? currentText.length) : currentText.length
-                return removeAtSymbolAndText(currentText, caret, searchText || '', trigger?.position!)
+                return removeAtSymbolAndText(currentText, caret, searchText || '', trigger?.position)
               })
             }
           }

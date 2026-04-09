@@ -47,15 +47,16 @@ const AboutSettings: FC = () => {
 
       if (update.downloaded) {
         // Open update dialog directly in renderer
-        UpdateDialogPopup.show({ releaseInfo: update.info || null })
+        void UpdateDialogPopup.show({ releaseInfo: update.info || null })
         return
       }
 
-      dispatch(setUpdateState({ checking: true }))
+      dispatch(setUpdateState({ checking: true, manualCheck: true }))
 
       try {
         await window.api.checkForUpdate()
       } catch (error) {
+        dispatch(setUpdateState({ manualCheck: false }))
         window.toast.error(t('settings.about.updateError'))
       }
 
@@ -162,7 +163,7 @@ const AboutSettings: FC = () => {
   }
 
   useEffect(() => {
-    runAsyncFunction(async () => {
+    void runAsyncFunction(async () => {
       const appInfo = await window.api.getAppInfo()
       setVersion(appInfo.version)
       setIsPortable(appInfo.isPortable)

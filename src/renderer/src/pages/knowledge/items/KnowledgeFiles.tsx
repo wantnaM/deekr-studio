@@ -82,7 +82,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
       return
     }
     const selectedFiles = await onSelectFile({ multipleSelections: true })
-    processFiles(selectedFiles)
+    void processFiles(selectedFiles)
   }
 
   const handleDrop = async (files: File[]) => {
@@ -117,7 +117,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
           }
         })
         .filter(({ ext }) => fileTypes.includes(ext))
-      processFiles(_files)
+      void processFiles(_files)
     }
   }
 
@@ -151,7 +151,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
             icon={<PlusIcon size={16} />}
             onClick={(e) => {
               e.stopPropagation()
-              handleAddFile()
+              void handleAddFile()
             }}
             disabled={disabled}>
             {t('knowledge.add_file')}
@@ -164,7 +164,7 @@ const KnowledgeFiles: FC<KnowledgeContentProps> = ({ selectedBase, progressMap, 
           <div
             onClick={(e) => {
               e.stopPropagation()
-              handleAddFile()
+              void handleAddFile()
             }}>
             <Dragger
               showUploadList={false}

@@ -218,7 +218,7 @@ export enum UpdateMirror {
   GITCODE = 'gitcode'
 }
 
-export const defaultTimeout = 10 * 1000 * 60
+export const DEFAULT_TIMEOUT = 30 * 1000 * 60
 
 export const occupiedDirs = ['logs', 'Network', 'Partitions/webview/Network']
 
@@ -351,7 +351,7 @@ export const WINDOWS_TERMINALS_WITH_COMMANDS: TerminalConfigWithCommand[] = [
     name: 'Windows Terminal',
     command: (_: string, fullCommand: string) => ({
       command: 'wt',
-      args: ['-p', 'Command Prompt', '--', 'cmd', '/c', `"${fullCommand}"`]
+      args: ['--', 'cmd', '/c', fullCommand]
     })
   },
   {
@@ -485,7 +485,7 @@ export const MACOS_TERMINALS_WITH_COMMANDS: TerminalConfigWithCommand[] = [
 ]
 
 // resources/scripts should be maintained manually
-export const HOME_CHERRY_DIR = '.cherrystudio'
+export const HOME_CHERRY_DIR = '.deekrstudio'
 
 // Git Bash path configuration types
 export type GitBashPathSource = 'manual' | 'auto'
@@ -502,3 +502,5 @@ export const CHERRYIN_CONFIG = {
   REDIRECT_URI: 'cherrystudio://oauth/callback',
   SCOPES: 'openid profile email offline_access balance:read usage:read tokens:read tokens:write'
 }
+
+export const APP_NAME = 'Deekr Studio'

@@ -54,6 +54,8 @@ export const useMinapps = () => {
     [dispatch]
   )
 
+  // WRITE: Update pinned apps directly (no preservedHidden needed —
+  // pinned apps are never region-filtered in the read path)
   const updatePinnedMinapps = useCallback(
     (apps: MinAppType[]) => {
       dispatch(setPinnedMinApps(apps))

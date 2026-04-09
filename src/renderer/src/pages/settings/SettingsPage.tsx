@@ -6,6 +6,7 @@ import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import { Divider as AntDivider } from 'antd'
 import {
   Brain,
+  CalendarClock,
   Command,
   FileCode,
   HardDrive,
@@ -13,9 +14,11 @@ import {
   MonitorCog,
   Package,
   PictureInPicture2,
+  Radio,
   // Search,
   Server,
   Settings2,
+  Sparkles,
   TextCursorInput,
   User,
   Users,
@@ -27,6 +30,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import AboutSettings from './AboutSettings'
+import ChannelsSettings from './ChannelsSettings'
 import DataSettings from './DataSettings/DataSettings'
 import DisplaySettings from './DisplaySettings/DisplaySettings'
 import DocProcessSettings from './DocProcessSettings'
@@ -38,7 +42,9 @@ import QuickAssistantSettings from './QuickAssistantSettings'
 import QuickPhraseSettings from './QuickPhraseSettings'
 import SelectionAssistantSettings from './SelectionAssistantSettings/SelectionAssistantSettings'
 import ShortcutSettings from './ShortcutSettings'
+import SkillsSettings from './SkillsSettings'
 import StudentsSettings from './StudentsSettings'
+import TasksSettings from './TasksSettings'
 import { ApiServerSettings } from './ToolSettings/ApiServerSettings'
 import UserInfoPage from './UserInfoPage'
 // import WebSearchSettings from './WebSearchSettings'
@@ -111,6 +117,12 @@ const SettingsPage: FC = () => {
               {t('settings.mcp.title')}
             </MenuItem>
           </MenuItemLink>
+          <MenuItemLink to="/settings/skills">
+            <MenuItem className={isRoute('/settings/skills')}>
+              <Sparkles size={18} />
+              {t('settings.skills.title')}
+            </MenuItem>
+          </MenuItemLink>
           {/* <MenuItemLink to="/settings/websearch">
             <MenuItem className={isRoute('/settings/websearch')}>
               <Search size={18} />
@@ -127,6 +139,18 @@ const SettingsPage: FC = () => {
             <MenuItem className={isRoute('/settings/api-server')}>
               <Server size={18} />
               {t('apiServer.title')}
+            </MenuItem>
+          </MenuItemLink>
+          <MenuItemLink to="/settings/channels">
+            <MenuItem className={isRoute('/settings/channels')}>
+              <Radio size={18} />
+              {t('settings.channels.title')}
+            </MenuItem>
+          </MenuItemLink>
+          <MenuItemLink to="/settings/scheduled-tasks">
+            <MenuItem className={isRoute('/settings/scheduled-tasks')}>
+              <CalendarClock size={18} />
+              {t('settings.scheduledTasks.title')}
             </MenuItem>
           </MenuItemLink>
           <MenuItemLink to="/settings/docprocess">
@@ -175,9 +199,12 @@ const SettingsPage: FC = () => {
             <Route path="model" element={<ModelSettings />} />
             {/* <Route path="websearch/*" element={<WebSearchSettings />} /> */}
             <Route path="api-server" element={<ApiServerSettings />} />
+            <Route path="channels" element={<ChannelsSettings />} />
+            <Route path="scheduled-tasks" element={<TasksSettings />} />
             <Route path="docprocess" element={<DocProcessSettings />} />
             <Route path="quickphrase" element={<QuickPhraseSettings />} />
             <Route path="mcp/*" element={<MCPSettings />} />
+            <Route path="skills" element={<SkillsSettings />} />
             <Route path="memory" element={<MemorySettings />} />
             <Route path="general/*" element={<GeneralSettings />} />
             <Route path="display" element={<DisplaySettings />} />

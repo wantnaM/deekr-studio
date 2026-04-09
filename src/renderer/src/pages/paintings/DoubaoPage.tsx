@@ -1,5 +1,5 @@
 import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
-import AiProvider from '@renderer/aiCore'
+// import AiProvider from '@renderer/aiCore'
 import ImageSize1_1 from '@renderer/assets/images/paintings/image-size-1-1.svg'
 import ImageSize1_2 from '@renderer/assets/images/paintings/image-size-1-2.svg'
 import ImageSize3_2 from '@renderer/assets/images/paintings/image-size-3-2.svg'
@@ -17,7 +17,7 @@ import { useRuntime } from '@renderer/hooks/useRuntime'
 import FileManager from '@renderer/services/FileManager'
 import { useAppDispatch } from '@renderer/store'
 import { setGenerating } from '@renderer/store/runtime'
-import type { FileMetadata, Painting } from '@renderer/types'
+import type { Painting } from '@renderer/types'
 import { getErrorMessage, uuid } from '@renderer/utils'
 import { Button, Input, InputNumber, Radio, Select, Slider, Tooltip } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
@@ -165,51 +165,47 @@ const DoubaoPage: FC<{ Options: string[] }> = ({ Options }) => {
     dispatch(setGenerating(true))
 
     // 使用豆包供应商
-    const aiProvider = new AiProvider(doubaoProvider)
+    // const aiProvider = new AiProvider(doubaoProvider)
 
     if (!painting.model) {
       return
     }
 
     try {
-      const urls = await aiProvider.generateImage({
-        model: painting.model,
-        prompt,
-        imageSize: painting.imageSize || '1024x1024',
-        batchSize: 1,
-        seed: painting.seed || undefined,
-        numInferenceSteps: 25,
-        guidanceScale: painting.guidanceScale || 4.5,
-        signal: controller.signal
-      })
-
-      if (urls.length > 0) {
-        const downloadedFiles = await Promise.all(
-          urls.map(async (url) => {
-            try {
-              if (!url || url.trim() === '') {
-                window.toast.warning(t('message.empty_url'))
-                return null
-              }
-              return await window.api.file.download(url)
-            } catch (error) {
-              if (
-                error instanceof Error &&
-                (error.message.includes('Failed to parse URL') || error.message.includes('Invalid URL'))
-              ) {
-                window.toast.warning(t('message.empty_url'))
-              }
-              return null
-            }
-          })
-        )
-
-        const validFiles = downloadedFiles.filter((file): file is FileMetadata => file !== null)
-
-        await FileManager.addFiles(validFiles)
-
-        updatePaintingState({ files: validFiles, urls })
-      }
+      // const urls = await aiProvider.generateImage({
+      //   model: painting.model,
+      //   prompt,
+      //   imageSize: painting.imageSize || '1024x1024',
+      //   batchSize: 1,
+      //   seed: painting.seed || undefined,
+      //   numInferenceSteps: 25,
+      //   guidanceScale: painting.guidanceScale || 4.5,
+      //   signal: controller.signal
+      // })
+      // if (urls.length > 0) {
+      //   const downloadedFiles = await Promise.all(
+      //     urls.map(async (url) => {
+      //       try {
+      //         if (!url || url.trim() === '') {
+      //           window.toast.warning(t('message.empty_url'))
+      //           return null
+      //         }
+      //         return await window.api.file.download(url)
+      //       } catch (error) {
+      //         if (
+      //           error instanceof Error &&
+      //           (error.message.includes('Failed to parse URL') || error.message.includes('Invalid URL'))
+      //         ) {
+      //           window.toast.warning(t('message.empty_url'))
+      //         }
+      //         return null
+      //       }
+      //     })
+      //   )
+      //   const validFiles = downloadedFiles.filter((file): file is FileMetadata => file !== null)
+      //   await FileManager.addFiles(validFiles)
+      //   updatePaintingState({ files: validFiles, urls })
+      // }
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== 'AbortError') {
         window.modal.error({
