@@ -6,15 +6,15 @@ import ModelSettings from '@renderer/pages/settings/ModelSettings/ModelSettings'
 import { Divider as AntDivider } from 'antd'
 import {
   Brain,
-  CalendarClock,
+  // CalendarClock,
   Command,
-  FileCode,
+  // FileCode,
   HardDrive,
   Info,
   MonitorCog,
   Package,
   PictureInPicture2,
-  Radio,
+  // Radio,
   // Search,
   Server,
   Settings2,
@@ -141,24 +141,24 @@ const SettingsPage: FC = () => {
               {t('apiServer.title')}
             </MenuItem>
           </MenuItemLink>
-          <MenuItemLink to="/settings/channels">
+          {/* <MenuItemLink to="/settings/channels">
             <MenuItem className={isRoute('/settings/channels')}>
               <Radio size={18} />
               {t('settings.channels.title')}
             </MenuItem>
-          </MenuItemLink>
-          <MenuItemLink to="/settings/scheduled-tasks">
+          </MenuItemLink> */}
+          {/* <MenuItemLink to="/settings/scheduled-tasks">
             <MenuItem className={isRoute('/settings/scheduled-tasks')}>
               <CalendarClock size={18} />
               {t('settings.scheduledTasks.title')}
             </MenuItem>
-          </MenuItemLink>
-          <MenuItemLink to="/settings/docprocess">
+          </MenuItemLink> */}
+          {/* <MenuItemLink to="/settings/docprocess">
             <MenuItem className={isRoute('/settings/docprocess')}>
               <FileCode size={18} />
               {t('settings.tool.preprocess.title')}
             </MenuItem>
-          </MenuItemLink>
+          </MenuItemLink> */}
           <MenuItemLink to="/settings/quickphrase">
             <MenuItem className={isRoute('/settings/quickphrase')}>
               <Zap size={18} />
