@@ -11,6 +11,7 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const [form] = Form.useForm()
   const [step, setStep] = useState<1 | 2>(1)
   const [selectedRole, setSelectedRole] = useState<'3' | '4'>('3')
+  const [step1Values, setStep1Values] = useState<Record<string, any>>({})
   const [schools, setSchools] = useState<DictDataType[]>([])
   const [teachers, setTeachers] = useState<any[]>([])
   const [fetchingTeachers, setFetchingTeachers] = useState(false)
@@ -54,7 +55,8 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
   const handleNext = async () => {
     try {
-      await form.validateFields(['type', 'username', 'nickname', 'password'])
+      const values = await form.validateFields(['type', 'username', 'nickname', 'password'])
+      setStep1Values(values)
       setStep(2)
     } catch {
       // validation errors shown by antd
@@ -63,7 +65,8 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
 
   const handleRegister = async () => {
     try {
-      const values = await form.validateFields()
+      const step2 = await form.validateFields()
+      const values = { ...step1Values, ...step2 }
       const registerData: RegisterCredentials = {
         username: values.username,
         password: values.password,
@@ -86,6 +89,7 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
       message.success('注册成功')
       form.resetFields()
       setStep(1)
+      setStep1Values({})
       onCancel()
     } catch {
       // validation errors or API errors
