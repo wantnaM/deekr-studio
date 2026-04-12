@@ -5,11 +5,11 @@ import type { DictDataType } from '@renderer/types'
 import { Button, Col, Form, Input, message, Radio, Row, Select } from 'antd'
 import { debounce } from 'lodash'
 import type { FC } from 'react'
-import { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import { useEffect, useMemo, useState } from 'react'
 
 const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
   const [form] = Form.useForm()
+  const [step, setStep] = useState<1 | 2>(1)
   const [selectedRole, setSelectedRole] = useState<'3' | '4'>('3')
   const [schools, setSchools] = useState<DictDataType[]>([])
   const [teachers, setTeachers] = useState<any[]>([])
@@ -52,48 +52,53 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
     { label: 'STEM', value: 'STEM' }
   ]
 
-  const handleRegister = async () => {
-    const values = await form.validateFields()
-
-    const registerData: RegisterCredentials = {
-      username: values.username,
-      password: values.password,
-      nickname: values.nickname,
-      type: parseInt(values.type),
-      school: values.school,
-      ...(values.type === '4' // 学生
-        ? {
-            grade: values.grade,
-            classroom: values.classroom,
-            teacherId: values.teacherId
-          }
-        : {
-            subject: values.subject,
-            mobile: values.mobile,
-            grade: values.grade
-          })
+  const handleNext = async () => {
+    try {
+      await form.validateFields(['type', 'username', 'nickname', 'password'])
+      setStep(2)
+    } catch {
+      // validation errors shown by antd
     }
+  }
 
-    await authService.register(registerData)
-    message.success('注册成功')
-    form.resetFields()
-    onCancel()
+  const handleRegister = async () => {
+    try {
+      const values = await form.validateFields()
+      const registerData: RegisterCredentials = {
+        username: values.username,
+        password: values.password,
+        nickname: values.nickname,
+        type: parseInt(values.type),
+        school: values.school,
+        ...(values.type === '4'
+          ? {
+              grade: values.grade,
+              classroom: values.classroom,
+              teacherId: values.teacherId
+            }
+          : {
+              subject: values.subject,
+              mobile: values.mobile,
+              grade: values.grade
+            })
+      }
+      await authService.register(registerData)
+      message.success('注册成功')
+      form.resetFields()
+      setStep(1)
+      onCancel()
+    } catch {
+      // validation errors or API errors
+    }
   }
 
   const handleRoleChange = (e: any) => {
     const type = e.target.value
     setSelectedRole(type)
-
     if (type === '4') {
-      form.setFieldsValue({
-        subject: undefined,
-        mobile: undefined
-      })
+      form.setFieldsValue({ subject: undefined, mobile: undefined })
     } else {
-      form.setFieldsValue({
-        classroom: undefined,
-        teacherId: undefined
-      })
+      form.setFieldsValue({ classroom: undefined, teacherId: undefined })
     }
   }
 
@@ -124,7 +129,7 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
     }
   }
 
-  const debouncedFetchTeachers = debounce(fetchTeachers, 500)
+  const debouncedFetchTeachers = useMemo(() => debounce(fetchTeachers, 500), [])
 
   const handleTeacherSearch = (value: string) => {
     debouncedFetchTeachers(value, form.getFieldValue('school'))
@@ -138,40 +143,48 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
     fetchData()
   }, [])
 
+  const handleBack = () => {
+    if (step === 2) {
+      setStep(1)
+    } else {
+      onCancel()
+    }
+  }
+
   return (
     <Form form={form} layout="vertical" initialValues={{ type: '3' }}>
-      <Form.Item name="type" rules={[{ required: true }]} label="角色">
-        <Radio.Group onChange={handleRoleChange} buttonStyle="solid">
-          <Radio.Button value="3">教师</Radio.Button>
-          <Radio.Button value="4">学生</Radio.Button>
-        </Radio.Group>
-      </Form.Item>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item
-            name="username"
-            label="用户账号"
-            rules={[
-              { required: true, message: '用户账号不能为空' },
-              { pattern: /^\d{8,30}$/, message: '用户账号必须为8-30位数字' }
-            ]}>
-            <Input placeholder="纯数字，推荐使用手机号" allowClear maxLength={30} />
+      {step === 1 && (
+        <>
+          <Form.Item name="type" rules={[{ required: true }]} label="角色">
+            <Radio.Group onChange={handleRoleChange} buttonStyle="solid">
+              <Radio.Button value="3">教师</Radio.Button>
+              <Radio.Button value="4">学生</Radio.Button>
+            </Radio.Group>
           </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            name="nickname"
-            label="用户昵称"
-            rules={[
-              { required: true, message: '用户昵称不能为空' },
-              { max: 30, message: '用户昵称长度不能超过30个字符' }
-            ]}>
-            <Input placeholder="请输入昵称或姓名" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={24}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="username"
+                label="用户账号"
+                rules={[
+                  { required: true, message: '用户账号不能为空' },
+                  { pattern: /^\d{8,30}$/, message: '用户账号必须为8-30位数字' }
+                ]}>
+                <Input placeholder="纯数字，推荐使用手机号" allowClear maxLength={30} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="nickname"
+                label="用户昵称"
+                rules={[
+                  { required: true, message: '用户昵称不能为空' },
+                  { max: 30, message: '用户昵称长度不能超过30个字符' }
+                ]}>
+                <Input placeholder="请输入昵称或姓名" />
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item
             name="password"
             label="密码"
@@ -181,8 +194,21 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
             ]}>
             <Input.Password placeholder="请输入密码" maxLength={16} />
           </Form.Item>
-        </Col>
-        <Col span={24}>
+          <Form.Item style={{ marginBottom: 12 }}>
+            <Button type="primary" block size="large" onClick={handleNext} className="h-11 rounded-lg! font-semibold">
+              下一步
+            </Button>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button block size="large" onClick={onCancel} className="h-11 rounded-lg! font-semibold">
+              返回登录
+            </Button>
+          </Form.Item>
+        </>
+      )}
+
+      {step === 2 && (
+        <>
           <Form.Item name="school" label="学校" rules={[{ required: true, message: '请选择学校' }]}>
             <Select
               showSearch
@@ -203,7 +229,7 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
                       添加新学校
                     </Button>
                   ) : (
-                    <div style={{ padding: '8px' }}>
+                    <div style={{ padding: 8 }}>
                       <Input
                         placeholder="请输入学校名称"
                         value={customSchoolInput}
@@ -228,115 +254,86 @@ const RegisterForm: FC<{ onCancel: () => void }> = ({ onCancel }) => {
               ))}
             </Select>
           </Form.Item>
-        </Col>
-      </Row>
 
-      {selectedRole === '4' && (
-        <>
-          <Form.Item name="teacherId" label="所属教师" rules={[{ required: true, message: '请选择所属教师' }]}>
-            <Select
-              showSearch
-              placeholder="请选择学校所属教师"
-              defaultActiveFirstOption={false}
-              allowClear
-              filterOption={false}
-              onSearch={handleTeacherSearch}
-              notFoundContent={fetchingTeachers ? '搜索中...' : '未找到根据学校匹配的教师'}
-              loading={fetchingTeachers}>
-              {teachers.map((teacher) => (
-                <Select.Option key={teacher.id} value={teacher.id}>
-                  {teacher.nickname} - {teacher.username}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="grade" label="年级" rules={[{ required: true, message: '请选择年级' }]}>
-                <Select placeholder="请选择年级">
-                  {gradeOptions.map((option) => (
-                    <Select.Option key={option.value} value={option.value}>
-                      {option.label}
+          {selectedRole === '4' && (
+            <>
+              <Form.Item name="teacherId" label="所属教师" rules={[{ required: true, message: '请选择所属教师' }]}>
+                <Select
+                  showSearch
+                  placeholder="请选择学校所属教师"
+                  defaultActiveFirstOption={false}
+                  allowClear
+                  filterOption={false}
+                  onSearch={handleTeacherSearch}
+                  notFoundContent={fetchingTeachers ? '搜索中...' : '未找到根据学校匹配的教师'}
+                  loading={fetchingTeachers}>
+                  {teachers.map((teacher) => (
+                    <Select.Option key={teacher.id} value={teacher.id}>
+                      {teacher.nickname} - {teacher.username}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="classroom" label="班级" rules={[{ required: true, message: '请输入班级' }]}>
-                <Input placeholder="例如：三年二班" />
-              </Form.Item>
-            </Col>
-          </Row>
-        </>
-      )}
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="grade" label="年级" rules={[{ required: true, message: '请选择年级' }]}>
+                    <Select placeholder="请选择年级" options={gradeOptions} />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="classroom" label="班级" rules={[{ required: true, message: '请输入班级' }]}>
+                    <Input placeholder="例如：三年二班" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </>
+          )}
 
-      {selectedRole === '3' && (
-        <>
-          <Form.Item
-            name="mobile"
-            label="手机号"
-            rules={[
-              { required: true, message: '请输入手机号' },
-              { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' }
-            ]}>
-            <Input placeholder="请输入您的手机号" />
+          {selectedRole === '3' && (
+            <>
+              <Form.Item
+                name="mobile"
+                label="手机号"
+                rules={[
+                  { required: true, message: '请输入手机号' },
+                  { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' }
+                ]}>
+                <Input placeholder="请输入您的手机号" />
+              </Form.Item>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="subject" label="学科" rules={[{ required: true, message: '请选择学科' }]}>
+                    <Select placeholder="请选择学科" options={subjectOptions} />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="grade" label="任课年级" rules={[{ required: true, message: '请选择任课年级' }]}>
+                    <Select placeholder="请选择任课年级" options={gradeOptions} />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </>
+          )}
+
+          <Form.Item style={{ marginBottom: 12 }}>
+            <Button
+              type="primary"
+              block
+              size="large"
+              onClick={handleRegister}
+              className="h-11 rounded-lg! font-semibold">
+              注册
+            </Button>
           </Form.Item>
-
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item name="subject" label="学科" rules={[{ required: true, message: '请选择学科' }]}>
-                <Select placeholder="请选择学科" options={subjectOptions} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="grade" label="任课年级" rules={[{ required: true, message: '请选择任课年级' }]}>
-                <Select placeholder="请选择任课年级">
-                  {gradeOptions.map((option) => (
-                    <Select.Option key={option.value} value={option.value}>
-                      {option.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Button block size="large" onClick={handleBack} className="h-11 rounded-lg! font-semibold">
+              上一步
+            </Button>
+          </Form.Item>
         </>
       )}
-
-      <Form.Item style={{ marginBottom: 20 }}>
-        <ButtonContainer>
-          <StyledButton type="primary" block size="large" onClick={handleRegister} variant="primary">
-            注册
-          </StyledButton>
-        </ButtonContainer>
-      </Form.Item>
-
-      <Form.Item style={{ marginBottom: 0 }}>
-        <StyledButton block size="large" onClick={onCancel} variant="secondary">
-          返回登录
-        </StyledButton>
-      </Form.Item>
     </Form>
   )
 }
-
-const ButtonContainer = styled.div`
-  width: 100%;
-`
-
-const StyledButton = styled(Button)<{ variant?: 'primary' | 'secondary' }>`
-  height: 44px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-`
 
 export default RegisterForm
