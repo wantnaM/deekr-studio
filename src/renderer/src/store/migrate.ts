@@ -3453,6 +3453,20 @@ const migrateConfig = {
           sessionToolOrder.visible.unshift(permissionModeKey)
         }
       }
+
+      // Hide agents and paintings from sidebar by default
+      if (state.settings && state.settings.sidebarIcons) {
+        const hiddenIcons = ['agents', 'paintings']
+        state.settings.sidebarIcons.visible = state.settings.sidebarIcons.visible.filter(
+          (icon) => !hiddenIcons.includes(icon)
+        )
+        for (const icon of hiddenIcons) {
+          if (!state.settings.sidebarIcons.disabled.includes(icon as any)) {
+            state.settings.sidebarIcons.disabled = [...state.settings.sidebarIcons.disabled, icon as any]
+          }
+        }
+      }
+
       logger.info('migrate 206 success')
       return state
     } catch (error) {
