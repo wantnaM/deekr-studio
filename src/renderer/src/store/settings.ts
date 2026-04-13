@@ -343,7 +343,7 @@ export const initialState: SettingsState = {
   topicNamingPrompt: '',
   sidebarIcons: {
     visible: DEFAULT_SIDEBAR_ICONS,
-    disabled: []
+    disabled: ['agents', 'paintings']
   },
   narrowMode: false,
   enableQuickAssistant: false,
@@ -395,14 +395,14 @@ export const initialState: SettingsState = {
     image: true,
     markdown: true,
     markdown_reason: true,
-    notion: true,
-    yuque: true,
-    joplin: true,
-    obsidian: true,
-    siyuan: true,
+    notion: false,
+    yuque: false,
+    joplin: false,
+    obsidian: false,
+    siyuan: false,
     docx: true,
     plain_text: true,
-    notes: true
+    notes: false
   },
   // OpenAI
   openAI: {
