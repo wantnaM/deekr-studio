@@ -13,8 +13,20 @@ import { findFileBlocks } from '@renderer/utils/messageUtils/find'
 import type { FilePart, TextPart } from 'ai'
 import i18n from 'i18next'
 
+// 视频扩展名 → 标准 MIME。base64File 主进程实现统一返回 application/<ext>，
+// 对视频是错的（应为 video/*），需要在这里覆盖
+const VIDEO_MIME_MAP: Record<string, string> = {
+  '.mp4': 'video/mp4',
+  '.mov': 'video/quicktime',
+  '.avi': 'video/x-msvideo',
+  '.mkv': 'video/x-matroska',
+  '.wmv': 'video/x-ms-wmv',
+  '.flv': 'video/x-flv',
+  '.webm': 'video/webm'
+}
+
 import { getAiSdkProviderId } from '../provider/factory'
-import { getFileSizeLimit, supportsImageInput, supportsLargeFileUpload } from './modelCapabilities'
+import { getFileSizeLimit, supportsImageInput, supportsLargeFileUpload, supportsVideoInput } from './modelCapabilities'
 
 const logger = loggerService.withContext('fileProcessor')
 
@@ -263,6 +275,39 @@ export async function convertFileBlockToFilePart(fileBlock: FileMessageBlock, mo
         type: 'file',
         data: base64Data.base64,
         mediaType: mediaType,
+        filename: file.origin_name
+      }
+    }
+
+    // 处理视频文件
+    if (file.type === FILE_TYPE.VIDEO && supportsVideoInput(model)) {
+      if (file.size > fileSizeLimit) {
+        if (supportsLargeFileUpload(model)) {
+          logger.info(`Large video file ${file.origin_name} (${file.size} bytes) attempting File API upload`)
+          const uploadResult = await handleLargeFileUpload(file, model)
+          if (uploadResult) {
+            return uploadResult
+          }
+          logger.warn(`Failed to upload large video ${file.origin_name}, skipping`)
+          return null
+        } else {
+          logger.warn(`Video file ${file.origin_name} exceeds size limit (${file.size} > ${fileSizeLimit})`)
+          window.toast.warning(
+            i18n.t('message.warning.file.pdf_exceeds_limit', {
+              name: file.origin_name,
+              limit: `${Math.round(fileSizeLimit / 1024 / 1024)}MB`
+            })
+          )
+          return null
+        }
+      }
+
+      const base64Data = await window.api.file.base64File(file.id + file.ext)
+      const realMime = VIDEO_MIME_MAP[file.ext.toLowerCase()] ?? `video/${file.ext.replace('.', '').toLowerCase()}`
+      return {
+        type: 'file',
+        data: base64Data.data,
+        mediaType: realMime,
         filename: file.origin_name
       }
     }
